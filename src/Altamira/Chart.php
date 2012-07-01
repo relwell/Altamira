@@ -200,9 +200,11 @@ class Chart
 
 	public function getDiv($width = 500, $height = 400)
 	{
-		return '<div class="jqPlot" id="' . $this->name .
-			'" style="height:'. $height . 'px; width:' . $width . 'px;"></div>';
-
+	    $div = sprintf('<div class="jqPlot" id="%s" style="height: %spx; width: %spx;"></div>', $this->name,
+	                                                                                            $height,
+	                                                                                            $width);
+        return $div;
+        
 		return $this;
 	}
 

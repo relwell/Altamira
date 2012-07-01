@@ -3,11 +3,9 @@
 include(__DIR__ . '/autoload.php');
 
 use Altamira\Chart;
+use Altamira\ChartIterator;
 use Altamira\Series;
 use Altamira\Series\BubbleSeries;
-
-$charts = array();
-$plugins = array();
 
 $chart = new Chart('chart1');
 $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales'))->
@@ -18,12 +16,9 @@ $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales')
     setAxisOptions('x', 'min', 0)->
     setLegend(true);
 
-$charts[] = array('script' => $chart->getScript(), 'div' => $chart->getDiv());
-$plugins = array_merge($plugins, $chart->getFiles());
-
 $chart2 = new Chart('chart2');
 $series = new Series(
-        array(  array('1/4/1990', 750),
+        array(  array('1/4/1990', 850),
             array('2/27/1991', 427),
             array('1/6/1994', 990),
             array('8/6/1994', 127),
@@ -36,10 +31,6 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     addSeries($series)->
     useDates()->
     useHighlighting();
-
-$charts[] = array('script' => $chart2->getScript(), 'div' => $chart2->getDiv());
-$plugins = array_merge($plugins, $chart2->getFiles());
-
 
 $chart3 = new Chart('chart3');
 $seriesA = new Series(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
@@ -60,9 +51,6 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
     addSeries($seriesC)->
     useZooming();
 
-$charts[] = array('script' => $chart3->getScript(), 'div' => $chart3->getDiv());
-$plugins = array_merge($plugins, $chart3->getFiles());
-
 $chart4 = new Chart('chart4');
 $chart4->setTitle('Horizontal Bar Chart')->
     addSeries(new Series(array(1, 4, 8, 2, 1, 5), 'Runs'))->
@@ -72,17 +60,11 @@ $chart4->setTitle('Horizontal Bar Chart')->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
     setLegend(true, 'se', 5, 5);
 
-$charts[] = array('script' => $chart4->getScript(), 'div' => $chart4->getDiv());
-$plugins = array_merge($plugins, $chart4->getFiles());
-
 $chart5 = new Chart('chart5');
 $chart5->setTitle('Pie Chart')->
     addSeries(new Series(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
     setType('Pie')->
     setLegend(true);
-
-$charts[] = array('script' => $chart5->getScript(), 'div' => $chart5->getDiv());
-$plugins = array_merge($plugins, $chart5->getFiles());
 
 $chart6 = new Chart('chart6');
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
@@ -93,9 +75,6 @@ $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     setLegend(true)->
     setTypeOption('sliceMargin', 3)->
     setTypeOption('showDataLabels', true);
-
-$charts[] = array('script' => $chart6->getScript(), 'div' => $chart6->getDiv());
-$plugins = array_merge($plugins, $chart6->getFiles());
 
 $chart7 = new Chart('chart7');
 $chart7->addSeries(new BubbleSeries(
@@ -110,9 +89,6 @@ $chart7->addSeries(new BubbleSeries(
     setType('Bubble')->
     setTypeOption('bubbleAlpha', .5)->
     setTypeOption('highlightAlpha', .7);
-
-$charts[] = array('script' => $chart7->getScript(), 'div' => $chart7->getDiv());
-$plugins = array_merge($plugins, $chart7->getFiles());
 
 $array1 = array(1, 4, 8, 2, 1, 5);
 $array2 = array(3, 3, 5, 4, 2, 6);
@@ -133,8 +109,17 @@ $chart8->setTitle('Vertical Stack Chart')->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
 
-$charts[] = array('script' => $chart8->getScript(), 'div' => $chart8->getDiv());
-$plugins = array_merge($plugins, $chart8->getFiles());
+$charts = array($chart, 
+                $chart2, 
+                $chart3, 
+                $chart4, 
+                $chart5, 
+                $chart6, 
+                $chart7, 
+                $chart8
+                );
+
+$chartIterator = new ChartIterator($charts);
 
 ?>
 <html>
@@ -143,24 +128,19 @@ $plugins = array_merge($plugins, $chart8->getFiles());
 <script type="text/javascript" src="js/excanvas.js"></script>
 <script type="text/javascript" src="js/jquery.jqplot.js"></script>
 <link rel="stylesheet" type="text/css" href="css/jqplot.css"></link>
-
-<?php
-
-foreach($plugins as $plugin): ?>
-    <script type="text/javascript" src="js/plugins/<?php echo $plugin ?>"></script>
-<?php endforeach; ?>
-
+<? $chartIterator->renderPlugins() ?>
 </head>
 <body>
 
-<?php
-
-foreach($charts as $chart) {
-    echo $chart['div'];
+<?php  
+while ( $chartIterator->valid() ) {
+    
+    echo $chartIterator->current()->getDiv();
+    $chartIterator->next();
+    
 }
+?>
 
-foreach($charts as $chart): ?>
-    <script type="text/javascript"><?php echo $chart['script']; ?></script>
-<?php endforeach; ?>
+<? $chartIterator->renderScripts() ?>
 
 </body>
