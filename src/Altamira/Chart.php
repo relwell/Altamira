@@ -26,6 +26,11 @@ class Chart
 
 		return $this;
 	}
+	
+	public function getName()
+	{
+	    return $this->name;
+	}
 
 	public function setTitle($title)
 	{
@@ -200,12 +205,11 @@ class Chart
 
 	public function getDiv($width = 500, $height = 400)
 	{
-	    $div = sprintf('<div class="jqPlot" id="%s" style="height: %spx; width: %spx;"></div>', $this->name,
-	                                                                                            $height,
-	                                                                                            $width);
-        return $div;
-        
-		return $this;
+	    $styleOptions = array('width'    =>    $width.'px', 
+	                          'height'   =>    $height.'px'
+	                         );
+	    
+	    return ChartRenderer::render( $this, $styleOptions );
 	}
 
 	public function getFiles()
