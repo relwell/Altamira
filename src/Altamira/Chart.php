@@ -16,13 +16,17 @@ class Chart
 	protected $series = array();
 	protected $labels = array();
 	protected $files = array();
+	
+	protected $library;
 
 	protected $typeNamespace = '\\Altamira\\Type\\';
 
-	public function __construct($name = null)
+	public function __construct($name = null, $library = 'jqPlot')
 	{
 		if(isset($name))
 			$this->name = $name;
+		
+		$this->library = $library;
 
 		return $this;
 	}
@@ -130,7 +134,7 @@ class Chart
 
 		$className =  $this->typeNamespace . ucwords($type);
 		if(class_exists($className))
-			$this->types[$title] = new $className();
+			$this->types[$title] = new $className($this->library);
 
 		return $this;
 	}
@@ -311,5 +315,10 @@ class Chart
 	{
 		$options = json_encode($array);
 		return preg_replace('/"#(.*?)#"/', '$1', $options);
+	}
+	
+	public function setLibrary($library)
+	{
+	    $this->library = $library;
 	}
 }

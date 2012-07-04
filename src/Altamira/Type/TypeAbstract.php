@@ -9,6 +9,23 @@ abstract class TypeAbstract
 	protected $options;
 
 	protected $allowedRendererOptions = array();
+	
+	public function __construct($library = 'jqPlot')
+	{
+	    $config = \parse_ini_file(__DIR__.'/TypeConfig.ini', true);
+	    if (! isset($config[strtolower($library)]) ) {
+	        throw new \Exception('This chart type is not supported in this library.');
+	    }
+	    
+	    $libConfig = $config[strtolower($library)];
+
+	    $class = end(explode('\\', strtolower(get_class($this))));
+	    
+	    foreach ( preg_grep("/$class\./i", array_keys($libConfig)) as $key ) {
+	        $attribute = preg_replace("/{$class}\./i", '', $key);
+	        $this->{$attribute} = $libConfig[$key];
+	    }
+	}
 
 	public function getFiles()
 	{

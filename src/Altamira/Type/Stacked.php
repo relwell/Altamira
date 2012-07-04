@@ -4,9 +4,7 @@ namespace Altamira\Type;
 
 class Stacked extends TypeAbstract
 {
-
-	protected $pluginFiles = array();
-
+    
 	public function getOptions()
 	{
 		$opts = array();

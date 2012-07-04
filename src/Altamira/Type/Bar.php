@@ -5,12 +5,6 @@ namespace Altamira\Type;
 class Bar extends TypeAbstract
 {
 
-	protected $pluginFiles = array('jqplot.categoryAxisRenderer.min.js', 'jqplot.barRenderer.min.js');
-	protected $renderer = '$.jqplot.BarRenderer';
-	protected $axisRenderer = '$.jqplot.CategoryAxisRenderer';
-
-	protected $allowedOptions = array('varyBarColor', 'barWidth', 'barPadding', 'barMargin', 'waterfall', 'stackSeries');
-
 	public function getOptions()
 	{
 		$opts = array();
