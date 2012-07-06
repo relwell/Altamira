@@ -7,7 +7,9 @@ use Altamira\ChartIterator;
 use Altamira\Series;
 use Altamira\Series\BubbleSeries;
 
-$chart = new Chart('chart1');
+$library = isset($_GET['library']) ? $_GET['library'] : 'jqPlot';
+
+$chart = new Chart('chart1', $library);
 $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales'))->
     addSeries(new Series(array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3), 'Returns'))->
     setTitle('Basic Line Chart')->
