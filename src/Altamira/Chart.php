@@ -307,13 +307,7 @@ class Chart
 	{
 		$this->runSeriesOptions();
 		$this->runTypeOptions();
-		return $this->makeJSArray($this->options);
-	}
-
-	public function makeJSArray($array)
-	{
-		$options = json_encode($array);
-		return preg_replace('/"#(.*?)#"/', '$1', $options);
+		return $this->jsWriter->makeJSArray($this->options);
 	}
 	
 	public function setLibrary($library)

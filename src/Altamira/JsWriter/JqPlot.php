@@ -27,11 +27,11 @@ class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
         
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
-            $output .= $varname . ' = ' . $this->chart->makeJSArray($data) . ';';
+            $output .= $varname . ' = ' . $this->makeJSArray($data) . ';';
         }
         
         $output .= 'plot = $.jqplot("' . $this->chart->getName() . '", ';
-        $output .= $this->chart->makeJSArray($vars);
+        $output .= $this->makeJSArray($vars);
         $output .= ', ';
         $output .= $this->chart->getOptionsJS();
         $output .= ');';
