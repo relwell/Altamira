@@ -54,7 +54,7 @@ class Series
 		$num = $start;
 		$this->tags = array();
 
-		foreach($data as $item) {
+		foreach($this->data as $item) {
 			$this->tags[] = $num;
 			$num += $step;
 		}

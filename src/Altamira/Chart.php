@@ -2,6 +2,8 @@
 
 namespace Altamira;
 
+use Altamira\JsWriter\JqPlot;
+
 class Chart
 {
 	protected $name;
@@ -28,6 +30,8 @@ class Chart
 		
 		$this->library = $library;
 
+		$this->jsWriter = $this->getJsWriter();
+		
 		return $this;
 	}
 	
@@ -41,6 +45,11 @@ class Chart
 		$this->options['title'] = $title;
 
 		return $this;
+	}
+	
+	public function getUseTags()
+	{
+	    return $this->useTags;
 	}
 
 	public function useHighlighting($size = 7.5)
@@ -231,34 +240,24 @@ class Chart
 
 	public function getScript()
 	{
-		$output  = '$(document).ready(function(){';
-		$output .= '$.jqplot.config.enablePlugins = true;';
+	    return $this->jsWriter->getScript();
+	}
+	
+	protected function getJsWriter()
+	{
+	    if ($this->jsWriter) {
+	        return $this->jsWriter;
+	    }
+	    
+	    $className = '\\Altamira\\JsWriter\\'.ucfirst($this->library);
 
-		$num = 0;
-		$vars = array();
-
-		$useTags = false;
-		if( (isset($this->types['default']) && $this->types['default']->getUseTags()) ||
-			(isset($this->useTags) && $this->useTags) )
-			$useTags = true;
-
-		foreach($this->series as $series) {
-			$num++;
-			$data = $series->getData($useTags);
-
-			$varname = 'plot_' . $this->name . '_' . $num;
-			$vars[] = '#' . $varname . '#';
-			$output .= $varname . ' = ' . $this->makeJSArray($data) . ';';
-		}
-
-		$output .= 'plot = $.jqplot("' . $this->name . '", ';
-		$output .= $this->makeJSArray($vars);
-		$output .= ', ';
-		$output .= $this->getOptionsJS();
-		$output .= ');';
-		$output .= '});';
-
-		return $output;
+	    if (class_exists($className)) {
+	        $instance = new $className($this); 
+	        return $instance;
+	    }
+	    
+	    throw new \Exception("No JsWriter by name of {$className}");
+	    
 	}
 
 	protected function runSeriesOptions()
@@ -289,7 +288,7 @@ class Chart
 		$this->options['series'] = $seriesOptions;
 	}
 
-	protected function runTypeOptions()
+	public function runTypeOptions()
 	{
 		if(isset($this->types['default'])) {
 			$this->options = array_merge_recursive($this->options, $this->types['default']->getOptions());
@@ -304,14 +303,14 @@ class Chart
 		}
 	}
 
-	protected function getOptionsJS()
+	public function getOptionsJS()
 	{
 		$this->runSeriesOptions();
 		$this->runTypeOptions();
 		return $this->makeJSArray($this->options);
 	}
 
-	protected function makeJSArray($array)
+	public function makeJSArray($array)
 	{
 		$options = json_encode($array);
 		return preg_replace('/"#(.*?)#"/', '$1', $options);
@@ -320,5 +319,15 @@ class Chart
 	public function setLibrary($library)
 	{
 	    $this->library = $library;
+	}
+	
+	public function getTypes()
+	{
+	    return $this->types;
+	}
+	
+	public function getSeries()
+	{
+	    return $this->series;
 	}
 }
