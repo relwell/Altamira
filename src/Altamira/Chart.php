@@ -321,6 +321,11 @@ class Chart
 	    $this->library = $library;
 	}
 	
+	public function getLibrary()
+	{
+	    return $this->library;
+	}
+	
 	public function getTypes()
 	{
 	    return $this->types;

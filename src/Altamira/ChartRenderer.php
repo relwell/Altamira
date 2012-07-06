@@ -11,7 +11,7 @@ class ChartRenderer
         $data = self::renderData( $chart );
         
         return <<<ENDDIV
-<div class="jqPlot" id="{$chart->getName()}" style="{$style}"{$data}></div>
+<div class="{$chart->getLibrary()}" id="{$chart->getName()}" style="{$style}"{$data}></div>
 ENDDIV;
         
     }

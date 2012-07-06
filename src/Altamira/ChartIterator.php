@@ -22,11 +22,13 @@ class ChartIterator extends \ArrayIterator
             // time saver -- if it's a chart, we can use this loop to add files, too
             $plugins = array_merge($plugins, $item->getFiles());
             $scripts[] = $item->getScript();
+            $this->libraries[$item->getLibrary()] = true;
         }
 
         // yo dawg...
         $this->plugins = new FilesRenderer($plugins, 'js/plugins/');
         $this->scripts = new ScriptsRenderer($scripts);
+        
         
         parent::__construct($array);        
     }
@@ -62,6 +64,47 @@ class ChartIterator extends \ArrayIterator
             
         }
         echo "\n</script>\n";
+        
+        return $this;
+        
+    }
+    
+    public function renderLibraries()
+    {
+        foreach ($this->libraries as $library=>$junk) {
+            
+            switch($library) {
+                case 'flot':
+                    $libraryPath = 'js/jquery.flot.js';
+                    break;
+                case 'jqPlot':
+                default:
+                    $libraryPath = 'js/jquery.jqplot.js';
+            }
+            
+        }
+        
+        echo "<script type='text/javascript' src='$libraryPath'></script>";
+        
+        return $this;
+    }
+    
+    public function renderCss()
+    {
+        foreach ($this->libraries as $library=>$junk) {
+            switch($library) {
+                case 'flot':
+                    break;
+                case 'jqPlot':
+                default:
+                    $cssPath = 'css/jqplot.css';
+            }
+        
+        }
+        
+        if (isset($cssPath)) {
+            echo "<link rel='stylesheet' type='text/css' href='{$cssPath}'></link>";
+        }
         
         return $this;
         

@@ -126,9 +126,9 @@ $chartIterator = new ChartIterator($charts);
 <head>
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
 <script type="text/javascript" src="js/excanvas.js"></script>
-<script type="text/javascript" src="js/jquery.jqplot.js"></script>
-<link rel="stylesheet" type="text/css" href="css/jqplot.css"></link>
-<? $chartIterator->renderPlugins() ?>
+<? $chartIterator->renderLibraries()
+                 ->renderCss()
+                 ->renderPlugins() ?>
 </head>
 <body>
 
