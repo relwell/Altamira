@@ -240,8 +240,6 @@ class Chart
 
 	public function getScript()
 	{
-	    $this->runSeriesOptions();
-	    $this->runTypeOptions();
 	    return $this->jsWriter->getScript();
 	}
 	
@@ -262,56 +260,6 @@ class Chart
 	    
 	}
 
-	protected function runSeriesOptions()
-	{
-		if(isset($this->types['default'])) {
-			$defaults = $this->options['seriesDefaults'];
-			$renderer = $this->types['default']->getRenderer();
-			if(isset($renderer))
-				$defaults['renderer'] = $renderer;
-			$defaults['rendererOptions'] = $this->types['default']->getRendererOptions();
-			if(count($defaults['rendererOptions']) == 0)
-				unset($defaults['rendererOptions']);
-			$this->options['seriesDefaults'] = $defaults;
-		}
-
-		$seriesOptions = array();
-		foreach($this->series as $series) {
-			$opts = $series->getOptions();
-			$title = $series->getTitle();
-			if(isset($this->types[$title])) {
-				$type = $this->types[$title];
-				$opts['renderer'] = $type->getRenderer();
-				array_merge_recursive($opts, $type->getSeriesOptions());
-			}
-			$opts['label'] = $title;
-			$seriesOptions[] = $opts;
-		}
-		$this->options['series'] = $seriesOptions;
-	}
-
-	protected function runTypeOptions()
-	{
-		if(isset($this->types['default'])) {
-			$this->options = array_merge_recursive($this->options, $this->types['default']->getOptions());
-		}
-
-		if(isset($this->options['axes'])) {
-			foreach($this->options['axes'] as $axis => $contents) {
-				if(isset($this->options['axes'][$axis]['renderer']) && is_array($this->options['axes'][$axis]['renderer'])) {
-					$this->options['axes'][$axis]['renderer'] = $this->options['axes'][$axis]['renderer'][0];
-				}
-			}
-		}
-	}
-
-	public function getOptionsJS()
-	{
-		$this->runSeriesOptions();
-		$this->runTypeOptions();
-		return $this->jsWriter->makeJSArray($this->options);
-	}
-	
 	public function setLibrary($library)
 	{
 	    $this->library = $library;
@@ -330,5 +278,10 @@ class Chart
 	public function getSeries()
 	{
 	    return $this->series;
+	}
+	
+	public function getOptions()
+	{
+	    return $this->options;
 	}
 }
