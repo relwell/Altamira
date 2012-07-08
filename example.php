@@ -17,6 +17,7 @@ $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales')
     setAxisOptions('x', 'tickInterval', 1)->
     setAxisOptions('x', 'min', 0)->
     setLegend(true);
+
 /**
 $chart2 = new Chart('chart2');
 $series = new Series(

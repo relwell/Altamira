@@ -240,6 +240,8 @@ class Chart
 
 	public function getScript()
 	{
+	    $this->runSeriesOptions();
+	    $this->runTypeOptions();
 	    return $this->jsWriter->getScript();
 	}
 	
@@ -288,7 +290,7 @@ class Chart
 		$this->options['series'] = $seriesOptions;
 	}
 
-	public function runTypeOptions()
+	protected function runTypeOptions()
 	{
 		if(isset($this->types['default'])) {
 			$this->options = array_merge_recursive($this->options, $this->types['default']->getOptions());

@@ -11,11 +11,22 @@ class Flot extends JsWriterAbstract
         
         $jsArray = '[';
         foreach ($this->chart->getSeries() as $title=>$series) {
+            
             $jsArray .= $counter++ > 0 ? ', ' : '';
             
+            $jsArray .= '{';
+            
+            // associate Xs with Ys in cases where we need it
             $data = $series->getData();
-            array_walk($data, function($val,$key) use (&$data) { $data[$key] = array($key, $val); });
-            $jsArray .= $this->makeJSArray($data);            
+            array_walk($data, function($val,$key) use (&$data) { $data[$key] = is_array($val) ? $val : array($key, $val); });
+            
+            if ($title) {
+                $jsArray .= 'label: "'.str_replace('"', '\\"', $title).'", ';
+            }
+            
+            $jsArray .= 'data: '.str_replace('"', '\\"', $this->makeJSArray($data));
+
+            $jsArray .= '}';
         }
         $jsArray .= ']';
         
