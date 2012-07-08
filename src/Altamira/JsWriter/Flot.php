@@ -40,9 +40,8 @@ ENDSCRIPT;
     }
     
 
-    protected function runTypeOptions()
+    protected function getTypeOptions(array $options)
     {
-        $options = $this->chart->getOptions();
         $types = $this->chart->getTypes();
     
         if(isset($types['default'])) {
@@ -56,12 +55,13 @@ ENDSCRIPT;
                 }
             }
         }
+        
+        return $options;
     }
     
-    protected function runSeriesOptions()
+    protected function getSeriesOptions(array $options)
     {
         $types = $this->chart->getTypes();
-        $options = $this->chart->getOptions();
     
         if(isset($types['default'])) {
             $defaults = $options['seriesDefaults'];
@@ -87,6 +87,8 @@ ENDSCRIPT;
             $seriesOptions[] = $opts;
         }
         $options['series'] = $seriesOptions;
+        
+        return $options;
     }
     
     public function getOptionsJS(Chart $chart)

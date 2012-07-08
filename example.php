@@ -18,7 +18,7 @@ $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales')
     setAxisOptions('x', 'min', 0)->
     setLegend(true);
 
-/**
+
 $chart2 = new Chart('chart2');
 $series = new Series(
         array(  array('1/4/1990', 850),
@@ -111,15 +111,15 @@ $chart8->setTitle('Vertical Stack Chart')->
     setLegend(true, 'se', 5, 5)->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
-**/
+
 $charts = array($chart, 
-                /**$chart2, 
+                $chart2, 
                 $chart3, 
                 $chart4, 
                 $chart5, 
                 $chart6, 
                 $chart7, 
-                $chart8**/
+                $chart8
                 );
 
 $chartIterator = new ChartIterator($charts);

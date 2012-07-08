@@ -6,6 +6,8 @@ abstract class JsWriterAbstract
 {
     protected $chart;
     
+    protected $options = array();
+    
     public function __construct(\Altamira\Chart $chart)
     {
         $this->chart = $chart;
@@ -13,8 +15,7 @@ abstract class JsWriterAbstract
     
     public function getScript()
     {
-        $this->runSeriesOptions();
-        $this->runTypeOptions();
+        $this->options = $this->getTypeOptions($this->getSeriesOptions($this->chart->getOptions()));
         return $this->generateScript();
     }
     
@@ -25,7 +26,7 @@ abstract class JsWriterAbstract
         return preg_replace('/"#(.*?)#"/', '$1', $options);
     }
     
-    abstract protected function runSeriesOptions();
-    abstract protected function runTypeOptions();
+    abstract protected function getSeriesOptions(array $options);
+    abstract protected function getTypeOptions(array $options);
     abstract protected function generateScript();
 }
