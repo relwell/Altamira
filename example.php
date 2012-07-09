@@ -19,7 +19,7 @@ $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales')
     setLegend(true);
 
 
-$chart2 = new Chart('chart2');
+$chart2 = new Chart('chart2', $library);
 $series = new Series(
         array(  array('1/4/1990', 850),
             array('2/27/1991', 427),
@@ -35,7 +35,7 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     useDates()->
     useHighlighting();
 
-$chart3 = new Chart('chart3');
+$chart3 = new Chart('chart3', $library);
 $seriesA = new Series(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
 $seriesB = new Series(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
 $seriesC = new Series(array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7), 'Third');
@@ -54,7 +54,7 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
     addSeries($seriesC)->
     useZooming();
 
-$chart4 = new Chart('chart4');
+$chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
     addSeries(new Series(array(1, 4, 8, 2, 1, 5), 'Runs'))->
     addSeries(new Series(array(3, 3, 5, 4, 2, 6), 'Walks'))->
@@ -63,13 +63,13 @@ $chart4->setTitle('Horizontal Bar Chart')->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
     setLegend(true, 'se', 5, 5);
 
-$chart5 = new Chart('chart5');
+$chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
     addSeries(new Series(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
     setType('Pie')->
     setLegend(true);
 
-$chart6 = new Chart('chart6');
+$chart6 = new Chart('chart6', $library);
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     addSeries(new Series(array(array('Metals', 3), array('Plastics', 5), array('Wood', 2), array('Glass', 7), array('Paper', 9)), 'Internal'))->
     addSeries(new Series(array(array('Metals', 4), array('Plastics', 2), array('Wood', 5), array('Glass', 4), array('Paper', 12)), 'External'))->
@@ -79,7 +79,7 @@ $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     setTypeOption('sliceMargin', 3)->
     setTypeOption('showDataLabels', true);
 
-$chart7 = new Chart('chart7');
+$chart7 = new Chart('chart7', $library);
 $chart7->addSeries(new BubbleSeries(
     array(  array(4, 7, 5, 'Screws'),
         array(5, 3, 6, 'Nails'),
@@ -103,7 +103,7 @@ for($i = 0; $i < $num; $i++) {
     $array2[$i] = $array2[$i] / $total * 100;
 }
 
-$chart8 = new Chart('chart8');
+$chart8 = new Chart('chart8', $library);
 $chart8->setTitle('Vertical Stack Chart')->
     addSeries(new Series($array1, 'Is'))->
     addSeries(new Series($array2, 'Is Not'))->
@@ -112,7 +112,7 @@ $chart8->setTitle('Vertical Stack Chart')->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
 
-$charts = array($chart, 
+$charts = array($chart,
                 $chart2, 
                 $chart3, 
                 $chart4, 

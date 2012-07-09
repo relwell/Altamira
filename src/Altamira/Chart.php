@@ -54,36 +54,26 @@ class Chart
 
 	public function useHighlighting($size = 7.5)
 	{
-		$this->files = array_merge_recursive(array('jqplot.highlighter.min.js'), $this->files);
-		$this->options['highlighter'] = array('sizeAdjust' => $size);
+	    $this->jsWriter->useHighlighting($size);
 
 		return $this;
 	}
 
 	public function useZooming()
 	{
-		$this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
-		$this->options['cursor'] = array('zoom' => true, 'show' => true);
-
+	    $this->jsWriter->useZooming();
+	    
 		return $this;
 	}
 
 	public function useCursor()
 	{
-		$this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
-		$this->options['cursor'] = array('show' => true, 'showTooltip' => true);
-
-		return $this;
+        $this->jsWriter->useCursor();
 	}
 
 	public function useDates($axis = 'x')
 	{
-		$this->files = array_merge_recursive(array('jqplot.dateAxisRenderer.min.js'), $this->files);
-		if(strtolower($axis) === 'x') {
-			$this->options['axes']['xaxis']['renderer'] = '#$.jqplot.DateAxisRenderer#';
-		} elseif(strtolower($axis) === 'y') {
-			$this->options['axes']['yaxis']['renderer'] = '#$.jqplot.DateAxisRenderer#';
-		}
+		$this->jsWriter->useDates($axis);
 
 		return $this;
 	}
@@ -235,7 +225,7 @@ class Chart
 			$this->files = array_merge_recursive($this->files, $series->getFiles());
 		}
 
-		return $this->files;
+		return array_merge($this->files, $this->jsWriter->getFiles());
 	}
 
 	public function getScript()

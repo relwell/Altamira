@@ -13,7 +13,6 @@ class FilesRenderer extends \ArrayIterator
     
     public function render()
     {
-        //@todo refactor everything to not require js/plugins
         echo <<<ENDSCRIPT
 <script type="text/javascript" src="{$this->path}{$this->current()}"></script>
 

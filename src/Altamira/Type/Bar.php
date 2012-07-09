@@ -11,8 +11,9 @@ class Bar extends TypeAbstract
 
 		$first = array();
 		$second = array();
-
-		$first['renderer'] = '#' . $this->axisRenderer . '#';
+        if ($this->axisRenderer) {
+		    $first['renderer'] = '#' . $this->axisRenderer . '#';
+        }
 		if(isset($this->options['ticks']))
 			$first['ticks'] = $this->options['ticks'];
 

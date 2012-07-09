@@ -4,6 +4,7 @@ namespace Altamira\JsWriter;
 
 class Flot extends JsWriterAbstract
 {
+    protected $dateAxes = array('x'=>false, 'y'=>false);
     
     protected function generateScript()
     {
@@ -18,21 +19,41 @@ class Flot extends JsWriterAbstract
             
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
-            array_walk($data, function($val,$key) use (&$data) { $data[$key] = is_array($val) ? $val : array($key, $val); });
+            foreach ($data as $key=>$val) { 
+                $data[$key] = is_array($val) ? $val : array($key, $val);
+                foreach ($this->dateAxes as $axis=>$flag) { 
+                    if ($flag) {
+                        switch ($axis) {
+                            case 'x':
+                                $date = \DateTime::createFromFormat('m/d/Y', $data[$key][0]);
+                                $data[$key][0] = $date->getTimestamp();
+                                break;
+                            case 'y':
+                                $date = \DateTime::createFromFormat('m/d/Y', $data[$key][1]);
+                                $data[$key][0] = $date->getTimestamp();
+                                break;
+                        }
+                    }
+                }
+            };
             
             if ($title) {
                 $jsArray .= 'label: "'.str_replace('"', '\\"', $title).'", ';
             }
             
-            $jsArray .= 'data: '.str_replace('"', '\\"', $this->makeJSArray($data));
+            $jsArray .= 'data: '.$this->makeJSArray($data);
 
             $jsArray .= '}';
         }
+        
+        
         $jsArray .= ']';
+        
+        $optionsJs = ($js = $this->getOptionsJs()) ? ", {$js}" : '';
         
         return <<<ENDSCRIPT
 jQuery(document).ready(function() {
-    jQuery.plot(jQuery('#{$name}'), {$jsArray});
+    jQuery.plot(jQuery('#{$name}'), {$jsArray}{$optionsJs});
 });
         
 ENDSCRIPT;
@@ -80,7 +101,9 @@ ENDSCRIPT;
             $title = $series->getTitle();
             if(isset($types[$title])) {
                 $type = $types[$title];
-                $opts['renderer'] = $type->getRenderer();
+                if ($renderer = $type->getRenderer()) {
+                    $opts['renderer'] = $renderer;
+                }
                 array_merge_recursive($opts, $type->getSeriesOptions());
             }
             $opts['label'] = $title;
@@ -91,9 +114,42 @@ ENDSCRIPT;
         return $options;
     }
     
-    public function getOptionsJS(Chart $chart)
+    public function getOptionsJS()
     {
-        return $this->makeJSArray($chart->getOptions());
+        //@todo actually get this formatted right
+        $transformedOptions = $this->options;
+        
+        return $this->makeJSArray($transformedOptions);
+    }
+    
+    public function useHighlighting($size = 7.5)
+    {
+        $this->options['highlighter'] = array('sizeAdjust' => $size);
+    
+        return $this;
+    }
+    
+    public function useZooming()
+    {
+        $this->options['cursor'] = array('zoom' => true, 'show' => true);
+    
+        return $this;
+    }
+    
+    public function useCursor()
+    {
+        $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
+    
+        return $this;
+    }
+    
+    public function useDates($axis = 'x')
+    {
+        $this->dateAxes[$axis] = true;
+        
+        $this->options[$axis.'axis']['mode'] = 'time';
+    
+        return $this;
     }
     
     

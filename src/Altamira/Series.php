@@ -130,7 +130,6 @@ class Series
 		$this->useTags = true;
 		$this->useLabels = true;
 		$this->options['pointLabels'] = array('show' => true, 'edgeTolerance' => 3);
-		$this->files[] = 'jqplot.pointLabels.min.js';
 		$this->labels = $labels;
 
 		return $this;

@@ -32,12 +32,48 @@ class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
         $output .= 'plot = $.jqplot("' . $this->chart->getName() . '", ';
         $output .= $this->makeJSArray($vars);
         $output .= ', ';
-        $output .= $this->getOptionsJS($this->chart);
+        $output .= $this->getOptionsJS();
         $output .= ');';
         $output .= '});';
         
         return $output;
         
+    }
+    
+    public function useHighlighting($size = 7.5)
+    {
+        $this->files = array_merge_recursive(array('jqplot.highlighter.min.js'), $this->files);
+        $this->options['highlighter'] = array('sizeAdjust' => $size);
+
+        return $this;
+    }
+    
+    public function useZooming()
+    {
+        $this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
+        $this->options['cursor'] = array('zoom' => true, 'show' => true);
+    
+        return $this;
+    }
+    
+    public function useCursor()
+    {
+        $this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
+        $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
+        
+        return $this;
+    }
+    
+    public function useDates($axis = 'x')
+    {
+        $this->files = array_merge_recursive(array('jqplot.dateAxisRenderer.min.js'), $this->files);
+        if(strtolower($axis) === 'x') {
+            $this->options['axes']['xaxis']['renderer'] = '#$.jqplot.DateAxisRenderer#';
+        } elseif(strtolower($axis) === 'y') {
+            $this->options['axes']['yaxis']['renderer'] = '#$.jqplot.DateAxisRenderer#';
+        }
+    
+        return $this;
     }
     
     protected function getTypeOptions(array $options)
@@ -74,7 +110,7 @@ class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
         }
         
         $seriesOptions = array();
-        foreach($this->series as $series) {
+        foreach($this->chart->getSeries() as $series) {
             $opts = $series->getOptions();
             $title = $series->getTitle();
             if(isset($types[$title])) {
@@ -86,6 +122,10 @@ class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
             $seriesOptions[] = $opts;
         }
         $options['series'] = $seriesOptions;
+        
+        if ($options['pointLabels']) {
+            $this->files[] = 'jqplot.pointLabels.min.js';
+        }
         
         return $options;
     }

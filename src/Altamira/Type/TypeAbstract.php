@@ -4,7 +4,7 @@ namespace Altamira\Type;
 
 abstract class TypeAbstract
 {
-	protected $pluginFiles;
+	protected $pluginFiles = array();
 	protected $renderer;
 	protected $options;
 
