@@ -9,7 +9,6 @@ class Flot extends JsWriterAbstract
     protected function generateScript()
     {
         $name = $this->chart->getName();
-        
         $jsArray = '[';
         foreach ($this->chart->getSeries() as $title=>$series) {
             
@@ -116,10 +115,53 @@ ENDSCRIPT;
     
     public function getOptionsJS()
     {
-        //@todo actually get this formatted right
-        $transformedOptions = $this->options;
+        $newOpts = array();
         
-        return $this->makeJSArray($transformedOptions);
+        $getOptVal = function(array $opts, $option){
+            $ploded = explode('.', $option);
+            $arr = $opts;
+            $val = null;
+            while ($curr = array_shift($ploded)) {
+                if (isset($arr[$curr])) {
+                    if (is_array($arr[$curr])) {
+                        $arr = $arr[$curr];
+                    } else {
+                        return $arr[$curr];
+                    }
+                } else {
+                    return null;
+                }
+            }
+            return $arr;
+        };
+        
+        $setOpt = function(array &$opts, $mapperString, $val){
+            $ploded = explode('.', $mapperString);
+            $arr = &$opts;
+            while ($curr = array_shift($ploded)) {
+                if (isset($arr[$curr])) {
+                    if (is_array($arr[$curr])) {
+                        $arr = &$arr[$curr];
+                    } else {
+                        $arr[$curr] = $val;
+                    }
+                } else {
+                    $arr[$curr] = empty($ploded) ? $val : array();
+                    $arr = &$arr[$curr];
+                }
+            }
+        };
+        
+        foreach ($this->optsMapper as $opt => $mapped)
+        {
+            if (($currOpt = $getOptVal($this->options, $opt)) && ($currOpt !== null)) {
+                $setOpt(&$newOpts, $mapped, $currOpt);
+            }
+        }
+        
+        
+        
+        return $this->makeJSArray($newOpts);
     }
     
     public function useHighlighting($size = 7.5)
@@ -152,5 +194,118 @@ ENDSCRIPT;
         return $this;
     }
     
+    
+
+    // maps jqplot-originating option data structure to flot
+    private $optsMapper = array('axes.xaxis.tickInterval' => 'xaxis.tickSize',
+                                'axes.xaxis.min'          => 'xaxis.min',
+                                'axes.xaxis.max'          => 'xaxis.max',
+                                'axes.xaxis.mode'         => 'xaxis.mode',
+                                'axes.xaxis.ticks'        => 'xaxis.ticks',
+            
+                                'axes.yaxis.tickInterval' => 'yaxis.tickSize',
+                                'axes.yaxis.min'          => 'yaxis.min',
+                                'axes.yaxis.max'          => 'yaxis.max',
+                                'axes.yaxis.mode'         => 'yaxis.mode',
+                                'axes.yaxis.ticks'        => 'yaxis.ticks',
+                                
+                                'legend.show'             => 'legend.show',
+                                'label.location'          => 'legend.position',
+                                'seriesColors'            => 'colors',
+                                );
+    
+    
+    // api-native functionality
+    private $nativeOpts = array('legend' => array(  'show'=>null,
+                                                    'labelFormatter'=>null,
+                                                    'labelBoxBorderColor'=>null,
+                                                    'noColumns'=>null,
+                                                    'position'=>null,
+                                                    'margin'=>null,
+                                                    'backgroundColor'=>null,
+                                                    'backgroundOpacity'=>null,
+                                                    'container'=>null),
+
+                                'xaxis' => array(   'show'=>null,
+                                                    'position'=>null,
+                                                    'mode'=>null,
+                                                    'color'=>null,
+                                                    'tickColor'=>null,
+                                                    'min'=>null,
+                                                    'max'=>null,
+                                                    'autoscaleMargin'=>null,
+                                                    'transform'=>null,
+                                                    'inverseTransform'=>null,
+                                                    'ticks'=>null,
+                                                    'tickSize'=>null,
+                                                    'minTickSize'=>null,
+                                                    'tickFormatter'=>null,
+                                                    'tickDecimals'=>null,
+                                                    'labelWidth'=>null,
+                                                    'labelHeight'=>null,
+                                                    'reserveSpace'=>null,
+                                                    'tickLength'=>null,
+                                                    'alignTicksWithAxis'=>null,
+                                                ),
+                                                
+                                'yaxis' => array(   'show'=>null,
+                                                    'position'=>null,
+                                                    'mode'=>null,
+                                                    'color'=>null,
+                                                    'tickColor'=>null,
+                                                    'min'=>null,
+                                                    'max'=>null,
+                                                    'autoscaleMargin'=>null,
+                                                    'transform'=>null,
+                                                    'inverseTransform'=>null,
+                                                    'ticks'=>null,
+                                                    'tickSize'=>null,
+                                                    'minTickSize'=>null,
+                                                    'tickFormatter'=>null,
+                                                    'tickDecimals'=>null,
+                                                    'labelWidth'=>null,
+                                                    'labelHeight'=>null,
+                                                    'reserveSpace'=>null,
+                                                    'tickLength'=>null,
+                                                    'alignTicksWithAxis'=>null,
+                                                ),
+                                                
+                                 'xaxes' => null,
+                                 'yaxes' => null,
+
+                                 'series' => array(
+                                                    'lines' => array('show'=>null, 'lineWidth'=>null, 'fill'=>null, 'fillColor'=>null),
+                                                    'points'=> array('show'=>null, 'lineWidth'=>null, 'fill'=>null, 'fillColor'=>null),
+                                                    'bars' => array('show'=>null, 'lineWidth'=>null, 'fill'=>null, 'fillColor'=>null),
+                                                  ),
+                                                  
+                                 'points' => array('radius'=>null, 'symbol'=>null),
+                                 
+                                 'bars' => array('barWidth'=>null, 'align'=>null, 'horizontal'=>null),
+                                 
+                                 'lines' => array('steps'=>null),
+                                
+                                 'shadowSize' => null,                                
+                                
+                                 'colors' => null,
+                                 
+                                 'grid' =>  array(  'show'=>null,
+                                                    'aboveData'=>null,
+                                                    'color'=>null,
+                                                    'backgroundColor'=>null,
+                                                    'labelMargin'=>null,
+                                                    'axisMargin'=>null,
+                                                    'markings'=>null,
+                                                    'borderWidth'=>null,
+                                                    'borderColor'=>null,
+                                                    'minBorderMargin'=>null,
+                                                    'clickable'=>null,
+                                                    'hoverable'=>null,
+                                                    'autoHighlight'=>null,
+                                                    'mouseActiveRadius'=>null
+                                                )
+
+                                 
+                                );
     
 }
