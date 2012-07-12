@@ -1,12 +1,16 @@
 <?php
 
 namespace Altamira\Series;
+use Altamira\JsWriter\JsWriterAbstract;
+
 use Altamira\Series;
 
 class BubbleSeries extends Series
 {
-	public function __construct($data, $title = null)
+	public function __construct($data, $title = null, JsWriterAbstract $jsWriter)
 	{
+	    $this->jsWriter = $jsWriter;
+	    
 		self::$count++;
 
 		foreach($data as $datum) {

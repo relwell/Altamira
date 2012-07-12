@@ -191,6 +191,16 @@ class Chart
 
 		return $this;
 	}
+	
+	public function createSeries($data, $title = null, $type = null)
+	{
+	    switch ($type) {
+	        case 'Bubble':
+	            return new Series\BubbleSeries($data, $title, $this->jsWriter);
+	        default:
+	            return new Series($data, $title, $this->jsWriter);
+	    }
+	}
 
 	public function addSeries(Series $series)
 	{

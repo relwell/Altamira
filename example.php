@@ -10,8 +10,8 @@ use Altamira\Series\BubbleSeries;
 $library = isset($_GET['library']) ? $_GET['library'] : 'jqPlot';
 
 $chart = new Chart('chart1', $library);
-$chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales'))->
-    addSeries(new Series(array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3), 'Returns'))->
+$chart->addSeries($chart->createSeries(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales'))->
+    addSeries($chart->createSeries(array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3), 'Returns'))->
     setTitle('Basic Line Chart')->
     setAxisOptions('y', 'formatString', '$%d')->
     setAxisOptions('x', 'tickInterval', 1)->
@@ -20,7 +20,7 @@ $chart->addSeries(new Series(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales')
 
 
 $chart2 = new Chart('chart2', $library);
-$series = new Series(
+$series = $chart->createSeries(
         array(  array('1/4/1990', 850),
             array('2/27/1991', 427),
             array('1/6/1994', 990),
@@ -36,9 +36,9 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     useHighlighting();
 
 $chart3 = new Chart('chart3', $library);
-$seriesA = new Series(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
-$seriesB = new Series(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
-$seriesC = new Series(array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7), 'Third');
+$seriesA = $chart->createSeries(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
+$seriesB = $chart->createSeries(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
+$seriesC = $chart->createSeries(array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7), 'Third');
 
 $seriesA->setOption('showMarker', false)->
     setOption('lineWidth', 8);
@@ -56,8 +56,8 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
 
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
-    addSeries(new Series(array(1, 4, 8, 2, 1, 5), 'Runs'))->
-    addSeries(new Series(array(3, 3, 5, 4, 2, 6), 'Walks'))->
+    addSeries($chart->createSeries(array(1, 4, 8, 2, 1, 5), 'Runs'))->
+    addSeries($chart->createSeries(array(3, 3, 5, 4, 2, 6), 'Walks'))->
     setType('Bar')->
     setTypeOption('horizontal', true)->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
@@ -65,14 +65,14 @@ $chart4->setTitle('Horizontal Bar Chart')->
 
 $chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
-    addSeries(new Series(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
+    addSeries($chart->createSeries(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
     setType('Pie')->
     setLegend(true);
 
 $chart6 = new Chart('chart6', $library);
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
-    addSeries(new Series(array(array('Metals', 3), array('Plastics', 5), array('Wood', 2), array('Glass', 7), array('Paper', 9)), 'Internal'))->
-    addSeries(new Series(array(array('Metals', 4), array('Plastics', 2), array('Wood', 5), array('Glass', 4), array('Paper', 12)), 'External'))->
+    addSeries($chart->createSeries(array(array('Metals', 3), array('Plastics', 5), array('Wood', 2), array('Glass', 7), array('Paper', 9)), 'Internal'))->
+    addSeries($chart->createSeries(array(array('Metals', 4), array('Plastics', 2), array('Wood', 5), array('Glass', 4), array('Paper', 12)), 'External'))->
     setSeriesColors(array('#dd3333', '#d465f1', '#aa2211', '#3377aa', '#6699bb', '#9933aa'))->
     setType('Donut')->
     setLegend(true)->
@@ -80,14 +80,14 @@ $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     setTypeOption('showDataLabels', true);
 
 $chart7 = new Chart('chart7', $library);
-$chart7->addSeries(new BubbleSeries(
+$chart7->addSeries($chart->createSeries(
     array(  array(4, 7, 5, 'Screws'),
         array(5, 3, 6, 'Nails'),
         array(4, 5, 7, 'Bolts'),
         array(3.5, 4, 6, 'Nuts'),
         array(3, 2, 5, 'Washers'),
         array(4, 1, 5, 'Pliers'),
-        array(4.5, 6, 6, 'Hammers'))))->
+        array(4.5, 6, 6, 'Hammers')), null, 'Bubble'))->
     setTitle('Bubble Chart')->
     setType('Bubble')->
     setTypeOption('bubbleAlpha', .5)->
@@ -105,8 +105,8 @@ for($i = 0; $i < $num; $i++) {
 
 $chart8 = new Chart('chart8', $library);
 $chart8->setTitle('Vertical Stack Chart')->
-    addSeries(new Series($array1, 'Is'))->
-    addSeries(new Series($array2, 'Is Not'))->
+    addSeries($chart->createSeries($array1, 'Is'))->
+    addSeries($chart->createSeries($array2, 'Is Not'))->
     setType('Bar')->
     setLegend(true, 'se', 5, 5)->
     setAxisOptions('y', 'max', 100)->

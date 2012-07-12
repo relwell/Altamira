@@ -2,6 +2,8 @@
 
 namespace Altamira;
 
+use Altamira\JsWriter\JsWriterAbstract;
+
 class Series
 {
 	static protected $count = 0;
@@ -10,13 +12,15 @@ class Series
 	protected $useTags = false;
 	protected $useLabels = false;
 
+	protected $jsWriter;
+	
 	protected $title;
 	protected $labels= array();
 	protected $options = array();
 	protected $files = array();
 	protected $allowedOptions = array('lineWidth', 'showLine', 'showMarker', 'markerStyle', 'markerSize');
 
-	public function __construct($data, $title = null)
+	public function __construct($data, $title = null, JsWriterAbstract $jsWriter)
 	{
 		self::$count++;
 
