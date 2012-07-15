@@ -68,7 +68,11 @@ class Chart
 
 	public function useCursor()
 	{
-        $this->jsWriter->useCursor();
+	    if (! $this->jsWriter instanceOf \AltaMira\JsWriter\Ability\Cursorable ) {
+            throw new \BadMethodCallException("JsWriter cannot use cursor");
+	    }
+	    
+	    $this->jsWriter->useCursor();
 	}
 
 	public function useDates($axis = 'x')
@@ -161,34 +165,19 @@ class Chart
 
 	public function setLegend($on = true, $location = 'ne', $x = 0, $y = 0)
 	{
-		if(!$on) {
-			unset($this->options['legend']);
-		} else {
-			$legend = array();
-			$legend['show'] = true;
-			if($location == 'outside' || $location == 'outsideGrid') {
-				$legend['placement'] = $location;
-			} else {
-				$legend['location'] = $location;
-			}
-			if($x != 0)
-				$legend['xoffset'] = $x;
-			if($y != 0)
-				$legend['yoffset'] = $y;
-			$this->options['legend'] = $legend;
-		}
+		$this->jsWriter->setLegend($on = true, $location = 'ne', $x = 0, $y = 0);
 
 		return $this;
 	}
 
 	public function setGrid($on = true, $color = null, $background = null)
 	{
-		$this->options['grid']['drawGridLines'] = $on;
-		if(isset($color))
-			$this->options['grid']['gridLineColor'] = $color;
-		if(isset($background))
-			$this->options['grid']['background'] = $background;
-
+	    if (! $this->jsWriter instanceOf JsWriter\Ability\Griddable ) {
+	        throw new \BadMethodCallException("JsWriter not Griddable");
+	    }
+	    
+	    $this->jsWriter->setGrid($on, $color, $background);
+	    
 		return $this;
 	}
 	

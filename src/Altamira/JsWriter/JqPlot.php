@@ -2,7 +2,17 @@
 
 namespace Altamira\JsWriter;
 
-class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
+use \Altamira\JsWriter\Ability;
+
+class JqPlot 
+    extends \Altamira\JsWriter\JsWriterAbstract
+    implements Ability\Cursorable, 
+               Ability\Datable, 
+               Ability\Fillable, 
+               Ability\Griddable, 
+               Ability\Highlightable, 
+               Ability\Legendable, 
+               Ability\Shadowable
 {
     
     public function generateScript()
@@ -76,6 +86,67 @@ class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
         return $this;
     }
     
+    public function setShadow($series, $use = true, $angle = 45, $offset = 1.25, $depth = 3, $alpha = 0.1)
+    {
+        $this->options['series'][$series]['shadow'] = $use;
+		$this->options['series'][$series]['shadowAngle'] = $angle;
+		$this->options['series'][$series]['shadowOffset'] = $offset;
+		$this->options['series'][$series]['shadowDepth'] = $depth;
+		$this->options['series'][$series]['shadowAlpha'] = $alpha;
+		
+		return $this;
+    }
+    
+    public function setFill($series, $use = true, $stroke = false, $color = null, $alpha = null) 
+    {
+        $this->options['series'][$series]['fill'] = $use;
+        $this->options['series'][$series]['fillAndStroke'] = $stroke;
+        
+        if(isset($color)) {
+            $this->options['series'][$series]['fillColor'] = $color;
+        }
+        if(isset($alpha)) {
+            $this->options['series'][$series]['fillAlpha'] = $alpha;
+        }
+        
+        return $this;
+    }
+    
+    public function setGrid($on = true, $color = null, $background = null)
+    {
+        $this->options['grid']['drawGridLines'] = $on;
+        if(isset($color)) {
+            $this->options['grid']['gridLineColor'] = $color;
+        }
+        if(isset($background)) {
+            $this->options['grid']['background'] = $background;
+        }
+    
+        return $this;
+    }
+    
+    public function setLegend($on = true, $location = 'ne', $x = 0, $y = 0)
+    {
+        if(!$on) {
+            unset($this->options['legend']);
+        } else {
+            $legend = array();
+            $legend['show'] = true;
+            if($location == 'outside' || $location == 'outsideGrid') {
+                $legend['placement'] = $location;
+            } else {
+                $legend['location'] = $location;
+            }
+            if($x != 0)
+                $legend['xoffset'] = $x;
+            if($y != 0)
+                $legend['yoffset'] = $y;
+            $this->options['legend'] = $legend;
+        }
+    
+        return $this;
+    }
+    
     protected function getTypeOptions(array $options)
     {
         $types = $this->chart->getTypes();
@@ -111,14 +182,20 @@ class JqPlot extends \Altamira\JsWriter\JsWriterAbstract
         
         $seriesOptions = array();
         foreach($this->chart->getSeries() as $series) {
-            $opts = $series->getOptions();
             $title = $series->getTitle();
+            $opts = $this->options['series'][$title];
+            
             if(isset($types[$title])) {
                 $type = $types[$title];
                 $opts['renderer'] = $type->getRenderer();
                 array_merge_recursive($opts, $type->getSeriesOptions());
             }
             $opts['label'] = $title;
+            
+            if($series->usesLabels()) {
+                $this->options['pointLabels']['show'] = true;
+            }
+            
             $seriesOptions[] = $opts;
         }
         $options['series'] = $seriesOptions;

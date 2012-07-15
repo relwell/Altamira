@@ -16,13 +16,14 @@ class Series
 	
 	protected $title;
 	protected $labels= array();
-	protected $options = array();
 	protected $files = array();
 	protected $allowedOptions = array('lineWidth', 'showLine', 'showMarker', 'markerStyle', 'markerSize');
 
 	public function __construct($data, $title = null, JsWriterAbstract $jsWriter)
 	{
 		self::$count++;
+		
+		$this->jsWriter = $jsWriter;
 
 		$tagcount = 0;
 		foreach($data as $datum) {
@@ -66,24 +67,23 @@ class Series
 
 	public function setShadow($use = true, $angle = 45, $offset = 1.25, $depth = 3, $alpha = 0.1)
 	{
-		$this->options['shadow'] = $use;
-		$this->options['shadowAngle'] = $angle;
-		$this->options['shadowOffset'] = $offset;
-		$this->options['shadowDepth'] = $depth;
-		$this->options['shadowAlpha'] = $alpha;
-
+	    if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Shadowable ) {
+	        throw new \BadMethodCallException("JsWriter not Shadowable");
+	    }
+	    
+		$this->jsWriter->setShadow($this->getTitle(), $use, $angle, $offset, $depth, $alpha);
+		
 		return $this;
 	}
 
 	public function setFill($use = true, $stroke = false, $color = null, $alpha = null)
 	{
-		$this->options['fill'] = $use;
-		$this->options['fillAndStroke'] = $stroke;
-		if(isset($color))
-			$this->options['fillColor'] = $color;
-		if(isset($alpha))
-			$this->options['fillAlpha'] = $alpha;
-
+        if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Fillable ) {
+            throw new \BadMethodCallException("JsWriter not Fillable");
+        }
+	    
+	    $this->jsWriter->setFill($this->getTitle(), $use, $stroke, $color, $alpha);
+	    
 		return $this;
 	}
 
@@ -133,18 +133,19 @@ class Series
 	{
 		$this->useTags = true;
 		$this->useLabels = true;
-		$this->options['pointLabels'] = array('show' => true, 'edgeTolerance' => 3);
+        $this->setOption('pointLabels', array('show' => true, 'edgeTolerance' => 3));
 		$this->labels = $labels;
 
 		return $this;
 	}
 
+	// @todo this logic should probably be in the jswriter
 	public function setLabelSetting($name, $value)
 	{
 		if($name === 'location' && in_array($value, array('n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'))) {
-			$this->options['pointLabels']['location'] = $value;
+		    $this->setOption('pointLabels', (($a = $this->getOption('pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
 		} elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
-			$this->options['pointLabels'][$name] = $value;
+			$this->setOption('pointLabels', (($a = $this->getOption('pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
 		}
 
 		return $this;
@@ -157,32 +158,25 @@ class Series
 
 	public function setOption($name, $value)
 	{
-		if(in_array($name, $this->allowedOptions))
-			$this->options[$name] = $value;
+		if(in_array($name, $this->allowedOptions)) {
+			$this->jsWriter->setSeriesOption($this->getTitle(), $name, $value);
+		}
 
 		return $this;
+	}
+	
+	public function getOption($option)
+	{
+	    return $this->jsWriter->getSeriesOption($this->getTitle(), $option);
 	}
 
 	public function getOptions()
 	{
-		$opts = $this->options;
-
-		if(isset($this->useLabels) && $this->useLabels)
-			$this->options['pointLabels']['show'] = true;
-
-		$markerOptions = array();
-		if(isset($this->options['markerStyle'])) {
-			$markerOptions['style'] = $this->options['markerStyle'];
-			unset($opts['markerStyle']);
-		}
-		if(isset($this->options['markerSize'])) {
-			$markerOptions['size'] = $this->options['markerSize'];
-			unset($opts['markerSize']);
-		}
-
-		if(count($markerOptions) != 0)
-			$opts['markerOptions'] = $markerOptions;
-
-		return $opts;
+        return $this->jsWriter->getOptionsForSeries($this->getTitle());
+	}
+	
+	public function usesLabels()
+	{
+	    return isset($this->useLabels) && $this->useLabels === true;
 	}
 }

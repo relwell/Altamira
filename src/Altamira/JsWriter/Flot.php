@@ -2,7 +2,11 @@
 
 namespace Altamira\JsWriter;
 
-class Flot extends JsWriterAbstract
+use Altamira\JsWriter\Ability;
+
+class Flot 
+    extends JsWriterAbstract
+    implements Ability\Cursorable
 {
     protected $dateAxes = array('x'=>false, 'y'=>false);
     
