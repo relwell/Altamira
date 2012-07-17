@@ -16,7 +16,7 @@ $chart->addSeries($chart->createSeries(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6)
     setAxisOptions('y', 'formatString', '$%d')->
     setAxisOptions('x', 'tickInterval', 1)->
     setAxisOptions('x', 'min', 0)->
-    setLegend(true);
+    setLegend(array('on'=>true));
 
 
 $chart2 = new Chart('chart2', $library);
@@ -51,8 +51,11 @@ $seriesC->setOption('lineWidth', 1)->
 $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double-click to reset)')->
     addSeries($seriesA)->
     addSeries($seriesB)->
-    addSeries($seriesC)->
-    useZooming();
+    addSeries($seriesC);
+
+if ($library !== 'flot') {
+    $chart3->useZooming();
+}
 
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
@@ -61,13 +64,13 @@ $chart4->setTitle('Horizontal Bar Chart')->
     setType('Bar')->
     setTypeOption('horizontal', true)->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
-    setLegend(true, 'se', 5, 5);
+    setLegend(array('on'=>true, 'location'=>'se', 'x'=>5, 'y'=>5));
 
 $chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
     addSeries($chart->createSeries(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
     setType('Pie')->
-    setLegend(true);
+    setLegend();
 
 $chart6 = new Chart('chart6', $library);
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
@@ -75,7 +78,7 @@ $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     addSeries($chart->createSeries(array(array('Metals', 4), array('Plastics', 2), array('Wood', 5), array('Glass', 4), array('Paper', 12)), 'External'))->
     setSeriesColors(array('#dd3333', '#d465f1', '#aa2211', '#3377aa', '#6699bb', '#9933aa'))->
     setType('Donut')->
-    setLegend(true)->
+    setLegend()->
     setTypeOption('sliceMargin', 3)->
     setTypeOption('showDataLabels', true);
 
@@ -108,7 +111,7 @@ $chart8->setTitle('Vertical Stack Chart')->
     addSeries($chart->createSeries($array1, 'Is'))->
     addSeries($chart->createSeries($array2, 'Is Not'))->
     setType('Bar')->
-    setLegend(true, 'se', 5, 5)->
+    setLegend(array('on'=>true, 'location'=>'se', 'x'=>5, 'y'=>5))->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
 

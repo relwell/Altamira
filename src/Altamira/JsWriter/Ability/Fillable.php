@@ -4,6 +4,10 @@ namespace Altamira\JsWriter\Ability;
 
 interface Fillable
 {
-    //@todo reduce parameter inflation
-    public function setFill($series, $use = true, $stroke = false, $color = null, $alpha = null);
+    public function setFill($series, $opts = array('use' => true, 
+                                                   'stroke' => false, 
+                                                   'color' => null, 
+                                                   'alpha' => null
+                                                  )
+                            );
 }

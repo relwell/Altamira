@@ -50,8 +50,11 @@ class JqPlot
         
     }
     
-    public function useHighlighting($size = 7.5)
+    public function useHighlighting(array $opts = array('size'=>7.5))
     {
+        extract($opts);
+        $size = isset($size) ? $size : 7.5;
+        
         $this->files = array_merge_recursive(array('jqplot.highlighter.min.js'), $this->files);
         $this->options['highlighter'] = array('sizeAdjust' => $size);
 
@@ -86,8 +89,20 @@ class JqPlot
         return $this;
     }
     
-    public function setShadow($series, $use = true, $angle = 45, $offset = 1.25, $depth = 3, $alpha = 0.1)
+    public function setShadow($series, $opts = array('use'=>true, 
+                                                     'angle'=>45, 
+                                                     'offset'=>1.25, 
+                                                     'depth'=>3, 
+                                                     'alpha'=>0.1))
     {
+        extract($opts);
+        
+        $use = isset($use) ? $use : true;
+        $angle = isset($angle) ? $angle : 45;
+        $offset = isset($offset) ? $offset : 1.25; 
+        $depth = isset($depth) ? $depth : 3; 
+        $alpha = isset($alpha) ? $alpha : 0.1;
+        
         $this->options['series'][$series]['shadow'] = $use;
 		$this->options['series'][$series]['shadowAngle'] = $angle;
 		$this->options['series'][$series]['shadowOffset'] = $offset;
@@ -97,36 +112,64 @@ class JqPlot
 		return $this;
     }
     
-    public function setFill($series, $use = true, $stroke = false, $color = null, $alpha = null) 
+    public function setFill($series, $opts = array('use' => true, 
+                                                   'stroke' => false, 
+                                                   'color' => null, 
+                                                   'alpha' => null
+                                                  )
+                            ) 
     {
+        extract($opts);
+        
+        $use = isset($use) ? $use : true;
+        $stroke = isset($stroke) ? $stroke : false;
+        $color = isset($color) ? $color : null;
+        $alpha = isset($alpha) ? $alpha : null;
+        
         $this->options['series'][$series]['fill'] = $use;
         $this->options['series'][$series]['fillAndStroke'] = $stroke;
         
-        if(isset($color)) {
+        if($color !== null) {
             $this->options['series'][$series]['fillColor'] = $color;
         }
-        if(isset($alpha)) {
+        if($alpha !== null) {
             $this->options['series'][$series]['fillAlpha'] = $alpha;
         }
         
         return $this;
     }
     
-    public function setGrid($on = true, $color = null, $background = null)
+    public function setGrid(array $opts)
     {
+        extract($opts);
+        $on = isset($on) ? $on : true; 
+        $color = isset($color) ? $color : null;
+        $background = isset($background) ? $background : null;
+        
         $this->options['grid']['drawGridLines'] = $on;
-        if(isset($color)) {
+        if($color !== null) {
             $this->options['grid']['gridLineColor'] = $color;
         }
-        if(isset($background)) {
+        if($background !== null) {
             $this->options['grid']['background'] = $background;
         }
     
         return $this;
     }
     
-    public function setLegend($on = true, $location = 'ne', $x = 0, $y = 0)
+    public function setLegend(array $opts = array('on' => 'true', 
+                                                  'location' => 'ne', 
+                                                  'x' => 0, 
+                                                  'y' => 0))
     {
+        extract($opts);
+        
+        $on = isset($on) ? $on : 'true';
+        $location = isset($location) ? $location : 'ne';
+        $x = isset($x) ? $x : 0;
+        $y = isset($y) ? $y : 0;
+        
+        
         if(!$on) {
             unset($this->options['legend']);
         } else {

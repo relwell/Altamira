@@ -6,7 +6,13 @@ use Altamira\JsWriter\Ability;
 
 class Flot 
     extends JsWriterAbstract
-    implements Ability\Cursorable
+    implements Ability\Cursorable,
+               Ability\Datable,
+               Ability\Fillable,
+               Ability\Griddable,
+               Ability\Highlightable,
+               Ability\Legendable,
+               Ability\Shadowable
 {
     protected $dateAxes = array('x'=>false, 'y'=>false);
     
@@ -168,16 +174,9 @@ ENDSCRIPT;
         return $this->makeJSArray($newOpts);
     }
     
-    public function useHighlighting($size = 7.5)
+    public function useHighlighting(array $opts = array('size'=>7.5))
     {
-        $this->options['highlighter'] = array('sizeAdjust' => $size);
-    
-        return $this;
-    }
-    
-    public function useZooming()
-    {
-        $this->options['cursor'] = array('zoom' => true, 'show' => true);
+        $this->options['grid']['autoHighlight'] = 'true';
     
         return $this;
     }
@@ -198,6 +197,80 @@ ENDSCRIPT;
         return $this;
     }
     
+    public function setGrid(array $opts)
+    {
+        
+        $gridMapping = array('on'=>'show', 
+                             'background'=>'backgroundColor'
+                            );
+        
+        foreach ($opts as $key=>$value) {
+            if ( in_array($key, $this->nativeOpts['grid']) ) {
+                $this->options['grid'][$key] = $value;
+            } else if ( in_array($key, $gridMapping) ) {
+                $this->options['grid'][$gridMapping[$key]] = $value;
+            }
+        }
+        
+        return $this;
+        
+    }
+    
+    public function setLegend(array $opts = array('on' => 'true', 
+                                                  'location' => 'ne', 
+                                                  'x' => 0, 
+                                                  'y' => 0))
+    {        
+        $opts['on'] = isset($opts['on']) ? $opts['on'] : 'true';
+        $opts['location'] = isset($ops['location']) ? $opts['location'] : 'ne';
+
+        $legendMapper = array('on' => 'show',
+                              'location' => 'position');
+        
+        foreach ($opts as $key=>$val) {
+            if ( in_array($key, $this->nativeOpts['legend']) ) {
+                $this->options['legend'][$key] = $val;
+            } else if ( in_array($key, $legendMapper) ) {
+                $this->options['legend'][$legendMapper[$key]] = $val;
+            }
+        }
+        
+        
+        return $this;
+    }
+    
+    public function setFill($series, $opts = array('use' => true,
+                                                   'stroke' => false,
+                                                   'color' => null,
+                                                   'alpha' => null
+                                                  ))
+    {
+        
+        // @todo add a method of telling flot whether the series is a line, bar, point
+        if (isset($opts['use']) && $opts['use'] == true) {
+            $this->options['series'][$series]['line']['fill'] = 'true';
+            
+            if (isset($opts['color'])) {
+                $this->options['series'][$series]['line']['fillColor'] = $opts['color'];
+            }
+        }
+        
+        return $this;
+    }
+    
+    public function setShadow($series, $opts = array('use'=>true,
+                                                     'angle'=>45,
+                                                     'offset'=>1.25,
+                                                     'depth'=>3,
+                                                     'alpha'=>0.1))
+    {
+        
+        if (isset($opts['use']) && $opts['use']) {
+            $this->options['series'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
+        }
+        
+        return $this;
+    }
     
 
     // maps jqplot-originating option data structure to flot

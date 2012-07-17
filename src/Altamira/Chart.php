@@ -52,9 +52,9 @@ class Chart
 	    return $this->useTags;
 	}
 
-	public function useHighlighting($size = 7.5)
+	public function useHighlighting(array $opts = array('size'=>7.5))
 	{
-	    $this->jsWriter->useHighlighting($size);
+	    $this->jsWriter->useHighlighting($opts);
 
 		return $this;
 	}
@@ -163,20 +163,23 @@ class Chart
 		return $this;
 	}
 
-	public function setLegend($on = true, $location = 'ne', $x = 0, $y = 0)
+	public function setLegend(array $opts = array('on' => 'true', 
+                                                  'location' => 'ne', 
+                                                  'x' => 0, 
+                                                  'y' => 0))
 	{
-		$this->jsWriter->setLegend($on = true, $location = 'ne', $x = 0, $y = 0);
+		$this->jsWriter->setLegend($opts);
 
 		return $this;
 	}
 
-	public function setGrid($on = true, $color = null, $background = null)
+	public function setGrid(array $opts = array('on'=>true))
 	{
 	    if (! $this->jsWriter instanceOf JsWriter\Ability\Griddable ) {
 	        throw new \BadMethodCallException("JsWriter not Griddable");
 	    }
 	    
-	    $this->jsWriter->setGrid($on, $color, $background);
+	    $this->jsWriter->setGrid($opts);
 	    
 		return $this;
 	}

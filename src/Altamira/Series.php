@@ -65,24 +65,32 @@ class Series
 		}
 	}
 
-	public function setShadow($use = true, $angle = 45, $offset = 1.25, $depth = 3, $alpha = 0.1)
+	public function setShadow($opts = array('use'=>true, 
+                                            'angle'=>45, 
+                                            'offset'=>1.25, 
+                                            'depth'=>3, 
+                                            'alpha'=>0.1))
 	{
 	    if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Shadowable ) {
 	        throw new \BadMethodCallException("JsWriter not Shadowable");
 	    }
 	    
-		$this->jsWriter->setShadow($this->getTitle(), $use, $angle, $offset, $depth, $alpha);
+		$this->jsWriter->setShadow($this->getTitle(), $opts);
 		
 		return $this;
 	}
 
-	public function setFill($use = true, $stroke = false, $color = null, $alpha = null)
+	public function setFill($opts = array('use' => true, 
+                                                   'stroke' => false, 
+                                                   'color' => null, 
+                                                   'alpha' => null
+                                                  ))
 	{
         if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Fillable ) {
             throw new \BadMethodCallException("JsWriter not Fillable");
         }
 	    
-	    $this->jsWriter->setFill($this->getTitle(), $use, $stroke, $color, $alpha);
+	    $this->jsWriter->setFill($this->getTitle(), $opts);
 	    
 		return $this;
 	}

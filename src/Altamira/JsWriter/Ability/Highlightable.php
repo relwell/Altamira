@@ -4,5 +4,5 @@ namespace Altamira\JsWriter\Ability;
 
 interface Highlightable
 {
-    public function useHighlighting($size = 7.5);
+    public function useHighlighting(array $opts = array('size'=>7.5) );
 }
