@@ -51,6 +51,12 @@ class Flot
             }
             
             $jsArray .= 'data: '.$this->makeJSArray($data);
+            
+            if ($series->usesLabels()) {
+                $jsArray .= ", points: {'show': 'true'}";
+            }
+            
+            $jsArray .= ", lines: {'show': 'true'}";
 
             $jsArray .= '}';
         }
