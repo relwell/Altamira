@@ -101,15 +101,7 @@ class Chart
 
 	public function setAxisOptions($axis, $name, $value)
 	{
-		if(strtolower($axis) === 'x' || strtolower($axis) === 'y') {
-			$axis = strtolower($axis) . 'axis';
-
-			if (in_array($name, array('min', 'max', 'numberTicks', 'tickInterval', 'numberTicks'))) {
-				$this->options['axes'][$axis][$name] = $value;
-			} elseif(in_array($name, array('showGridline', 'formatString'))) {
-				$this->options['axes'][$axis]['tickOptions'][$name] = $value;
-			}
-		}
+		$this->jsWriter->setAxisOptions($axis, $name, $value);
 
 		return $this;
 	}

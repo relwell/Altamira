@@ -28,12 +28,16 @@ class Flot
             
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
+            
             foreach ($data as $key=>$val) { 
-                $data[$key] = is_array($val) ? $val : array($key, $val);
+                // sorry, no point labels in flot
+                $data[$key] = is_array($val) ? array_slice($val, 0, 2) : array($key, $val);
+                
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
                         switch ($axis) {
                             case 'x':
+                                
                                 $date = \DateTime::createFromFormat('m/d/Y', $data[$key][0]);
                                 $data[$key][0] = $date->getTimestamp();
                                 break;
@@ -44,6 +48,7 @@ class Flot
                         }
                     }
                 }
+                
             };
             
             if ($title) {
@@ -75,9 +80,33 @@ ENDSCRIPT;
         
     }
     
-
-    protected function getTypeOptions(array $options)
+    public function setAxisOptions($axis, $name, $value)
     {
+        if(strtolower($axis) === 'x' || strtolower($axis) === 'y') {
+            $axis = strtolower($axis) . 'axis';
+    
+            if (isset($this->nativeOpts[$axis][$name])) {
+                $this->options[$axis][$name] = $value;
+            } else {
+                $key = 'axes.'.$axis.'.'.$name;
+
+                if (isset($this->optsMapper[$key])) {
+                    $this->setOpt($this->options, $this->optsMapper[$key], $value);
+                }
+                
+                if ($name == 'formatString') {
+                    $this->options[$axis]['tickFormatter'] = $this->getCallbackPlaceholder('function(val, axis){return "'.$value.'".replace(/%d/, val);}');
+                }
+                
+            }
+        }
+
+        return $this;
+    }
+
+    //@todo handle type options correctly
+    protected function getTypeOptions(array $options)
+    {return $options;
         $types = $this->chart->getTypes();
     
         if(isset($types['default'])) {
@@ -95,8 +124,9 @@ ENDSCRIPT;
         return $options;
     }
     
+    //@todo handle series default transformations
     protected function getSeriesOptions(array $options)
-    {
+    {return $options; 
         $types = $this->chart->getTypes();
     
         if(isset($types['default'])) {
@@ -131,53 +161,68 @@ ENDSCRIPT;
     
     public function getOptionsJS()
     {
-        $newOpts = array();
-        
-        $getOptVal = function(array $opts, $option){
-            $ploded = explode('.', $option);
-            $arr = $opts;
-            $val = null;
-            while ($curr = array_shift($ploded)) {
-                if (isset($arr[$curr])) {
-                    if (is_array($arr[$curr])) {
-                        $arr = $arr[$curr];
-                    } else {
-                        return $arr[$curr];
-                    }
-                } else {
-                    return null;
-                }
-            }
-            return $arr;
-        };
-        
-        $setOpt = function(array &$opts, $mapperString, $val){
-            $ploded = explode('.', $mapperString);
-            $arr = &$opts;
-            while ($curr = array_shift($ploded)) {
-                if (isset($arr[$curr])) {
-                    if (is_array($arr[$curr])) {
-                        $arr = &$arr[$curr];
-                    } else {
-                        $arr[$curr] = $val;
-                    }
-                } else {
-                    $arr[$curr] = empty($ploded) ? $val : array();
-                    $arr = &$arr[$curr];
-                }
-            }
-        };
-        
         foreach ($this->optsMapper as $opt => $mapped)
         {
-            if (($currOpt = $getOptVal($this->options, $opt)) && ($currOpt !== null)) {
-                $setOpt(&$newOpts, $mapped, $currOpt);
+            if (($currOpt = $this->getOptVal($this->options, $opt)) && ($currOpt !== null)) {
+                $this->setOpt(&$this->options, $mapped, $currOpt);
+                $this->unsetOpt($this->options, $opt);
             }
         }
         
-        
-        
-        return $this->makeJSArray($newOpts);
+        return $this->makeJSArray($this->options);
+    }
+    
+    // these are helper functions to transform jqplot options to flot
+    private function getOptVal(array $opts, $option)
+    {
+        $ploded = explode('.', $option);
+        $arr = $opts;
+        $val = null;
+        while ($curr = array_shift($ploded)) {
+            if (isset($arr[$curr])) {
+                if (is_array($arr[$curr])) {
+                    $arr = $arr[$curr];
+                } else {
+                    return $arr[$curr];
+                }
+            } else {
+                return null;
+            }
+        }
+        return $arr;
+    }
+    
+    private function setOpt(array &$opts, $mapperString, $val)
+    {
+        $ploded = explode('.', $mapperString);
+        $arr = &$opts;
+        while ($curr = array_shift($ploded)) {
+            if (isset($arr[$curr])) {
+                if (is_array($arr[$curr])) {
+                    $arr = &$arr[$curr];
+                } else {
+                    $arr[$curr] = $val;
+                }
+            } else {
+                $arr[$curr] = empty($ploded) ? $val : array();
+                $arr = &$arr[$curr];
+            }
+        }
+    }
+    
+    private function unsetOpt(array &$opts, $mapperString)
+    {
+        $ploded = explode('.', $mapperString);
+        $arr = &$opts;
+        while ($curr = array_shift($ploded)) {
+            if (isset($arr[$curr])) {
+                if (is_array($arr[$curr])) {
+                    $arr = &$arr[$curr];
+                } else {
+                    unset($arr[$curr]);
+                }
+            }
+        }
     }
     
     public function useHighlighting(array $opts = array('size'=>7.5))
@@ -199,6 +244,9 @@ ENDSCRIPT;
         $this->dateAxes[$axis] = true;
         
         $this->options[$axis.'axis']['mode'] = 'time';
+        $this->options[$axis.'axis']['timeformat'] = '%d-%b-%y';
+        
+        array_push($this->files, 'jquery.flot.time.js');
     
         return $this;
     }

@@ -8,6 +8,7 @@ abstract class JsWriterAbstract
     
     protected $options = array();
     protected $files = array();
+    protected $callbacks = array();
     
     public function __construct(\Altamira\Chart $chart)
     {
@@ -22,11 +23,28 @@ abstract class JsWriterAbstract
         return $this->generateScript();
     }
     
-    
     public function makeJSArray($array)
     {
         $options = json_encode($array);
-        return preg_replace('/"#(.*?)#"/', '$1', $options);
+        $optionString = preg_replace('/"#(.*?)#"/', '$1', $options);
+        
+        foreach ( $this->callbacks as $placeHolder => $callback ) {
+            $optionString = str_replace("\"{$placeHolder}\"", $callback, $optionString);
+        }
+        
+        return $optionString;
+    }
+    
+    protected function getCallbackPlaceholder( $callback )
+    {
+        $index = count($this->callbacks);
+        $uid = spl_object_hash( $this );
+        
+        $key = sprintf('%s_%s', $uid, $index);
+        
+        $this->callbacks[$key] = $callback;
+        
+        return $key; 
     }
     
     public function getFiles()
