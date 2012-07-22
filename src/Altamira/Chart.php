@@ -25,8 +25,9 @@ class Chart
 
 	public function __construct($name = null, $library = 'jqPlot')
 	{
-		if(isset($name))
+		if(isset($name)) {
 			$this->name = $name;
+		}
 		
 		$this->library = $library;
 
@@ -45,6 +46,11 @@ class Chart
 		$this->options['title'] = $title;
 
 		return $this;
+	}
+	
+	public function getTitle()
+	{
+	    return isset($this->options['title']) ? $this->options['title'] : $this->name;
 	}
 	
 	public function getUseTags()

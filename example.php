@@ -6,8 +6,14 @@ use Altamira\Chart;
 use Altamira\ChartIterator;
 use Altamira\Series;
 use Altamira\Series\BubbleSeries;
+use Altamira\ChartRenderer;
 
 $library = isset($_GET['library']) ? $_GET['library'] : 'jqPlot';
+
+if ($library == 'flot') {
+    ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\DefaultRenderer' );
+    ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
+}
 
 $chart = new Chart('chart1', $library);
 $chart->addSeries($chart->createSeries(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales'))->

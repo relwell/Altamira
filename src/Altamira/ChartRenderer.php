@@ -1,35 +1,62 @@
 <?php 
 
 namespace Altamira;
+use Altamira\ChartRenderer\RendererInterface;
+
+use Altamira\ChartRenderer;
 
 class ChartRenderer
 {
+    protected static $rendererChain = array();
     
     public static function render( Chart $chart, array $styleOptions = array() )
     {
-        $style = self::renderStyle( $styleOptions );
-        $data = self::renderData( $chart );
-        
-        return <<<ENDDIV
-<div class="{$chart->getLibrary()}" id="{$chart->getName()}" style="{$style}"{$data}></div>
-ENDDIV;
-        
-    }
-    
-    public static function renderStyle( array $styleOptions = array() )
-    {
-        $style = '';
-        foreach ( $styleOptions as $key=>$val ) {
-            $style .= "$key: $val; ";
+        if ( empty(self::$rendererChain) ) {
+            self::pushRenderer( '\Altamira\ChartRenderer\DefaultRenderer' );
+        } 
+            
+        $outputString = '';
+
+        for ( $i = count(self::$rendererChain)-1; $i >= 0; $i-- ) {
+            $renderer = self::$rendererChain[$i];
+            $outputString .= call_user_func_array(array($renderer, 'preRender'), array( $chart, $styleOptions ));
         }
-        return $style;
+        
+        for ( $i = 0; $i < count(self::$rendererChain); $i++ ) {
+            $renderer = self::$rendererChain[$i];
+            $outputString .= call_user_func_array(array($renderer, 'postRender'), array( $chart, $styleOptions ));
+        }
+        
+        return $outputString;
     }
     
-    public static function renderData( Chart $chart )
+    public static function pushRenderer( $renderer )
     {
+        if (! (($renderer instanceOf ChartRenderer\RendererAbstract ) || is_subclass_of($renderer, 'Altamira\ChartRenderer\RendererAbstract') )) {
+            throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
+        }
         
+        array_push( self::$rendererChain, $renderer );
         
+        return self;
+    }
+    
+    public static function unshiftRenderer( $renderer )
+    {
+        if (! $renderer instanceOf ChartRenderer\RendererAbstract ) {
+            throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
+        }
         
+        array_unshift( self::$rendererChain, $renderer );
+        
+        return self;
+    }
+    
+    public function reset()
+    {
+        self::$rendererChain = array();
+        
+        return self;
     }
     
 }
