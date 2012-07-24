@@ -39,11 +39,11 @@ class Flot
                             case 'x':
                                 
                                 $date = \DateTime::createFromFormat('m/d/Y', $data[$key][0]);
-                                $data[$key][0] = $date->getTimestamp();
+                                $data[$key][0] = $date->getTimestamp() * 1000;
                                 break;
                             case 'y':
                                 $date = \DateTime::createFromFormat('m/d/Y', $data[$key][1]);
-                                $data[$key][0] = $date->getTimestamp();
+                                $data[$key][0] = $date->getTimestamp() * 1000;
                                 break;
                         }
                     }
