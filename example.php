@@ -57,11 +57,8 @@ $seriesC->setOption('lineWidth', 1)->
 $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double-click to reset)')->
     addSeries($seriesA)->
     addSeries($seriesB)->
-    addSeries($seriesC);
-
-if ($library !== 'flot') {
-    $chart3->useZooming();
-}
+    addSeries($seriesC)->
+    useZooming();
 
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->

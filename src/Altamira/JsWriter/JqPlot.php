@@ -61,7 +61,7 @@ class JqPlot
         return $this;
     }
     
-    public function useZooming()
+    public function useZooming(array $options = array('mode'=>'xy'))
     {
         $this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
         $this->options['cursor'] = array('zoom' => true, 'show' => true);

@@ -12,19 +12,21 @@ class Flot
                Ability\Griddable,
                Ability\Highlightable,
                Ability\Legendable,
-               Ability\Shadowable
+               Ability\Shadowable,
+               Ability\Zoomable
 {
     protected $dateAxes = array('x'=>false, 'y'=>false);
+    protected $zooming = false;
     
     protected function generateScript()
     {
         $name = $this->chart->getName();
-        $jsArray = '[';
+        $dataArrayJS = '[';
         foreach ($this->chart->getSeries() as $title=>$series) {
             
-            $jsArray .= $counter++ > 0 ? ', ' : '';
+            $dataArrayJS .= $counter++ > 0 ? ', ' : '';
             
-            $jsArray .= '{';
+            $dataArrayJS .= '{';
             
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
@@ -54,28 +56,48 @@ class Flot
             };
             
             if ($title) {
-                $jsArray .= 'label: "'.str_replace('"', '\\"', $title).'", ';
+                $dataArrayJS .= 'label: "'.str_replace('"', '\\"', $title).'", ';
             }
             
-            $jsArray .= 'data: '.$this->makeJSArray($data);
+            $dataArrayJS .= 'data: '.$this->makeJSArray($data);
             
             if ($series->usesLabels()) {
-                $jsArray .= ", points: {'show': 'true'}";
+                $dataArrayJS .= ", points: {'show': 'true'}";
             }
             
-            $jsArray .= ", lines: {'show': 'true'}";
+            $dataArrayJS .= ", lines: {'show': 'true'}";
 
-            $jsArray .= '}';
+            $dataArrayJS .= '}';
         }
         
         
-        $jsArray .= ']';
+        $dataArrayJS .= ']';
         
-        $optionsJs = ($js = $this->getOptionsJs()) ? ", {$js}" : '';
+        $optionsJs = ($js = $this->getOptionsJs()) ? ", {$js}" : ', {}';
+        
+        $extraFunctionCalls = array();
+        
+        if ($this->zooming) {
+            $extraFunctionCalls[] = <<<ENDJS
+placeholder.bind("plotselected", function (event, ranges) {
+    jQuery.plot(placeholder, {$dataArrayJS},
+      $.extend(true, {}{$optionsJs}, {
+      xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+      yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+  }));
+});
+placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, {$dataArrayJS}{$optionsJs}); });     
+ENDJS;
+            
+        }
+        
+        $extraFunctionCallString = implode('', $extraFunctionCalls);
         
         return <<<ENDSCRIPT
 jQuery(document).ready(function() {
-    jQuery.plot(jQuery('#{$name}'), {$jsArray}{$optionsJs});
+    var placeholder = jQuery('#{$name}');
+    var plot = jQuery.plot(placeholder, {$dataArrayJS}{$optionsJs});
+    {$extraFunctionCallString}
 });
         
 ENDSCRIPT;
@@ -252,6 +274,13 @@ ENDSCRIPT;
         array_push($this->files, 'jquery.flot.time.js');
     
         return $this;
+    }
+    
+    public function useZooming( array $options = array('mode'=>'xy') )
+    {
+        $this->zooming = true;
+        $this->options['selection'] = array('mode' => $options['mode'] );
+        $this->files[] = 'jquery.flot.selection.js';
     }
     
     public function setGrid(array $opts)
