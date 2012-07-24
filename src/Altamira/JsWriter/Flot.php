@@ -29,9 +29,11 @@ class Flot
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
             
+            $oneDimensional = array_keys($data) == range(0, count($data)-1, 1);
+            
             foreach ($data as $key=>$val) { 
                 // sorry, no point labels in flot
-                $data[$key] = is_array($val) ? array_slice($val, 0, 2) : array($key, $val);
+                $data[$key] = is_array($val) ? array_slice($val, 0, 2) : array(($oneDimensional? $key+1 : $key), $val);
                 
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
