@@ -227,6 +227,7 @@ ENDSCRIPT;
     
     public function useHighlighting(array $opts = array('size'=>7.5))
     {
+        $this->options['grid']['hoverable'] = 'true';
         $this->options['grid']['autoHighlight'] = 'true';
     
         return $this;
