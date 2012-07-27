@@ -17,7 +17,6 @@ class Series
 	protected $title;
 	protected $labels= array();
 	protected $files = array();
-	protected $allowedOptions = array('lineWidth', 'showLine', 'showMarker', 'markerStyle', 'markerSize');
 
 	public function __construct($data, $title = null, JsWriterAbstract $jsWriter)
 	{
@@ -139,10 +138,13 @@ class Series
 
 	public function useLabels($labels = array())
 	{
-		$this->useTags = true;
-		$this->useLabels = true;
-        $this->setOption('pointLabels', array('show' => true, 'edgeTolerance' => 3));
-		$this->labels = $labels;
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
+    		$this->useTags = true;
+    		$this->useLabels = true;
+    		$this->jsWriter->useSeriesLabels($this, $labels);
+            $this->jsWriter->setSeriesOption($this, 'pointLabels', array('show' => true, 'edgeTolerance' => 3));
+    		$this->labels = $labels;
+	    }
 
 		return $this;
 	}
@@ -150,12 +152,10 @@ class Series
 	// @todo this logic should probably be in the jswriter
 	public function setLabelSetting($name, $value)
 	{
-		if($name === 'location' && in_array($value, array('n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'))) {
-		    $this->setOption('pointLabels', (($a = $this->getOption('pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
-		} elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
-			$this->setOption('pointLabels', (($a = $this->getOption('pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
-		}
-
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
+    		$this->jsWriter->setSeriesLabelSetting($this, $name, $value);
+	    }
+		
 		return $this;
 	}
 
@@ -166,9 +166,7 @@ class Series
 
 	public function setOption($name, $value)
 	{
-		if(in_array($name, $this->allowedOptions)) {
-			$this->jsWriter->setSeriesOption($this->getTitle(), $name, $value);
-		}
+		$this->jsWriter->setSeriesOption($this, $name, $value);
 
 		return $this;
 	}

@@ -12,7 +12,8 @@ class JqPlot
                Ability\Griddable, 
                Ability\Highlightable, 
                Ability\Legendable, 
-               Ability\Shadowable
+               Ability\Shadowable,
+               Ability\Labelable
 {
     
     public function generateScript()
@@ -250,17 +251,9 @@ class JqPlot
             }
             $opts['label'] = $title;
             
-            if($series->usesLabels()) {
-                $this->options['pointLabels']['show'] = true;
-            }
-            
             $seriesOptions[] = $opts;
         }
         $options['series'] = $seriesOptions;
-        
-        if ($options['pointLabels']) {
-            $this->files[] = 'jqplot.pointLabels.min.js';
-        }
         
         return $options;
     }
@@ -268,6 +261,35 @@ class JqPlot
     public function getOptionsJS()
     {
         return $this->makeJSArray($this->options);
+    }
+    
+    public function setSeriesOption( \Altamira\Series $series, $name, $value)
+    {
+        $this->options['series'][$series->getTitle()][$name] = $value;
+        
+        return $this;
+    }
+    
+    public function useSeriesLabels( \Altamira\Series $series, array $options = array() )
+    {
+        $this->options['series'][$series->getTitle()]['pointLabels']['show'] = true;
+        
+        if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
+            $this->files[] = 'jqplot.pointLabels.min.js';
+        }
+        
+        return $this;
+    }
+    
+    public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
+    {
+        if($name === 'location' && in_array($value, array('n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'))) {
+            $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
+        } elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
+            $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
+        }
+        
+        return $this;
     }
     
 }

@@ -373,7 +373,7 @@ ENDSCRIPT;
                                 'axes.yaxis.ticks'        => 'yaxis.ticks',
                                 
                                 'legend.show'             => 'legend.show',
-                                'label.location'          => 'legend.position',
+                                'legend.location'         => 'legend.position',
                                 'seriesColors'            => 'colors',
                                 );
     
