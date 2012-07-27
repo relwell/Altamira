@@ -70,12 +70,10 @@ class Series
                                             'depth'=>3, 
                                             'alpha'=>0.1))
 	{
-	    if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Shadowable ) {
-	        throw new \BadMethodCallException("JsWriter not Shadowable");
+	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Shadowable ) {
+	        $this->jsWriter->setShadow($this->getTitle(), $opts);
 	    }
 	    
-		$this->jsWriter->setShadow($this->getTitle(), $opts);
-		
 		return $this;
 	}
 
@@ -85,11 +83,9 @@ class Series
                                                    'alpha' => null
                                                   ))
 	{
-        if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Fillable ) {
-            throw new \BadMethodCallException("JsWriter not Fillable");
+        if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Fillable ) {
+    	    $this->jsWriter->setFill($this->getTitle(), $opts);
         }
-	    
-	    $this->jsWriter->setFill($this->getTitle(), $opts);
 	    
 		return $this;
 	}
