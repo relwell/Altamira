@@ -54,17 +54,29 @@ abstract class JsWriterAbstract
     
     public function getOptionsForSeries($series)
     {
-        return $this->options['series'][$series];
+        if ($series instanceOf \Altamira\Series) {
+            return $this->options['series'][$series->getTitle()];
+        } else if (is_string($series)) {
+            return $this->options['series'][$series];
+        }
     }
     
     public function getSeriesOption($series, $option)
     {
-        return $this->options['series'][$series][$option];
+        if ($series instanceOf \Altamira\Series) {
+            return $this->options['series'][$series->getTitle()][$option];
+        } else if (is_string($series)) {
+            return $this->options['series'][$series][$option];
+        }
     }
     
     public function setSeriesOption($series, $name, $value)
     {
-        $this->options['series'][$series][$name] = $value;
+        if ($series instanceOf \Altamira\Series) {
+            $this->options['series'][$series->getTitle()][$name] = $value;
+        } else if (is_string($series)) {
+            $this->options['series'][$series][$name] = $value;
+        }
         
         return $this;
     }
