@@ -13,30 +13,34 @@ class Flot
                Ability\Highlightable,
                Ability\Legendable,
                Ability\Shadowable,
-               Ability\Zoomable
+               Ability\Zoomable,
+               Ability\Labelable
 {
     protected $dateAxes = array('x'=>false, 'y'=>false);
     protected $zooming = false;
+    protected $highlighting = false;
+    protected $pointLabels = array();
     
     protected function generateScript()
     {
         $name = $this->chart->getName();
-        $dataArrayJS = '[';
+        $dataArrayJs = '[';
         foreach ($this->chart->getSeries() as $title=>$series) {
             
-            $dataArrayJS .= $counter++ > 0 ? ', ' : '';
+            $dataArrayJs .= $counter++ > 0 ? ', ' : '';
             
-            $dataArrayJS .= '{';
+            $dataArrayJs .= '{';
             
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
             
             $oneDimensional = array_keys($data) == range(0, count($data)-1, 1);
             
+            if (! empty($this->seriesLabels[$title]) ) {
+                $labelCopy = $this->seriesLabels[$title];
+            }
+            
             foreach ($data as $key=>$val) { 
-                // sorry, no point labels in flot
-                $data[$key] = is_array($val) ? array_slice($val, 0, 2) : array(($oneDimensional? $key+1 : $key), $val);
-                
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
                         switch ($axis) {
@@ -47,60 +51,154 @@ class Flot
                                 break;
                             case 'y':
                                 $date = \DateTime::createFromFormat('m/d/Y', $data[$key][1]);
-                                $data[$key][0] = $date->getTimestamp() * 1000;
+                                $data[$key][1] = $date->getTimestamp() * 1000;
                                 break;
                         }
                     }
                 }
+                // update if date
+                $val = $data[$key];
+                if (is_array($val)) {
+                    $data[$key] = array_slice($val, 0, 2);
+                    if (!empty($this->seriesLabels[$title])) {
+                        $dataPoints = "{$val[0]},{$val[1]}";
+                        $this->pointLabels[$dataPoints] = array_shift($labelCopy);
+                    }
+                } else {
+                    $data[$key] = array(($oneDimensional? $key+1 : $key), $val);
+                }
+                
                 
             };
-            
+
             if ($title) {
-                $dataArrayJS .= 'label: "'.str_replace('"', '\\"', $title).'", ';
+                $dataArrayJs .= 'label: "'.str_replace('"', '\\"', $title).'", ';
             }
             
-            $dataArrayJS .= 'data: '.$this->makeJSArray($data);
+            $dataArrayJs .= 'data: '.$this->makeJSArray($data);
             
             if ($series->usesLabels()) {
-                $dataArrayJS .= ", points: {'show': 'true'}";
+                $dataArrayJs .= ", points: {'show': 'true'}";
             }
             
-            $dataArrayJS .= ", lines: {'show': 'true'}";
+            $dataArrayJs .= ", lines: {'show': 'true'}";
 
-            $dataArrayJS .= '}';
+            $dataArrayJs .= '}';
         }
         
         
-        $dataArrayJS .= ']';
+        $dataArrayJs .= ']';
         
         $optionsJs = ($js = $this->getOptionsJs()) ? ", {$js}" : ', {}';
         
+        $extraFunctionCallString = implode("\n", $this->getExtraFunctionCalls($dataArrayJs, $optionsJs));
+        
+        return <<<ENDSCRIPT
+jQuery(document).ready(function() {
+    var placeholder = jQuery('#{$name}');
+    var plot = jQuery.plot(placeholder, {$dataArrayJs}{$optionsJs});
+    {$extraFunctionCallString}
+});
+        
+ENDSCRIPT;
+        
+    }
+    
+    public function getExtraFunctionCalls($dataArrayJs, $optionsJs)
+    {
         $extraFunctionCalls = array();
         
         if ($this->zooming) {
             $extraFunctionCalls[] = <<<ENDJS
 placeholder.bind("plotselected", function (event, ranges) {
-    jQuery.plot(placeholder, {$dataArrayJS},
+    jQuery.plot(placeholder, {$dataArrayJs},
       $.extend(true, {}{$optionsJs}, {
       xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
       yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
   }));
 });
-placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, {$dataArrayJS}{$optionsJs}); });     
+placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, {$dataArrayJs}{$optionsJs}); });
+ENDJS;
+        
+        }
+        
+        if ($this->useLabels) {
+            $seriesLabels = json_encode($this->pointLabels);
+            // @todo implement more options for this
+            $extraFunctionCalls[] = <<<ENDJS
+var pointLabels = {$seriesLabels};
+            
+$.each(plot.getData()[0].data, function(i, el){
+console.log(el[0] + ',' + el[1]);
+console.log(pointLabels[el[0] + ',' + el[1]]);
+console.log(pointLabels);
+    var o = plot.pointOffset({
+        x: el[0], y: el[1]});
+        $('<div class="data-point-label">' + pointLabels[el[0] + ',' + el[1]] + '</div>').css( {
+            position: 'absolute',
+            left: o.left,
+            top: o.top - 25,
+            display: 'none',
+            'font-size': '10px'
+        }).appendTo(plot.getPlaceholder()).fadeIn('slow');
+});
+ENDJS;
+
+        }
+        
+        if ($this->highlighting) {
+            
+            $labelPaddingX = 5;
+            $labelPaddingY = 5;
+            
+            $formatPoints = "x + ',' + y";
+            
+            foreach ($this->dateAxes as $axis=>$flag) { 
+                if ($flag) {
+                    $formatPoints = str_replace($axis, "(new Date(parseInt({$axis}))).toLocaleDateString()",$formatPoints);
+                }
+            }
+
+            $extraFunctionCalls[] =  <<<ENDJS
+            
+function showTooltip(x, y, contents) {
+    $('<div id="flottooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + {$labelPaddingY},
+        left: x + {$labelPaddingX},
+        border: '1px solid #fdd',
+        padding: '2px',
+        'background-color': '#fee',
+        opacity: 0.80
+    }).appendTo("body").fadeIn(200);
+}
+
+var previousPoint = null;
+
+placeholder.bind("plothover", function (event, pos, item) {
+    if (item) {
+        if (previousPoint != item.dataIndex) {
+            previousPoint = item.dataIndex;
+            
+            $("#flottooltip").remove();
+            var x = item.datapoint[0].toFixed(2),
+                y = item.datapoint[1].toFixed(2);
+            
+            showTooltip(item.pageX, item.pageY,
+                        {$formatPoints});
+        }
+    }
+    else {
+        $("#flottooltip").remove();
+        previousPoint = null;            
+    }
+});
 ENDJS;
             
         }
         
-        $extraFunctionCallString = implode('', $extraFunctionCalls);
-        
-        return <<<ENDSCRIPT
-jQuery(document).ready(function() {
-    var placeholder = jQuery('#{$name}');
-    var plot = jQuery.plot(placeholder, {$dataArrayJS}{$optionsJs});
-    {$extraFunctionCallString}
-});
-        
-ENDSCRIPT;
+        return $extraFunctionCalls;
         
     }
     
@@ -251,6 +349,8 @@ ENDSCRIPT;
     
     public function useHighlighting(array $opts = array('size'=>7.5))
     {
+        $this->highlighting = true;
+        
         $this->options['grid']['hoverable'] = 'true';
         $this->options['grid']['autoHighlight'] = 'true';
     
@@ -358,6 +458,16 @@ ENDSCRIPT;
         return $this;
     }
     
+    public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
+    {
+        $this->useLabels = true;
+        $this->seriesLabels[$series->getTitle()] = $labels;
+    }
+    
+    public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
+    {
+        //@todo
+    }
 
     // maps jqplot-originating option data structure to flot
     private $optsMapper = array('axes.xaxis.tickInterval' => 'xaxis.tickSize',

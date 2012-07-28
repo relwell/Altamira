@@ -31,7 +31,8 @@ class Chart
 		
 		$this->library = $library;
 
-		$this->jsWriter = $this->getJsWriter();
+		// initialize
+		$this->getJsWriter();
 		
 		return $this;
 	}
@@ -233,20 +234,20 @@ class Chart
 	    return $this->jsWriter->getScript();
 	}
 	
-	protected function getJsWriter()
+	public function getJsWriter()
 	{
-	    if ($this->jsWriter) {
-	        return $this->jsWriter;
+	    if (! $this->jsWriter) {
+    	    $className = '\\Altamira\\JsWriter\\'.ucfirst($this->library);
+    
+    	    if (class_exists($className)) {
+    	        $instance = new $className($this);
+    	        $this->jsWriter = $instance; 
+    	    } else {
+    	        throw new \Exception("No JsWriter by name of {$className}");
+    	    }
 	    }
 	    
-	    $className = '\\Altamira\\JsWriter\\'.ucfirst($this->library);
-
-	    if (class_exists($className)) {
-	        $instance = new $className($this); 
-	        return $instance;
-	    }
-	    
-	    throw new \Exception("No JsWriter by name of {$className}");
+	    return $this->jsWriter;
 	    
 	}
 

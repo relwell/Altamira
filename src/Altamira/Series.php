@@ -93,13 +93,6 @@ class Series
 	public function getData($tags = false)
 	{
 		if($tags || $this->useTags) {
-			$labels = $this->labels;
-			if($this->useLabels && (count($labels) > 0)) {
-				$useLabels = true;
-			} else {
-				$useLabels = false;
-			}
-
 			$data = array();
 			$tags = $this->tags;
 			foreach($this->data as $datum) {
@@ -109,14 +102,7 @@ class Series
 				} else {
 					$item = array($datum, array_shift($tags));
 				}
-				if($useLabels) {
-					if(count($labels) === 0) {
-						$item[] = null;
-					} else {
-						$item[] = array_shift($labels);
-					}
-				}
-
+				
 				$data[] = $item;
 			}
 			return $data;
@@ -139,7 +125,6 @@ class Series
     		$this->useLabels = true;
     		$this->jsWriter->useSeriesLabels($this, $labels);
             $this->jsWriter->setSeriesOption($this, 'pointLabels', array('show' => true, 'edgeTolerance' => 3));
-    		$this->labels = $labels;
 	    }
 
 		return $this;
@@ -180,5 +165,10 @@ class Series
 	public function usesLabels()
 	{
 	    return isset($this->useLabels) && $this->useLabels === true;
+	}
+	
+	public function getUseTags()
+	{
+	    return $this->useTags;
 	}
 }

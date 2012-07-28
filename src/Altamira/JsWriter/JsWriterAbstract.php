@@ -9,6 +9,7 @@ abstract class JsWriterAbstract
     protected $options = array();
     protected $files = array();
     protected $callbacks = array();
+    protected $seriesLabels = array();
     
     public function __construct(\Altamira\Chart $chart)
     {

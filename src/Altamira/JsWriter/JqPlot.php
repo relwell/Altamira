@@ -34,7 +34,17 @@ class JqPlot
         foreach($this->chart->getSeries() as $series) {
             $num++;
             $data = $series->getData($useTags);
-        
+            $title = $series->getTitle();
+            
+            if (isset($this->seriesLabels[$title]) 
+                && !empty($this->seriesLabels[$title])) {
+                $labelCopy = $this->seriesLabels[$title];
+                foreach ($data as &$datum) {
+                    $datum[] = array_shift($labelCopy);
+                }
+                
+            }
+
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
             $output .= $varname . ' = ' . $this->makeJSArray($data) . ';';
@@ -270,8 +280,9 @@ class JqPlot
         return $this;
     }
     
-    public function useSeriesLabels( \Altamira\Series $series, array $options = array() )
+    public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
     {
+        $this->seriesLabels[$series->getTitle()] = $labels;
         $this->options['series'][$series->getTitle()]['pointLabels']['show'] = true;
         
         if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
