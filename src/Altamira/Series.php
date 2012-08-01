@@ -23,6 +23,7 @@ class Series
 		self::$count++;
 		
 		$this->jsWriter = $jsWriter;
+		$this->jsWriter->initializeSeries($title);
 
 		$tagcount = 0;
 		foreach($data as $datum) {
@@ -170,5 +171,45 @@ class Series
 	public function getUseTags()
 	{
 	    return $this->useTags;
+	}
+	
+	public function setLineWidth($val)
+	{
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesLineWidth($this, $val);
+	    }
+	    return $this;
+	}
+	
+	public function showLine($bool = true)
+	{
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+    	    $this->jsWriter->setSeriesShowLine($this, $bool);
+	    }
+	    return $this;
+	}
+	
+	public function showMarker($bool = true)
+	{
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesShowMarker($this, $bool);
+	    }
+	    return $this;
+	}
+	
+	public function setMarkerStyle($value)
+	{
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesMarkerStyle($this, $value);
+	    }
+	    return $this;
+	}
+	
+	public function setMarkerSize($value)
+	{
+	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesMarkerSize($this, $value);
+	    }
+	    return $this;
 	}
 }

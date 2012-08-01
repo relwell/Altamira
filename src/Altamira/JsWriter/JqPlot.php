@@ -13,7 +13,8 @@ class JqPlot
                Ability\Highlightable, 
                Ability\Legendable, 
                Ability\Shadowable,
-               Ability\Labelable
+               Ability\Labelable,
+               Ability\Lineable
 {
     
     public function generateScript()
@@ -300,6 +301,42 @@ class JqPlot
             $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
         }
         
+        return $this;
+    }
+    
+    public function setSeriesLineWidth( \Altamira\Series $series, $value )
+    {
+        $this->options['series'][$series->getTitle()]['lineWidth'] = $value;
+        return $this;
+    }
+    
+    public function setSeriesShowLine( \Altamira\Series $series, $bool )
+    {
+        $this->options['series'][$series->getTitle()]['showLine'] = $bool;
+        return $this;
+    }
+    
+    public function setSeriesShowMarker( \Altamira\Series $series, $bool )
+    {
+        $this->options['series'][$series->getTitle()]['showMarker'] = $bool;
+        return $this;
+    }
+    
+    public function setSeriesMarkerStyle( \Altamira\Series $series, $value )
+    {
+        $this->options['series'][$series->getTitle()]['markerOptions'] = ( isset($this->options['series'][$series->getTitle()]['markerOptions'])
+                                                                       ? $this->options['series'][$series->getTitle()]['markerOptions']
+                                                                       : array() )
+                                                                       + array('style'=>$value);
+        return $this;
+    }
+    
+    public function setSeriesMarkerSize( \Altamira\Series $series, $value )
+    {
+        $this->options['series'][$series->getTitle()]['markerOptions'] = ( isset($this->options['series'][$series->getTitle()]['markerOptions'])
+                ? $this->options['series'][$series->getTitle()]['markerOptions']
+                : array() )
+                + array('size'=>$value);
         return $this;
     }
     

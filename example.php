@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL);
 include(__DIR__ . '/autoload.php');
 
 use Altamira\Chart;
@@ -46,13 +46,16 @@ $seriesA = $chart3->createSeries(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
 $seriesB = $chart3->createSeries(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
 $seriesC = $chart3->createSeries(array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7), 'Third');
 
-$seriesA->setOption('showMarker', false)->
-    setOption('lineWidth', 8);
-$seriesB->setOption('markerStyle', 'filledSquare')->
-    setOption('showLine', false);
-$seriesC->setOption('lineWidth', 1)->
-    setOption('markerSize', 15)->
-    setOption('markerStyle', 'diamond');
+/**
+ * These styles are only supported by Flot
+ */
+$seriesA->showMarker(false)->
+    setLineWidth(8);
+$seriesB->setMarkerStyle('filledSquare')->
+    showLine(false);
+$seriesC->setLineWidth(1)->
+    setMarkerSize(15)->
+    setMarkerStyle('diamond');
 
 $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double-click to reset)')->
     addSeries($seriesA)->

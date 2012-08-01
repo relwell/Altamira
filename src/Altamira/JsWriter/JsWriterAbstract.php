@@ -82,6 +82,11 @@ abstract class JsWriterAbstract
         return $this;
     }
     
+    public function initializeSeries($title)
+    {
+        $this->options['series'][$title] = array();
+    }
+    
     abstract protected function getSeriesOptions(array $options);
     abstract protected function getTypeOptions(array $options);
     abstract protected function generateScript();

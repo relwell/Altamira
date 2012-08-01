@@ -14,7 +14,8 @@ class Flot
                Ability\Legendable,
                Ability\Shadowable,
                Ability\Zoomable,
-               Ability\Labelable
+               Ability\Labelable,
+               Ability\Lineable
 {
     protected $dateAxes = array('x'=>false, 'y'=>false);
     protected $zooming = false;
@@ -77,13 +78,15 @@ class Flot
             }
             
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
+
+            $this->prepOpts( $this->options['series'][$title] );
             
-            if ($series->usesLabels()) {
-                $dataArrayJs .= ", points: {'show': 'true'}";
+            $opts = substr(json_encode($this->options['series'][$title]), 1, -1);
+            
+            if (strlen($opts) > 2) {
+                $dataArrayJs .= ',' . $opts;
             }
             
-            $dataArrayJs .= ", lines: {'show': 'true'}";
-
             $dataArrayJs .= '}';
         }
         
@@ -489,6 +492,77 @@ ENDJS;
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
+    }
+    
+    public function setSeriesLineWidth( \Altamira\Series $series, $value )
+    {
+        $this->options['series'][$series->getTitle()]['lines'] = ( isset($this->options['series'][$series->getTitle()]['lines'])
+                                                               ? $this->options['series'][$series->getTitle()]['lines']
+                                                               : array() )
+                                                               + array('lineWidth'=>$value);
+        
+        return $this;
+    }
+    
+    public function setSeriesShowLine( \Altamira\Series $series, $bool )
+    {
+        $this->options['series'][$series->getTitle()]['lines'] = ( isset($this->options['series'][$series->getTitle()]['lines'])
+                                                               ? $this->options['series'][$series->getTitle()]['lines']
+                                                               : array() )
+                                                               + array('show'=>$bool);
+        return $this;
+    }
+    
+    public function setSeriesShowMarker( \Altamira\Series $series, $bool )
+    {
+        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
+                                                                ? $this->options['series'][$series->getTitle()]['points']
+                                                                : array() )
+                                                                + array('show'=>$bool);
+        return $this;
+    }
+    
+    public function setSeriesMarkerStyle( \Altamira\Series $series, $value )
+    {
+        // jqplot compatibility preprocessing
+        $value = str_replace('filled', '', $value);
+        $value = strtolower($value);
+        
+        if (! in_array('jquery.flot.symbol.js', $this->files)) {
+            $this->files[] = 'jquery.flot.symbol.js';
+        }
+        
+        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
+                                                                ? $this->options['series'][$series->getTitle()]['points']
+                                                                : array() )
+                                                                + array('symbol'=>$value);
+        
+        return $this;    
+    }
+    
+    public function setSeriesMarkerSize( \Altamira\Series $series, $value )
+    {
+        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
+                ? $this->options['series'][$series->getTitle()]['points']
+                : array() )
+                + array('radius'=>(int) ($value / 2));
+        
+        return $this;
+    }
+    
+    public function prepOpts( &$opts = array() )
+    {
+        if ( !isset($this->opts['points']) || !isset($this->opts['points']['show']) ) {
+            // show points by default
+            $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
+                            + array('show'=>'true');
+        }
+        
+        if ( !isset($this->opts['lines']) || !isset($this->opts['lines']['show']) ) {
+            // show lines by default
+            $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
+            + array('show'=>'true');
+        }
     }
 
     // maps jqplot-originating option data structure to flot
