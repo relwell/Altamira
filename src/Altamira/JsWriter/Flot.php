@@ -20,6 +20,7 @@ class Flot
     protected $zooming = false;
     protected $highlighting = false;
     protected $pointLabels = array();
+    protected $labelSettings = array('location'=>'w','xpadding'=>'0','ypadding'=>'0');
     
     protected function generateScript()
     {
@@ -124,20 +125,40 @@ ENDJS;
         
         if ($this->useLabels) {
             $seriesLabels = json_encode($this->pointLabels);
-            // @todo implement more options for this
+            
+            $top = '';
+            $left = '';
+            $pixelCount = '15';
+            
+            for ( $i = 0; $i < strlen($this->labelSettings['location']); $i++ ) {
+                switch ( $this->labelSettings['location'][$i] ) {
+                    case 'n':
+                        $top = '-'.$pixelCount;
+                        break;
+                    case 'e':
+                        $left = '+'.$pixelCount;
+                        break; 
+                    case 's':
+                        $top = '+'.$pixelCount;
+                        break;
+                    case 'w':
+                        $left = '-'.$pixelCount;
+                }
+            }
+            
+            $paddingx = '-'.(isset($this->labelSettings['xpadding']) ? $this->labelSettings['xpadding'] : '0');
+            $paddingy = '-'.(isset($this->labelSettings['ypadding']) ? $this->labelSettings['ypadding'] : '0');
+            
             $extraFunctionCalls[] = <<<ENDJS
 var pointLabels = {$seriesLabels};
             
 $.each(plot.getData()[0].data, function(i, el){
-console.log(el[0] + ',' + el[1]);
-console.log(pointLabels[el[0] + ',' + el[1]]);
-console.log(pointLabels);
     var o = plot.pointOffset({
         x: el[0], y: el[1]});
         $('<div class="data-point-label">' + pointLabels[el[0] + ',' + el[1]] + '</div>').css( {
             position: 'absolute',
-            left: o.left,
-            top: o.top - 25,
+            left: o.left{$left}{$paddingx},
+            top: o.top-5{$top}{$paddingy},
             display: 'none',
             'font-size': '10px'
         }).appendTo(plot.getPlaceholder()).fadeIn('slow');
@@ -466,7 +487,8 @@ ENDJS;
     
     public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
     {
-        //@todo
+        // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
+        $this->labelSettings[$name] = $value;
     }
 
     // maps jqplot-originating option data structure to flot
