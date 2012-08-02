@@ -30,6 +30,7 @@ class Chart
 		}
 		
 		$this->library = $library;
+		$this->typeNamespace .= ucfirst($library) . '\\';
 
 		// initialize
 		$this->getJsWriter();
@@ -127,16 +128,21 @@ class Chart
 
 	public function setType($type, $series = null)
 	{
-		if(isset($series) && isset($this->series[$series])) {
-			$series = $this->series[$series];
-			$title = $series->getTitle();
-		} else {
-			$title = 'default';
-		}
+	    $config = \parse_ini_file(__DIR__.'/Type/TypeConfig.ini', true);
 
-		$className =  $this->typeNamespace . ucwords($type);
-		if(class_exists($className))
-			$this->types[$title] = new $className($this->library);
+	    if ( isset($config[strtolower($this->library)]) ) {
+
+	        if(isset($series) && isset($this->series[$series])) {
+    			$series = $this->series[$series];
+    			$title = $series->getTitle();
+    		} else {
+    			$title = 'default';
+    		}
+    
+    		$className =  $this->typeNamespace . ucwords($type);
+    		if(class_exists($className))
+    			$this->types[$title] = new $className($this->library, $config);
+	    }
 
 		return $this;
 	}

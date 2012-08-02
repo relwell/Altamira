@@ -1,8 +1,8 @@
 <?php
 
-namespace Altamira\Type;
+namespace Altamira\Type\Flot;
 
-class Bar extends TypeAbstract
+class Bar extends \Altamira\Type\TypeAbstract
 {
 
 	public function getOptions()

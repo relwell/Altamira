@@ -10,12 +10,8 @@ abstract class TypeAbstract
 
 	protected $allowedRendererOptions = array();
 	
-	public function __construct($library = 'jqPlot')
+	public function __construct($library = 'jqPlot', $config)
 	{
-	    $config = \parse_ini_file(__DIR__.'/TypeConfig.ini', true);
-	    if (! isset($config[strtolower($library)]) ) {
-	        throw new \Exception('This chart type is not supported in this library.');
-	    }
 	    
 	    $libConfig = $config[strtolower($library)];
 

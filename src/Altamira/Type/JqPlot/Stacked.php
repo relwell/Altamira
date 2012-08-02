@@ -1,8 +1,8 @@
 <?php
 
-namespace Altamira\Type;
+namespace Altamira\Type\JqPlot;
 
-class Stacked extends TypeAbstract
+class Stacked extends \Altamira\Type\TypeAbstract
 {
     
 	public function getOptions()

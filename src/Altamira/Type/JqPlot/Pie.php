@@ -1,8 +1,8 @@
 <?php
 
-namespace Altamira\Type;
+namespace Altamira\Type\JqPlot;
 
-class Pie extends TypeAbstract
+class Pie extends \Altamira\Type\TypeAbstract
 {
 	protected $allowedRendererOptions = array();
 

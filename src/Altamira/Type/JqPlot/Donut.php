@@ -1,6 +1,6 @@
 <?php
 
-namespace Altamira\Type;
+namespace Altamira\Type\JqPlot;
 
 class Donut extends Pie
 {
