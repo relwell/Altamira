@@ -17,6 +17,9 @@ class Flot
                Ability\Labelable,
                Ability\Lineable
 {
+    protected $library = 'flot';
+    protected $typeNamespace = '\\Altamira\\Type\\Flot\\';
+    
     protected $dateAxes = array('x'=>false, 'y'=>false);
     protected $zooming = false;
     protected $highlighting = false;
@@ -250,10 +253,9 @@ ENDJS;
         return $this;
     }
 
-    //@todo handle type options correctly
     protected function getTypeOptions(array $options)
-    {return $options;
-        $types = $this->chart->getTypes();
+    {
+        $types = $this->types;
     
         if(isset($types['default'])) {
             $options = array_merge_recursive($options, $types['default']->getOptions());
@@ -273,7 +275,7 @@ ENDJS;
     //@todo handle series default transformations
     protected function getSeriesOptions(array $options)
     {return $options; 
-        $types = $this->chart->getTypes();
+        $types = $this->types;
     
         if(isset($types['default'])) {
             $defaults = $options['seriesDefaults'];

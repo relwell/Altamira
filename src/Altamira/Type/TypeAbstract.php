@@ -7,13 +7,16 @@ abstract class TypeAbstract
 	protected $pluginFiles = array();
 	protected $renderer;
 	protected $options;
-
+    protected $series;
+	
 	protected $allowedRendererOptions = array();
 	
-	public function __construct($library = 'jqPlot', $config)
+	public function __construct(\Altamira\JsWriter\JsWriterAbstract $jsWriter)
 	{
 	    
-	    $libConfig = $config[strtolower($library)];
+	    $config = \parse_ini_file(__DIR__.'/../Type/TypeConfig.ini', true);
+	    
+	    $libConfig = $config[strtolower($jsWriter->getLibrary())];
 
 	    $class = end(explode('\\', strtolower(get_class($this))));
 	    

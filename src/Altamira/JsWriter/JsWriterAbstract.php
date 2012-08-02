@@ -6,10 +6,13 @@ abstract class JsWriterAbstract
 {
     protected $chart;
     
-    protected $options = array();
+    protected $options = array('series'=>array());
     protected $files = array();
     protected $callbacks = array();
     protected $seriesLabels = array();
+    protected $types = array();
+    protected $library;
+    protected $typeNamespace;
     
     public function __construct(\Altamira\Chart $chart)
     {
@@ -50,7 +53,13 @@ abstract class JsWriterAbstract
     
     public function getFiles()
     {
-        return $this->files;
+        $files = $this->files;
+        
+        foreach ($this->types as $type) {
+            $files = array_merge($files, $type->getFiles());
+        }
+        
+        return $files;
     }
     
     public function getOptionsForSeries($series)
@@ -85,6 +94,45 @@ abstract class JsWriterAbstract
     public function initializeSeries($title)
     {
         $this->options['series'][$title] = array();
+    }
+    
+    public function getLibrary()
+    {
+        if (!$this->library) {
+            throw new \Exception("You must set a library when creating a new jsWriter");
+        }
+        return $this->library;
+    }
+    
+    public function setType( $type, $series = null )
+    {
+        if ( $series instanceOf \Altamira\Series ) {
+            $series = $series->getTitle();
+        }
+        
+        $title = $series ?: 'default';
+    
+        $className =  $this->typeNamespace . ucwords($type);
+        if(class_exists($className)) {
+            $this->types[$title] = new $className($this);
+        }
+        
+        return $this;
+    }
+    
+    public function setTypeOption( $name, $option, $series=null )
+    {
+        if ( $series instanceOf \Altamira\Series ) {
+            $series = $series->getTitle();
+        }
+        
+        $title = $series ?: 'default';
+        
+        if(isset($this->types[$title])) {
+            $this->types[$title]->setOption($name, $option);
+        }
+        
+        return $this;
     }
     
     abstract protected function getSeriesOptions(array $options);

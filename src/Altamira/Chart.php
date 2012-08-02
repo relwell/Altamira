@@ -19,6 +19,8 @@ class Chart
 	protected $labels = array();
 	protected $files = array();
 	
+	protected $jsWriter;
+	
 	protected $library;
 
 	protected $typeNamespace = '\\Altamira\\Type\\';
@@ -128,36 +130,15 @@ class Chart
 
 	public function setType($type, $series = null)
 	{
-	    $config = \parse_ini_file(__DIR__.'/Type/TypeConfig.ini', true);
-
-	    if ( isset($config[strtolower($this->library)]) ) {
-
-	        if(isset($series) && isset($this->series[$series])) {
-    			$series = $this->series[$series];
-    			$title = $series->getTitle();
-    		} else {
-    			$title = 'default';
-    		}
-    
-    		$className =  $this->typeNamespace . ucwords($type);
-    		if(class_exists($className))
-    			$this->types[$title] = new $className($this->library, $config);
-	    }
+	    $this->jsWriter->setType($type, $series);
 
 		return $this;
 	}
 
 	public function setTypeOption($name, $option, $series = null)
 	{
-		if(isset($series)) {
-			$title = $series;
-		} else {
-			$title = 'default';
-		}
-
-		if(isset($this->types[$title]))
-			$this->types[$title]->setOption($name, $option);
-
+	    $this->jsWriter->setTypeOption($name, $option, $series);
+	    
 		return $this;
 	}
 
@@ -224,15 +205,11 @@ class Chart
 
 	public function getFiles()
 	{
-		foreach($this->types as $type) {
-			$this->files = array_merge_recursive($this->files, $type->getFiles());
-		}
-
 		foreach($this->series as $series) {
 			$this->files = array_merge_recursive($this->files, $series->getFiles());
 		}
 
-		return array_merge($this->files, $this->jsWriter->getFiles());
+		return array_unique(array_merge($this->files, $this->jsWriter->getFiles()));
 	}
 
 	public function getScript()
@@ -242,7 +219,7 @@ class Chart
 	
 	public function getJsWriter()
 	{
-	    if (! $this->jsWriter) {
+	    if (! $this->jsWriter ) {
     	    $className = '\\Altamira\\JsWriter\\'.ucfirst($this->library);
     
     	    if (class_exists($className)) {

@@ -212,4 +212,11 @@ class Series
 	    }
 	    return $this;
 	}
+	
+	public function setType($type)
+	{
+	    $this->jsWriter->setType($type, $this);
+	    
+	    return $this;
+	}
 }

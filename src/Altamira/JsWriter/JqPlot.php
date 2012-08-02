@@ -17,6 +17,9 @@ class JqPlot
                Ability\Lineable
 {
     
+    protected $library = 'jqplot';
+    protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';
+    
     public function generateScript()
     {
         $output  = '$(document).ready(function(){';
@@ -25,10 +28,8 @@ class JqPlot
         $num = 0;
         $vars = array();
         
-        $types = $this->chart->getTypes();
-        
-        $useTags = (isset($types['default']) 
-                 && $types['default']->getUseTags()) 
+        $useTags = (isset($this->types['default']) 
+                 && $this->types['default']->getUseTags()) 
                  || ($this->chart->getUseTags());
         
         
@@ -219,10 +220,8 @@ class JqPlot
     
     protected function getTypeOptions(array $options)
     {
-        $types = $this->chart->getTypes();
-        
-        if(isset($types['default'])) {
-            $options = array_merge_recursive($options, $types['default']->getOptions());
+        if(isset($this->types['default'])) {
+            $options = array_merge_recursive($options, $this->types['default']->getOptions());
         }
         
         if(isset($options['axes'])) {
@@ -238,7 +237,7 @@ class JqPlot
     
     protected function getSeriesOptions(array $options)
     {
-        $types = $this->chart->getTypes();
+        $types = $this->types;
         if(isset($types['default'])) {
             $defaults = $options['seriesDefaults'];
             $renderer = $types['default']->getRenderer();
@@ -251,12 +250,10 @@ class JqPlot
         }
         
         $seriesOptions = array();
-        foreach($this->chart->getSeries() as $series) {
-            $title = $series->getTitle();
-            $opts = $this->options['series'][$title];
-            
+        foreach($this->options['series'] as $title => $opts) {
             if(isset($types[$title])) {
                 $type = $types[$title];
+                var_dump($type); die;
                 $opts['renderer'] = $type->getRenderer();
                 array_merge_recursive($opts, $type->getSeriesOptions());
             }
