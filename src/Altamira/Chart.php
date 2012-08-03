@@ -11,6 +11,8 @@ class Chart
 
 	protected $useTags = false;
 	protected $types = array();
+	
+	// @todo chart shouldn't even have options -- put it all in jswriter
 	protected $options = array(	'seriesDefaults' => array('pointLabels' => array('show' => false)),
 					'highlighter' => array('show' => false),
 					'cursor' => array('showTooltip' => false, 'show' => false)

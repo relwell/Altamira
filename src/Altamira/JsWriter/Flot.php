@@ -78,9 +78,9 @@ class Flot
 
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
 
-            $this->prepOpts( $this->options['series'][$title] );
+            $this->prepOpts( $this->options['seriesStorage'][$title] );
             
-            $opts = substr(json_encode($this->options['series'][$title]), 1, -1);
+            $opts = substr(json_encode($this->options['seriesStorage'][$title]), 1, -1);
             
             if (strlen($opts) > 2) {
                 $dataArrayJs .= ',' . $opts;
@@ -273,29 +273,19 @@ ENDJS;
         $types = $this->types;
     
         if(isset($types['default'])) {
-            $defaults = $options['seriesDefaults'];
-            $renderer = $types['default']->getRenderer();
-            if(isset($renderer))
-                $defaults['renderer'] = $renderer;
-            $defaults['rendererOptions'] = $types['default']->getRendererOptions();
-            if(count($defaults['rendererOptions']) == 0)
-                unset($defaults['rendererOptions']);
-            $options['seriesDefaults'] = $defaults;
+            array_merge_recursive($options['series'], $types['default']->getOptions());
         }
     
         $seriesOptions = array();
-        foreach($this->options['series'] as $title => $opts) {
+        foreach($this->options['seriesStorage'] as $title => $opts) {
             if(isset($types[$title])) {
                 $type = $types[$title];
-                if ($renderer = $type->getRenderer()) {
-                    $opts['renderer'] = $renderer;
-                }
                 array_merge_recursive($opts, $type->getSeriesOptions());
             }
             $opts['label'] = $title;
             $seriesOptions[$title] = $opts;
         }
-        $options['series'] = $seriesOptions;
+        $options['seriesStorage'] = $seriesOptions;
         
         return $options;
     }
@@ -312,8 +302,8 @@ ENDJS;
         
         $opts = $this->options;
 
-        unset($opts['seriesDefaults']);
         unset($opts['series']);
+        unset($opts['seriesStorage']);
         
         return $this->makeJSArray($opts);
     }
@@ -458,10 +448,10 @@ ENDJS;
         
         // @todo add a method of telling flot whether the series is a line, bar, point
         if (isset($opts['use']) && $opts['use'] == true) {
-            $this->options['series'][$series]['line']['fill'] = true;
+            $this->options['seriesStorage'][$series]['line']['fill'] = true;
             
             if (isset($opts['color'])) {
-                $this->options['series'][$series]['line']['fillColor'] = $opts['color'];
+                $this->options['seriesStorage'][$series]['line']['fillColor'] = $opts['color'];
             }
         }
         
@@ -476,7 +466,7 @@ ENDJS;
     {
         
         if (isset($opts['use']) && $opts['use']) {
-            $this->options['series'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
+            $this->options['seriesStorage'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
         }
         
         return $this;
@@ -496,8 +486,8 @@ ENDJS;
     
     public function setSeriesLineWidth( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['lines'] = ( isset($this->options['series'][$series->getTitle()]['lines'])
-                                                               ? $this->options['series'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
+                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
                                                                : array() )
                                                                + array('lineWidth'=>$value);
         
@@ -506,8 +496,8 @@ ENDJS;
     
     public function setSeriesShowLine( \Altamira\Series $series, $bool )
     {
-        $this->options['series'][$series->getTitle()]['lines'] = ( isset($this->options['series'][$series->getTitle()]['lines'])
-                                                               ? $this->options['series'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
+                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
                                                                : array() )
                                                                + array('show'=>$bool);
         return $this;
@@ -515,8 +505,8 @@ ENDJS;
     
     public function setSeriesShowMarker( \Altamira\Series $series, $bool )
     {
-        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
-                                                                ? $this->options['series'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
+                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
                                                                 : array() )
                                                                 + array('show'=>$bool);
         return $this;
@@ -532,8 +522,8 @@ ENDJS;
             $this->files[] = 'jquery.flot.symbol.js';
         }
         
-        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
-                                                                ? $this->options['series'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
+                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
                                                                 : array() )
                                                                 + array('symbol'=>$value);
         
@@ -542,8 +532,8 @@ ENDJS;
     
     public function setSeriesMarkerSize( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
-                ? $this->options['series'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
+                ? $this->options['seriesStorage'][$series->getTitle()]['points']
                 : array() )
                 + array('radius'=>(int) ($value / 2));
         
