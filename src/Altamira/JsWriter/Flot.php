@@ -76,10 +76,6 @@ class Flot
                 
             };
 
-            if ($title) {
-                $dataArrayJs .= 'label: "'.str_replace('"', '\\"', $title).'", ';
-            }
-            
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
 
             $this->prepOpts( $this->options['series'][$title] );
@@ -272,9 +268,8 @@ ENDJS;
         return $options;
     }
     
-    //@todo handle series default transformations
     protected function getSeriesOptions(array $options)
-    {return $options; 
+    {
         $types = $this->types;
     
         if(isset($types['default'])) {
@@ -289,9 +284,7 @@ ENDJS;
         }
     
         $seriesOptions = array();
-        foreach($this->series as $series) {
-            $opts = $series->getOptions();
-            $title = $series->getTitle();
+        foreach($this->options['series'] as $title => $opts) {
             if(isset($types[$title])) {
                 $type = $types[$title];
                 if ($renderer = $type->getRenderer()) {
@@ -300,7 +293,7 @@ ENDJS;
                 array_merge_recursive($opts, $type->getSeriesOptions());
             }
             $opts['label'] = $title;
-            $seriesOptions[] = $opts;
+            $seriesOptions[$title] = $opts;
         }
         $options['series'] = $seriesOptions;
         
@@ -317,7 +310,12 @@ ENDJS;
             }
         }
         
-        return $this->makeJSArray($this->options);
+        $opts = $this->options;
+
+        unset($opts['seriesDefaults']);
+        unset($opts['series']);
+        
+        return $this->makeJSArray($opts);
     }
     
     // these are helper functions to transform jqplot options to flot
@@ -377,8 +375,8 @@ ENDJS;
     {
         $this->highlighting = true;
         
-        $this->options['grid']['hoverable'] = 'true';
-        $this->options['grid']['autoHighlight'] = 'true';
+        $this->options['grid']['hoverable'] = true;
+        $this->options['grid']['autoHighlight'] = true;
     
         return $this;
     }
@@ -433,7 +431,7 @@ ENDJS;
                                                   'x' => 0, 
                                                   'y' => 0))
     {        
-        $opts['on'] = isset($opts['on']) ? $opts['on'] : 'true';
+        $opts['on'] = isset($opts['on']) ? $opts['on'] : true;
         $opts['location'] = isset($ops['location']) ? $opts['location'] : 'ne';
 
         $legendMapper = array('on' => 'show',
@@ -460,7 +458,7 @@ ENDJS;
         
         // @todo add a method of telling flot whether the series is a line, bar, point
         if (isset($opts['use']) && $opts['use'] == true) {
-            $this->options['series'][$series]['line']['fill'] = 'true';
+            $this->options['series'][$series]['line']['fill'] = true;
             
             if (isset($opts['color'])) {
                 $this->options['series'][$series]['line']['fillColor'] = $opts['color'];
@@ -554,16 +552,16 @@ ENDJS;
     
     public function prepOpts( &$opts = array() )
     {
-        if ( !isset($this->opts['points']) || !isset($this->opts['points']['show']) ) {
+        if ( (! isset($this->options['points'])) && !isset($opts['points']) || !isset($opts['points']['show']) ) {
             // show points by default
             $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
-                            + array('show'=>'true');
+                            + array('show'=>true);
         }
         
-        if ( !isset($this->opts['lines']) || !isset($this->opts['lines']['show']) ) {
+        if ( (! isset($this->options['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
             // show lines by default
             $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
-            + array('show'=>'true');
+            + array('show'=>true);
         }
     }
 

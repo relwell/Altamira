@@ -256,6 +256,7 @@ class JqPlot
                 var_dump($type); die;
                 $opts['renderer'] = $type->getRenderer();
                 array_merge_recursive($opts, $type->getSeriesOptions());
+                var_dump($type->getSeriesOptions());
             }
             $opts['label'] = $title;
             

@@ -5,27 +5,16 @@ namespace Altamira\Type\Flot;
 class Bar extends \Altamira\Type\TypeAbstract
 {
 
+    protected $options = array('lines' => array('show' => false),
+                               'bars'  => array('show' => true));
+    
 	public function getOptions()
 	{
-        $opts = array();
-        
-        
-        
-		return $opts;
+		return $this->options;
 	}
 
 	public function getRendererOptions()
 	{
-		$opts = array();
-		if(isset($this->options['horizontal']) && $this->options['horizontal'])
-			$opts['barDirection'] = 'horizontal';
-
-		foreach($this->allowedOptions as $item) {
-			if(isset($this->options[$item]))
-				$opts[$item] = $this->options[$item];
-		}
-
-		return $opts;
 	}
 
 	public function getUseTags()
@@ -34,6 +23,19 @@ class Bar extends \Altamira\Type\TypeAbstract
 			return true;
 
 		return false;
+	}
+	
+	public function setOption($name, $value)
+	{
+	    switch ($name) {
+	        case 'horizontal':
+	            $this->options['bars']['horizontal'] = $value;
+                break;	        
+	        default:
+	            parent::setOption($name, $value);
+	    }
+	    
+	    return $this;
 	}
 }
 
