@@ -5,8 +5,10 @@ namespace Altamira\Type\Flot;
 class Bar extends \Altamira\Type\TypeAbstract
 {
 
-    protected $options = array('lines' => array('show' => false),
-                               'bars'  => array('show' => true));
+    protected $options = array('lines'    =>    array('show' => false),
+                               'bars'     =>    array('show' => true),
+                               'points'   =>    array('show' => false)
+                              );
     
 	public function getOptions()
 	{

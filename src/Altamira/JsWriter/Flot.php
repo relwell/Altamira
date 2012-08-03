@@ -552,7 +552,7 @@ ENDJS;
     
     public function prepOpts( &$opts = array() )
     {
-        if ( (! isset($this->options['points'])) && !isset($opts['points']) || !isset($opts['points']['show']) ) {
+        if ( (! isset($this->options['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
             // show points by default
             $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
                             + array('show'=>true);
