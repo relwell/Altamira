@@ -10,6 +10,7 @@ abstract class JsWriterAbstract
     protected $files = array();
     protected $callbacks = array();
     protected $seriesLabels = array();
+    protected $series = array();
     protected $types = array();
     protected $library;
     protected $typeNamespace;
@@ -91,9 +92,10 @@ abstract class JsWriterAbstract
         return $this;
     }
     
-    public function initializeSeries($title)
+    public function initializeSeries( \Altamira\Series $series )
     {
-        $this->options['series'][$title] = array();
+        $this->options['seriesStorage'][$series->getTitle()] = array();
+        $this->series[] = $series;
     }
     
     public function getLibrary()

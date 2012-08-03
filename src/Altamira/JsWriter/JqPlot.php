@@ -116,11 +116,11 @@ class JqPlot
         $depth = isset($depth) ? $depth : 3; 
         $alpha = isset($alpha) ? $alpha : 0.1;
         
-        $this->options['series'][$series]['shadow'] = $use;
-		$this->options['series'][$series]['shadowAngle'] = $angle;
-		$this->options['series'][$series]['shadowOffset'] = $offset;
-		$this->options['series'][$series]['shadowDepth'] = $depth;
-		$this->options['series'][$series]['shadowAlpha'] = $alpha;
+        $this->options['seriesStorage'][$series]['shadow'] = $use;
+		$this->options['seriesStorage'][$series]['shadowAngle'] = $angle;
+		$this->options['seriesStorage'][$series]['shadowOffset'] = $offset;
+		$this->options['seriesStorage'][$series]['shadowDepth'] = $depth;
+		$this->options['seriesStorage'][$series]['shadowAlpha'] = $alpha;
 		
 		return $this;
     }
@@ -139,14 +139,14 @@ class JqPlot
         $color = isset($color) ? $color : null;
         $alpha = isset($alpha) ? $alpha : null;
         
-        $this->options['series'][$series]['fill'] = $use;
-        $this->options['series'][$series]['fillAndStroke'] = $stroke;
+        $this->options['seriesStorage'][$series]['fill'] = $use;
+        $this->options['seriesStorage'][$series]['fillAndStroke'] = $stroke;
         
         if($color !== null) {
-            $this->options['series'][$series]['fillColor'] = $color;
+            $this->options['seriesStorage'][$series]['fillColor'] = $color;
         }
         if($alpha !== null) {
-            $this->options['series'][$series]['fillAlpha'] = $alpha;
+            $this->options['seriesStorage'][$series]['fillAlpha'] = $alpha;
         }
         
         return $this;
@@ -250,7 +250,7 @@ class JqPlot
         }
         
         $seriesOptions = array();
-        foreach($this->options['series'] as $title => $opts) {
+        foreach($this->options['seriesStorage'] as $title => $opts) {
             if(isset($types[$title])) {
                 $type = $types[$title];
                 var_dump($type); die;
@@ -262,19 +262,23 @@ class JqPlot
             
             $seriesOptions[] = $opts;
         }
-        $options['series'] = $seriesOptions;
+        $options['seriesStorage'] = $seriesOptions;
         
         return $options;
     }
     
     public function getOptionsJS()
     {
-        return $this->makeJSArray($this->options);
+        $opts = $this->options;
+        $opts['series'] = $opts['seriesStorage'];
+        unset($opts['series']);
+        
+        return $this->makeJSArray($opts);
     }
     
     public function setSeriesOption( \Altamira\Series $series, $name, $value)
     {
-        $this->options['series'][$series->getTitle()][$name] = $value;
+        $this->options['seriesStorage'][$series->getTitle()][$name] = $value;
         
         return $this;
     }
@@ -282,7 +286,7 @@ class JqPlot
     public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
     {
         $this->seriesLabels[$series->getTitle()] = $labels;
-        $this->options['series'][$series->getTitle()]['pointLabels']['show'] = true;
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['show'] = true;
         
         if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
             $this->files[] = 'jqplot.pointLabels.min.js';
@@ -304,26 +308,26 @@ class JqPlot
     
     public function setSeriesLineWidth( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['lineWidth'] = $value;
+        $this->options['seriesStorage'][$series->getTitle()]['lineWidth'] = $value;
         return $this;
     }
     
     public function setSeriesShowLine( \Altamira\Series $series, $bool )
     {
-        $this->options['series'][$series->getTitle()]['showLine'] = $bool;
+        $this->options['seriesStorage'][$series->getTitle()]['showLine'] = $bool;
         return $this;
     }
     
     public function setSeriesShowMarker( \Altamira\Series $series, $bool )
     {
-        $this->options['series'][$series->getTitle()]['showMarker'] = $bool;
+        $this->options['seriesStorage'][$series->getTitle()]['showMarker'] = $bool;
         return $this;
     }
     
     public function setSeriesMarkerStyle( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['markerOptions'] = ( isset($this->options['series'][$series->getTitle()]['markerOptions'])
-                                                                       ? $this->options['series'][$series->getTitle()]['markerOptions']
+        $this->options['seriesStorage'][$series->getTitle()]['markerOptions'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['markerOptions'])
+                                                                       ? $this->options['seriesStorage'][$series->getTitle()]['markerOptions']
                                                                        : array() )
                                                                        + array('style'=>$value);
         return $this;
@@ -331,8 +335,8 @@ class JqPlot
     
     public function setSeriesMarkerSize( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['markerOptions'] = ( isset($this->options['series'][$series->getTitle()]['markerOptions'])
-                ? $this->options['series'][$series->getTitle()]['markerOptions']
+        $this->options['seriesStorage'][$series->getTitle()]['markerOptions'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['markerOptions'])
+                ? $this->options['seriesStorage'][$series->getTitle()]['markerOptions']
                 : array() )
                 + array('size'=>$value);
         return $this;
