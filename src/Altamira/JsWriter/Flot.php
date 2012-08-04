@@ -44,7 +44,7 @@ class Flot
             if (! empty($this->seriesLabels[$title]) ) {
                 $labelCopy = $this->seriesLabels[$title];
             }
-            
+
             foreach ($data as $key=>$val) { 
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
@@ -65,6 +65,14 @@ class Flot
                 $val = $data[$key];
                 if (is_array($val)) {
                     $data[$key] = array_slice($val, 0, 2);
+                    
+                    if (isset($this->types['default'])) {
+                        if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
+                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
+                            $data[] = array('label' => $val[0], 'data' => $val[1]);
+                        }
+                    }
+                    
                     if (!empty($this->seriesLabels[$title])) {
                         $dataPoints = "{$val[0]},{$val[1]}";
                         $this->pointLabels[$dataPoints] = array_shift($labelCopy);
@@ -72,8 +80,6 @@ class Flot
                 } else {
                     $data[$key] = array(($oneDimensional? $key+1 : $key), $val);
                 }
-                
-                
             };
 
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
@@ -301,8 +307,12 @@ ENDJS;
         }
         
         $opts = $this->options;
+        
+        // stupid pie plugin
+        if (!isset($opts['series']['pie']['show'])) {
+            $opts = array_merge_recursive($opts, array('series'=>array('pie'=>array('show'=>false))));
+        }
 
-        unset($opts['series']);
         unset($opts['seriesStorage']);
         
         return $this->makeJSArray($opts);
