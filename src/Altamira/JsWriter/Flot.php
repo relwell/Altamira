@@ -65,12 +65,12 @@ class Flot
                 $val = $data[$key];
                 if (is_array($val)) {
                     $data[$key] = array_slice($val, 0, 2);
-                    
-                    if (isset($this->types['default'])) {
-                        if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
-                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
+                    if (isset($this->types['default']) 
+                        && (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
+                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut )) {
+                        
                             $data[] = array('label' => $val[0], 'data' => $val[1]);
-                        }
+                        
                     }
                     
                     if (!empty($this->seriesLabels[$title])) {
@@ -78,7 +78,14 @@ class Flot
                         $this->pointLabels[$dataPoints] = array_shift($labelCopy);
                     }
                 } else {
-                    $data[$key] = array(($oneDimensional? $key+1 : $key), $val);
+                    $valueArray = array(($oneDimensional? $key+1 : $key), $val);
+                    if (isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bar ) {
+                        $baropts = $this->types['default']->getOptions();
+                        if (isset($baropts['bars']['horizontal']) && $baropts['bars']['horizontal'] == true) {
+                            $valueArray = array($val, $key);
+                        }
+                    }
+                    $data[$key] = $valueArray;
                 }
             };
 
