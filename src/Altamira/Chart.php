@@ -183,7 +183,9 @@ class Chart
 	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Flot ) {
 	        $seriesArray = array();
 	        foreach ($data as $datum) {
-	            $seriesArray[] = $this->createSeries(array($datum[1]), $datum[0], $type);
+	            $seriesArray[] = $type == 'Bubble' 
+	                           ? $this->createSeries($datum, end($datum), $type)
+	                           : $this->createSeries(array($datum[1]), $datum[0], $type);
 	        }
 	        return $seriesArray;
 	    } else {

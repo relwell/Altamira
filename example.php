@@ -89,7 +89,7 @@ $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     setTypeOption('showDataLabels', true);
 
 $chart7 = new Chart('chart7', $library);
-$chart7->addSeries($chart7->createSeries(
+$chart7->addSeries($chart7->createManySeries(
     array(  array(4, 7, 5, 'Screws'),
         array(5, 3, 6, 'Nails'),
         array(4, 5, 7, 'Bolts'),

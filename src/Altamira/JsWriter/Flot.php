@@ -63,15 +63,24 @@ class Flot
                 }
                 // update if date
                 $val = $data[$key];
+
                 if (is_array($val)) {
                     $data[$key] = array_slice($val, 0, 2);
-                    if (isset($this->types['default']) 
-                        && (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
-                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut )) {
+                    if ( isset($this->types['default']) ) { 
+                        if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
+                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
                         
-                            $data[] = array('label' => $val[0], 'data' => $val[1]);
+                            $data[$key] = array('label' => $val[0], 'data' => $val[1]);
+                            
+                            
+                        } else if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
+                            $bubblePoints = array_slice($val, 0, 3);
+                            $bubblePoints[2] *= 10;
+                            $data[$key] = $bubblePoints;
+                        } 
                         
                     }
+                        
                     
                     if (!empty($this->seriesLabels[$title])) {
                         $dataPoints = "{$val[0]},{$val[1]}";
@@ -88,8 +97,12 @@ class Flot
                     $data[$key] = $valueArray;
                 }
             };
-
+            
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
+            
+            if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
+                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
+            }
 
             $this->prepOpts( $this->options['seriesStorage'][$title] );
             
@@ -580,16 +593,18 @@ ENDJS;
     
     public function prepOpts( &$opts = array() )
     {
-        if ( (! isset($this->options['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
-            // show points by default
-            $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
-                            + array('show'=>true);
-        }
-        
-        if ( (! isset($this->options['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
-            // show lines by default
-            $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
-            + array('show'=>true);
+        if (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble)) {
+            if ( (! isset($this->options['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
+                // show points by default
+                $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
+                                + array('show'=>true);
+            }
+            
+            if ( (! isset($this->options['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
+                // show lines by default
+                $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
+                + array('show'=>true);
+            }
         }
     }
 
