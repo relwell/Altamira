@@ -74,7 +74,7 @@ $chart4->setTitle('Horizontal Bar Chart')->
 
 $chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
-    addSeries($chart5->createSeries(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
+    addSeries($chart5->createManySeries(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
     setType('Pie')->
     setLegend();
 

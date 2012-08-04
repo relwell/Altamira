@@ -181,8 +181,34 @@ class Chart
 	            return new Series($data, $title, $this->jsWriter);
 	    }
 	}
+	
+	public function createManySeries($data, $title = null, $type = null)
+	{
+	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Flot ) {
+	        $seriesArray = array();
+	        foreach ($data as $datum) {
+	            $seriesArray[] = $this->createSeries(array($datum[1]), $datum[0], $type);
+	        }
+	        return $seriesArray;
+	    } else {
+	        return $this->createSeries($data, $title, $type);
+	    }
+	}
+	
+	public function addSeries( $seriesOrArray )
+	{
+	    if (is_array($seriesOrArray)) {
+	        foreach ($seriesOrArray as $series) {
+	            $this->addSingleSeries($series);
+	        }
+	    } else {
+	        $this->addSingleSeries($seriesOrArray);
+	    }
+	    
+	    return $this;
+	}
 
-	public function addSeries(Series $series)
+	public function addSingleSeries(Series $series)
 	{
 		$this->series[$series->getTitle()] = $series;
 
