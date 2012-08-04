@@ -340,4 +340,16 @@ class JqPlot
         return $this;
     }
     
+    public function setAxisTicks($axis, $ticks)
+    {
+
+        if(strtolower($axis) === 'x') {
+            $this->options['axes']['xaxis']['ticks'] = $ticks;
+        } elseif(strtolower($axis) === 'y') {
+            $this->options['axes']['yaxis']['ticks'] = $ticks;
+        }
+        
+        return $this;
+    }
+    
 }

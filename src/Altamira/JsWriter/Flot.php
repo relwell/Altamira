@@ -550,6 +550,27 @@ ENDJS;
         return $this;
     }
     
+    public function setAxisTicks($axis, $ticks)
+    {
+        if ( in_array($axis, array('x', 'y') ) ) {
+            
+            $isString = false;
+            $alternateTicks = array();
+            $cnt = 1;
+            
+            foreach ($ticks as $tick) {
+                if (!(ctype_digit($tick) || is_int($tick))) {
+                    $isString = true; 
+                }
+                $alternateTicks[] = array($cnt++, $tick);
+            }
+            
+            $this->options[$axis.'axis']['ticks'] = $isString ? $alternateTicks : $ticks;
+        }
+        
+        return $this;
+    }
+    
     public function prepOpts( &$opts = array() )
     {
         if ( (! isset($this->options['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
