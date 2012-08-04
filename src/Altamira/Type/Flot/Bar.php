@@ -9,15 +9,6 @@ class Bar extends \Altamira\Type\TypeAbstract
                                'bars'     =>    array('show' => true),
                                'points'   =>    array('show' => false)
                               );
-    
-	public function getOptions()
-	{
-		return $this->options;
-	}
-
-	public function getRendererOptions()
-	{
-	}
 
 	public function getUseTags()
 	{

@@ -6,7 +6,7 @@ abstract class TypeAbstract
 {
 	protected $pluginFiles = array();
 	protected $renderer;
-	protected $options;
+	protected $options = array();
     protected $series;
 	
 	protected $allowedRendererOptions = array();
@@ -42,7 +42,7 @@ abstract class TypeAbstract
 
 	public function getOptions()
 	{
-		return array();
+		return $this->options;
 	}
 
 	public function getSeriesOptions()
