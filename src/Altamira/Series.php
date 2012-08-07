@@ -21,9 +21,6 @@ class Series
 	public function __construct($data, $title = null, JsWriterAbstract $jsWriter)
 	{
 		self::$count++;
-		
-		$this->jsWriter = $jsWriter;
-		$this->jsWriter->initializeSeries($title);
 
 		$tagcount = 0;
 		foreach($data as $datum) {
@@ -47,6 +44,9 @@ class Series
 		} else {
 			$this->title = 'Series ' . self::$count;
 		}
+
+		$this->jsWriter = $jsWriter;
+		$this->jsWriter->initializeSeries($this);
 	}
 
 	public function getFiles()
@@ -210,6 +210,13 @@ class Series
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
 	        $this->jsWriter->setSeriesMarkerSize($this, $value);
 	    }
+	    return $this;
+	}
+	
+	public function setType($type)
+	{
+	    $this->jsWriter->setType($type, $this);
+	    
 	    return $this;
 	}
 }

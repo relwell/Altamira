@@ -6,18 +6,17 @@ abstract class TypeAbstract
 {
 	protected $pluginFiles = array();
 	protected $renderer;
-	protected $options;
-
+	protected $options = array();
+    protected $series;
+	
 	protected $allowedRendererOptions = array();
 	
-	public function __construct($library = 'jqPlot')
+	public function __construct(\Altamira\JsWriter\JsWriterAbstract $jsWriter)
 	{
-	    $config = \parse_ini_file(__DIR__.'/TypeConfig.ini', true);
-	    if (! isset($config[strtolower($library)]) ) {
-	        throw new \Exception('This chart type is not supported in this library.');
-	    }
 	    
-	    $libConfig = $config[strtolower($library)];
+	    $config = \parse_ini_file(__DIR__.'/../Type/TypeConfig.ini', true);
+	    
+	    $libConfig = $config[strtolower($jsWriter->getLibrary())];
 
 	    $class = end(explode('\\', strtolower(get_class($this))));
 	    
@@ -43,7 +42,7 @@ abstract class TypeAbstract
 
 	public function getOptions()
 	{
-		return array();
+		return $this->options;
 	}
 
 	public function getSeriesOptions()

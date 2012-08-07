@@ -17,6 +17,9 @@ class Flot
                Ability\Labelable,
                Ability\Lineable
 {
+    protected $library = 'flot';
+    protected $typeNamespace = '\\Altamira\\Type\\Flot\\';
+    
     protected $dateAxes = array('x'=>false, 'y'=>false);
     protected $zooming = false;
     protected $highlighting = false;
@@ -27,6 +30,9 @@ class Flot
     {
         $name = $this->chart->getName();
         $dataArrayJs = '[';
+        
+        $this->prepOpts($this->options['series']);
+        
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
@@ -41,7 +47,7 @@ class Flot
             if (! empty($this->seriesLabels[$title]) ) {
                 $labelCopy = $this->seriesLabels[$title];
             }
-            
+
             foreach ($data as $key=>$val) { 
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
@@ -60,28 +66,50 @@ class Flot
                 }
                 // update if date
                 $val = $data[$key];
+
                 if (is_array($val)) {
                     $data[$key] = array_slice($val, 0, 2);
+                    if ( isset($this->types['default']) ) { 
+                        if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
+                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
+                        
+                            $data[$key] = array('label' => $val[0], 'data' => $val[1]);
+                            
+                            
+                        } else if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
+                            $bubblePoints = array_slice($val, 0, 3);
+                            $bubblePoints[2] *= 10;
+                            $data[$key] = $bubblePoints;
+                        } 
+                        
+                    }
+                        
+                    
                     if (!empty($this->seriesLabels[$title])) {
                         $dataPoints = "{$val[0]},{$val[1]}";
                         $this->pointLabels[$dataPoints] = array_shift($labelCopy);
                     }
                 } else {
-                    $data[$key] = array(($oneDimensional? $key+1 : $key), $val);
+                    $valueArray = array(($oneDimensional? $key+1 : $key), $val);
+                    if (isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bar ) {
+                        $baropts = $this->types['default']->getOptions();
+                        if (isset($baropts['bars']['horizontal']) && $baropts['bars']['horizontal'] == true) {
+                            $valueArray = array($val, $key);
+                        }
+                    }
+                    $data[$key] = $valueArray;
                 }
-                
-                
             };
-
-            if ($title) {
-                $dataArrayJs .= 'label: "'.str_replace('"', '\\"', $title).'", ';
-            }
             
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
-
-            $this->prepOpts( $this->options['series'][$title] );
             
-            $opts = substr(json_encode($this->options['series'][$title]), 1, -1);
+            if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
+                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
+            }
+
+            $this->prepOpts( $this->options['seriesStorage'][$title] );
+            
+            $opts = substr(json_encode($this->options['seriesStorage'][$title]), 1, -1);
             
             if (strlen($opts) > 2) {
                 $dataArrayJs .= ',' . $opts;
@@ -250,10 +278,9 @@ ENDJS;
         return $this;
     }
 
-    //@todo handle type options correctly
     protected function getTypeOptions(array $options)
-    {return $options;
-        $types = $this->chart->getTypes();
+    {
+        $types = $this->types;
     
         if(isset($types['default'])) {
             $options = array_merge_recursive($options, $types['default']->getOptions());
@@ -270,37 +297,24 @@ ENDJS;
         return $options;
     }
     
-    //@todo handle series default transformations
     protected function getSeriesOptions(array $options)
-    {return $options; 
-        $types = $this->chart->getTypes();
+    {
+        $types = $this->types;
     
         if(isset($types['default'])) {
-            $defaults = $options['seriesDefaults'];
-            $renderer = $types['default']->getRenderer();
-            if(isset($renderer))
-                $defaults['renderer'] = $renderer;
-            $defaults['rendererOptions'] = $types['default']->getRendererOptions();
-            if(count($defaults['rendererOptions']) == 0)
-                unset($defaults['rendererOptions']);
-            $options['seriesDefaults'] = $defaults;
+            array_merge_recursive($options['series'], $types['default']->getOptions());
         }
     
         $seriesOptions = array();
-        foreach($this->series as $series) {
-            $opts = $series->getOptions();
-            $title = $series->getTitle();
+        foreach($this->options['seriesStorage'] as $title => $opts) {
             if(isset($types[$title])) {
                 $type = $types[$title];
-                if ($renderer = $type->getRenderer()) {
-                    $opts['renderer'] = $renderer;
-                }
                 array_merge_recursive($opts, $type->getSeriesOptions());
             }
             $opts['label'] = $title;
-            $seriesOptions[] = $opts;
+            $seriesOptions[$title] = $opts;
         }
-        $options['series'] = $seriesOptions;
+        $options['seriesStorage'] = $seriesOptions;
         
         return $options;
     }
@@ -315,7 +329,17 @@ ENDJS;
             }
         }
         
-        return $this->makeJSArray($this->options);
+        $opts = $this->options;
+        
+        // stupid pie plugin
+        if (!isset($opts['series']['pie']['show'])) {
+            $opts = array_merge_recursive($opts, array('series'=>array('pie'=>array('show'=>false))));
+        }
+
+        unset($opts['seriesStorage']);
+        unset($opts['seriesDefaults']);
+        
+        return $this->makeJSArray($opts);
     }
     
     // these are helper functions to transform jqplot options to flot
@@ -375,8 +399,8 @@ ENDJS;
     {
         $this->highlighting = true;
         
-        $this->options['grid']['hoverable'] = 'true';
-        $this->options['grid']['autoHighlight'] = 'true';
+        $this->options['grid']['hoverable'] = true;
+        $this->options['grid']['autoHighlight'] = true;
     
         return $this;
     }
@@ -431,7 +455,7 @@ ENDJS;
                                                   'x' => 0, 
                                                   'y' => 0))
     {        
-        $opts['on'] = isset($opts['on']) ? $opts['on'] : 'true';
+        $opts['on'] = isset($opts['on']) ? $opts['on'] : true;
         $opts['location'] = isset($ops['location']) ? $opts['location'] : 'ne';
 
         $legendMapper = array('on' => 'show',
@@ -458,10 +482,10 @@ ENDJS;
         
         // @todo add a method of telling flot whether the series is a line, bar, point
         if (isset($opts['use']) && $opts['use'] == true) {
-            $this->options['series'][$series]['line']['fill'] = 'true';
+            $this->options['seriesStorage'][$series]['line']['fill'] = true;
             
             if (isset($opts['color'])) {
-                $this->options['series'][$series]['line']['fillColor'] = $opts['color'];
+                $this->options['seriesStorage'][$series]['line']['fillColor'] = $opts['color'];
             }
         }
         
@@ -476,7 +500,7 @@ ENDJS;
     {
         
         if (isset($opts['use']) && $opts['use']) {
-            $this->options['series'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
+            $this->options['seriesStorage'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
         }
         
         return $this;
@@ -496,8 +520,8 @@ ENDJS;
     
     public function setSeriesLineWidth( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['lines'] = ( isset($this->options['series'][$series->getTitle()]['lines'])
-                                                               ? $this->options['series'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
+                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
                                                                : array() )
                                                                + array('lineWidth'=>$value);
         
@@ -506,8 +530,8 @@ ENDJS;
     
     public function setSeriesShowLine( \Altamira\Series $series, $bool )
     {
-        $this->options['series'][$series->getTitle()]['lines'] = ( isset($this->options['series'][$series->getTitle()]['lines'])
-                                                               ? $this->options['series'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
+                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
                                                                : array() )
                                                                + array('show'=>$bool);
         return $this;
@@ -515,8 +539,8 @@ ENDJS;
     
     public function setSeriesShowMarker( \Altamira\Series $series, $bool )
     {
-        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
-                                                                ? $this->options['series'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
+                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
                                                                 : array() )
                                                                 + array('show'=>$bool);
         return $this;
@@ -532,8 +556,8 @@ ENDJS;
             $this->files[] = 'jquery.flot.symbol.js';
         }
         
-        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
-                                                                ? $this->options['series'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
+                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
                                                                 : array() )
                                                                 + array('symbol'=>$value);
         
@@ -542,26 +566,49 @@ ENDJS;
     
     public function setSeriesMarkerSize( \Altamira\Series $series, $value )
     {
-        $this->options['series'][$series->getTitle()]['points'] = ( isset($this->options['series'][$series->getTitle()]['points'])
-                ? $this->options['series'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
+                ? $this->options['seriesStorage'][$series->getTitle()]['points']
                 : array() )
                 + array('radius'=>(int) ($value / 2));
         
         return $this;
     }
     
-    public function prepOpts( &$opts = array() )
+    public function setAxisTicks($axis, $ticks)
     {
-        if ( !isset($this->opts['points']) || !isset($this->opts['points']['show']) ) {
-            // show points by default
-            $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
-                            + array('show'=>'true');
+        if ( in_array($axis, array('x', 'y') ) ) {
+            
+            $isString = false;
+            $alternateTicks = array();
+            $cnt = 1;
+            
+            foreach ($ticks as $tick) {
+                if (!(ctype_digit($tick) || is_int($tick))) {
+                    $isString = true; 
+                }
+                $alternateTicks[] = array($cnt++, $tick);
+            }
+            
+            $this->options[$axis.'axis']['ticks'] = $isString ? $alternateTicks : $ticks;
         }
         
-        if ( !isset($this->opts['lines']) || !isset($this->opts['lines']['show']) ) {
-            // show lines by default
-            $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
-            + array('show'=>'true');
+        return $this;
+    }
+    
+    public function prepOpts( &$opts = array() )
+    {
+        if (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble)) {
+            if ( (! isset($this->options['series']['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
+                // show points by default
+                $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
+                                + array('show'=>true);
+            }
+            
+            if ( (! isset($this->options['series']['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
+                // show lines by default
+                $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
+                + array('show'=>true);
+            }
         }
     }
 

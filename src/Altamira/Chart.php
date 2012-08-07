@@ -11,6 +11,8 @@ class Chart
 
 	protected $useTags = false;
 	protected $types = array();
+	
+	// @todo chart shouldn't even have options -- put it all in jswriter
 	protected $options = array(	'seriesDefaults' => array('pointLabels' => array('show' => false)),
 					'highlighter' => array('show' => false),
 					'cursor' => array('showTooltip' => false, 'show' => false)
@@ -18,6 +20,8 @@ class Chart
 	protected $series = array();
 	protected $labels = array();
 	protected $files = array();
+	
+	protected $jsWriter;
 	
 	protected $library;
 
@@ -30,6 +34,7 @@ class Chart
 		}
 		
 		$this->library = $library;
+		$this->typeNamespace .= ucfirst($library) . '\\';
 
 		// initialize
 		$this->getJsWriter();
@@ -91,11 +96,7 @@ class Chart
 
 	public function setAxisTicks($axis, $ticks)
 	{
-		if(strtolower($axis) === 'x') {
-			$this->options['axes']['xaxis']['ticks'] = $ticks;
-		} elseif(strtolower($axis) === 'y') {
-			$this->options['axes']['yaxis']['ticks'] = $ticks;
-		}
+	    $this->jsWriter->setAxisTicks($axis, $ticks);
 
 		return $this;
 	}
@@ -127,31 +128,15 @@ class Chart
 
 	public function setType($type, $series = null)
 	{
-		if(isset($series) && isset($this->series[$series])) {
-			$series = $this->series[$series];
-			$title = $series->getTitle();
-		} else {
-			$title = 'default';
-		}
-
-		$className =  $this->typeNamespace . ucwords($type);
-		if(class_exists($className))
-			$this->types[$title] = new $className($this->library);
+	    $this->jsWriter->setType($type, $series);
 
 		return $this;
 	}
 
 	public function setTypeOption($name, $option, $series = null)
 	{
-		if(isset($series)) {
-			$title = $series;
-		} else {
-			$title = 'default';
-		}
-
-		if(isset($this->types[$title]))
-			$this->types[$title]->setOption($name, $option);
-
+	    $this->jsWriter->setTypeOption($name, $option, $series);
+	    
 		return $this;
 	}
 
@@ -192,8 +177,36 @@ class Chart
 	            return new Series($data, $title, $this->jsWriter);
 	    }
 	}
+	
+	public function createManySeries($data, $title = null, $type = null)
+	{
+	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Flot ) {
+	        $seriesArray = array();
+	        foreach ($data as $datum) {
+	            $seriesArray[] = $type == 'Bubble' 
+	                           ? $this->createSeries($datum, end($datum), $type)
+	                           : $this->createSeries(array($datum[1]), $datum[0], $type);
+	        }
+	        return $seriesArray;
+	    } else {
+	        return $this->createSeries($data, $title, $type);
+	    }
+	}
+	
+	public function addSeries( $seriesOrArray )
+	{
+	    if (is_array($seriesOrArray)) {
+	        foreach ($seriesOrArray as $series) {
+	            $this->addSingleSeries($series);
+	        }
+	    } else {
+	        $this->addSingleSeries($seriesOrArray);
+	    }
+	    
+	    return $this;
+	}
 
-	public function addSeries(Series $series)
+	public function addSingleSeries(Series $series)
 	{
 		$this->series[$series->getTitle()] = $series;
 
@@ -218,15 +231,11 @@ class Chart
 
 	public function getFiles()
 	{
-		foreach($this->types as $type) {
-			$this->files = array_merge_recursive($this->files, $type->getFiles());
-		}
-
 		foreach($this->series as $series) {
 			$this->files = array_merge_recursive($this->files, $series->getFiles());
 		}
 
-		return array_merge($this->files, $this->jsWriter->getFiles());
+		return array_unique(array_merge($this->files, $this->jsWriter->getFiles()));
 	}
 
 	public function getScript()
@@ -236,7 +245,7 @@ class Chart
 	
 	public function getJsWriter()
 	{
-	    if (! $this->jsWriter) {
+	    if (! $this->jsWriter ) {
     	    $className = '\\Altamira\\JsWriter\\'.ucfirst($this->library);
     
     	    if (class_exists($className)) {
