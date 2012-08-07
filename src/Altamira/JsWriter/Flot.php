@@ -456,7 +456,7 @@ ENDJS;
                                                   'y' => 0))
     {        
         $opts['on'] = isset($opts['on']) ? $opts['on'] : true;
-        $opts['location'] = isset($ops['location']) ? $opts['location'] : 'ne';
+        $opts['location'] = isset($opts['location']) ? $opts['location'] : 'ne';
 
         $legendMapper = array('on' => 'show',
                               'location' => 'position');
@@ -464,10 +464,14 @@ ENDJS;
         foreach ($opts as $key=>$val) {
             if ( in_array($key, $this->nativeOpts['legend']) ) {
                 $this->options['legend'][$key] = $val;
-            } else if ( in_array($key, $legendMapper) ) {
+            } else if ( in_array($key, array_keys($legendMapper)) ) { 
                 $this->options['legend'][$legendMapper[$key]] = $val;
             }
         }
+        
+        $margin = array(isset($opts['x']) ? $opts['x'] : 0, isset($opts['y']) ? $opts['y'] : 0);
+        
+        $this->options['legend']['margin'] = $margin;
         
         
         return $this;
