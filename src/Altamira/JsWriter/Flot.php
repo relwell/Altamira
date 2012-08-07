@@ -337,6 +337,7 @@ ENDJS;
         }
 
         unset($opts['seriesStorage']);
+        unset($opts['seriesDefaults']);
         
         return $this->makeJSArray($opts);
     }

@@ -5,10 +5,10 @@ namespace Altamira\Type\Flot;
 class Bar extends \Altamira\Type\TypeAbstract
 {
 
-    protected $options = array('lines'    =>    array('show' => false),
+    protected $options = array('series'=>array('lines'    =>    array('show' => false),
                                                  'bars'     =>    array('show' => true),
                                                  'points'   =>    array('show' => false)
-                              );
+                              ));
 
 	public function getUseTags()
 	{
@@ -26,7 +26,7 @@ class Bar extends \Altamira\Type\TypeAbstract
                 break;
 	        case 'stackSeries':
 	            $this->pluginFiles[] = 'jquery.flot.stack.js';
-	            $this->options['stack'] = true;
+	            $this->options['series']['stack'] = true;
 	            break; 
 	        default:
 	            parent::setOption($name, $value);
