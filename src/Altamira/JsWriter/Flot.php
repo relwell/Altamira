@@ -30,6 +30,9 @@ class Flot
     {
         $name = $this->chart->getName();
         $dataArrayJs = '[';
+        
+        $this->prepOpts($this->options['series']);
+        
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
@@ -594,13 +597,13 @@ ENDJS;
     public function prepOpts( &$opts = array() )
     {
         if (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble)) {
-            if ( (! isset($this->options['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
+            if ( (! isset($this->options['series']['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
                 // show points by default
                 $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
                                 + array('show'=>true);
             }
             
-            if ( (! isset($this->options['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
+            if ( (! isset($this->options['series']['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
                 // show lines by default
                 $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
                 + array('show'=>true);

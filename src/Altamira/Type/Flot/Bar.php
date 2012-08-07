@@ -6,8 +6,8 @@ class Bar extends \Altamira\Type\TypeAbstract
 {
 
     protected $options = array('lines'    =>    array('show' => false),
-                               'bars'     =>    array('show' => true),
-                               'points'   =>    array('show' => false)
+                                                 'bars'     =>    array('show' => true),
+                                                 'points'   =>    array('show' => false)
                               );
 
 	public function getUseTags()
@@ -23,7 +23,11 @@ class Bar extends \Altamira\Type\TypeAbstract
 	    switch ($name) {
 	        case 'horizontal':
 	            $this->options['bars']['horizontal'] = $value;
-                break;	        
+                break;
+	        case 'stackSeries':
+	            $this->pluginFiles[] = 'jquery.flot.stack.js';
+	            $this->options['stack'] = true;
+	            break; 
 	        default:
 	            parent::setOption($name, $value);
 	    }
