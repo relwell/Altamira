@@ -1,0 +1,7 @@
+parameters:
+#    malwarebytes_altamira.example.class: Malwarebytes\AltamiraBundle\Example
+
+services:
+#    malwarebytes_altamira.example:
+#        class: %malwarebytes_altamira.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
