@@ -1,3 +1,7 @@
+About
+===================
+
+
 A PHP abstraction library for JavaScript charting.
 
 
