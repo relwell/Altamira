@@ -13,13 +13,21 @@ class FilesRenderer extends \ArrayIterator
     
     public function render()
     {
-        echo <<<ENDSCRIPT
-<script type="text/javascript" src="{$this->path}{$this->current()}"></script>
-
-ENDSCRIPT;
-        
+        echo getScript();
         return $this;
         
     }
     
+    public function getScript() {
+        return <<<ENDSCRIPT
+<script type="text/javascript" src="{$this->path}{$this->current()}"></script>
+
+ENDSCRIPT;
+    }
+
+
+    public function getScriptPath() {
+        return $this->path.$this->current();
+    }
 }
+?>

@@ -1,5 +1,8 @@
 <html>
 <head>
+{% for jsPath in altamiraJSLibraries %}
+<script type='text/javascript' src='{{asset(jsPath)}}'></script>
+{% endfor %}
 </head>
 <body>
 Blank canvas.

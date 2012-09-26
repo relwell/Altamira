@@ -8,7 +8,12 @@ class ChartFactory {
 
     function __construct($library) {
         $this->setLibrary($library);
-        echo "I AM CREATED! this should be changed to debug message."; 
+        echo "I AM CREATED with library ".$library."! this should be changed to debug message."; 
+
+        if ($library == 'flot') {
+            ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\DefaultRenderer' );
+            ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
+        }
     }
 
 
@@ -20,6 +25,11 @@ class ChartFactory {
 
     public function createChart($name) {
         return new Chart($name,$this->library);
+    }
+
+
+    public function getChartIterator(array $charts) {
+        return new ChartIterator($charts);
     }
 }
 ?>

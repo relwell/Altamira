@@ -75,7 +75,10 @@ abstract class JsWriterAbstract
     public function getSeriesOption($series, $option)
     {
         if ($series instanceOf \Malwarebytes\AltamiraBundle\Altamira\Series) {
-            return $this->options['series'][$series->getTitle()][$option];
+            // TODO Examine this, added this because of more notices
+            if (isset($this->options['series'][$series->getTitle()])) {
+                return $this->options['series'][$series->getTitle()][$option];
+            } else return (null);
         } else if (is_string($series)) {
             return $this->options['series'][$series][$option];
         }

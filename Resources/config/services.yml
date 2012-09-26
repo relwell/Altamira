@@ -10,4 +10,5 @@ services:
 services:
     charts_factory:
         class: Malwarebytes\AltamiraBundle\Altamira\ChartFactory
-        arguments: [ "jqPlot" ]
+        arguments: [ %malwarebytes_altamira.library_type% ]
+

@@ -8,13 +8,13 @@ class ChartIterator extends \ArrayIterator
     protected $plugins;
     protected $scripts;
     
-    public function __construct( $array )
+    public function __construct( $chartsArray )
     {
         //enforce that this is an array of charts
         $plugins = array();
         $scripts = array();
         
-        foreach ($array as $item) {
+        foreach ($chartsArray as $item) {
             if (! $item instanceOf Chart ) {
                 throw new \Exception("ChartIterator only supports an array of Chart instances.");
             }
@@ -26,11 +26,11 @@ class ChartIterator extends \ArrayIterator
         }
 
         // yo dawg...
-        $this->plugins = new FilesRenderer($plugins, 'js/plugins/');
+        $this->plugins = new FilesRenderer($plugins, 'bundles/malwarebytesaltamira/js/plugins/');
         $this->scripts = new ScriptsRenderer($scripts);
         
         
-        parent::__construct($array);        
+        parent::__construct($chartsArray);        
     }
     
     
@@ -53,6 +53,15 @@ class ChartIterator extends \ArrayIterator
         return $this;
         
     }
+  
+    public function getPlugins() {
+        $plugin=array();
+        while ($this->plugins->valid() ) {
+            $plugin[]=$this->plugins->getScriptPath();
+            $this->plugins->next();
+        }
+        return $plugin;
+    }
     
     public function renderScripts()
     {
@@ -69,27 +78,37 @@ class ChartIterator extends \ArrayIterator
         
     }
     
+    /* TODO: This code is excessive. Might as well just look at the last value. Methinks this is broken. -jchan */
     public function renderLibraries()
     {
+        echo "<script type='text/javascript src='".getLibraries()."'></script>\n";
+        return $this;
+    }
+
+    /**
+     * Instead of printing, return this value
+     */
+    public function getLibraries() {
         foreach ($this->libraries as $library=>$junk) {
-            
             switch($library) {
                 case 'flot':
-                    $libraryPath = 'js/jquery.flot.js';
+                    $libraryPath = 'bundles/malwarebytesaltamira/js/jquery.flot.js';
                     break;
                 case 'jqPlot':
                 default:
-                    $libraryPath = 'js/jquery.jqplot.js';
+                    $libraryPath = 'bundles/malwarebytesaltamira/js/jquery.jqplot.js';
             }
-            
         }
-        
-        echo "<script type='text/javascript' src='$libraryPath'></script>";
-        
+        return $libraryPath;
+    }
+            
+               
+    public function renderCss() {
+        echo getCss();  
         return $this;
     }
     
-    public function renderCss()
+    public function getCss()
     {
         foreach ($this->libraries as $library=>$junk) {
             switch($library) {
@@ -106,8 +125,14 @@ class ChartIterator extends \ArrayIterator
             echo "<link rel='stylesheet' type='text/css' href='{$cssPath}'></link>";
         }
         
-        return $this;
         
     }
-    
+
+
+    public function getJSLibraries() {
+        $libraries= array( $this->getLibraries() );
+        $libraries=array_merge(  $libraries ,$this->getPlugins());
+        return $libraries;
+    }
+ 
 }

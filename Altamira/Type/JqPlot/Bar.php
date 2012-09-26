@@ -11,7 +11,7 @@ class Bar extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 
 		$first = array();
 		$second = array();
-        if ($this->axisRenderer) {
+        if (isset($this->axisRenderer) && $this->axisRenderer) {
 		    $first['renderer'] = '#' . $this->axisRenderer . '#';
         }
 		if(isset($this->options['ticks']))
@@ -48,10 +48,11 @@ class Bar extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 		if(isset($this->options['horizontal']) && $this->options['horizontal'])
 			$opts['barDirection'] = 'horizontal';
 
-		foreach($this->allowedOptions as $item) {
+                // TODO allowedOptions isn't even set, what gives?
+		/*foreach($this->allowedOptions as $item) {
 			if(isset($this->options[$item]))
 				$opts[$item] = $this->options[$item];
-		}
+		}*/
 
 		return $opts;
 	}
