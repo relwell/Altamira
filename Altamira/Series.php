@@ -1,8 +1,8 @@
 <?php
 
-namespace Malwarebytes\Altamira;
+namespace Malwarebytes\AltamiraBundle\Altamira;
 
-use Malwarebytes\Altamira\JsWriter\JsWriterAbstract;
+use Malwarebytes\AltamiraBundle\Altamira\JsWriter\JsWriterAbstract;
 
 class Series
 {
@@ -71,7 +71,7 @@ class Series
                                             'depth'=>3, 
                                             'alpha'=>0.1))
 	{
-	    if ( $this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Shadowable ) {
+	    if ( $this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Shadowable ) {
 	        $this->jsWriter->setShadow($this->getTitle(), $opts);
 	    }
 	    
@@ -84,7 +84,7 @@ class Series
                                                    'alpha' => null
                                                   ))
 	{
-        if ( $this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Fillable ) {
+        if ( $this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Fillable ) {
     	    $this->jsWriter->setFill($this->getTitle(), $opts);
         }
 	    
@@ -121,7 +121,7 @@ class Series
 
 	public function useLabels($labels = array())
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Labelable) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Labelable) {
     		$this->useTags = true;
     		$this->useLabels = true;
     		$this->jsWriter->useSeriesLabels($this, $labels);
@@ -134,7 +134,7 @@ class Series
 	// @todo this logic should probably be in the jswriter
 	public function setLabelSetting($name, $value)
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Labelable) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Labelable) {
     		$this->jsWriter->setSeriesLabelSetting($this, $name, $value);
 	    }
 		
@@ -175,7 +175,7 @@ class Series
 	
 	public function setLineWidth($val)
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Lineable ) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Lineable ) {
 	        $this->jsWriter->setSeriesLineWidth($this, $val);
 	    }
 	    return $this;
@@ -183,7 +183,7 @@ class Series
 	
 	public function showLine($bool = true)
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Lineable ) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Lineable ) {
     	    $this->jsWriter->setSeriesShowLine($this, $bool);
 	    }
 	    return $this;
@@ -191,7 +191,7 @@ class Series
 	
 	public function showMarker($bool = true)
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Lineable ) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Lineable ) {
 	        $this->jsWriter->setSeriesShowMarker($this, $bool);
 	    }
 	    return $this;
@@ -199,7 +199,7 @@ class Series
 	
 	public function setMarkerStyle($value)
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Lineable ) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Lineable ) {
 	        $this->jsWriter->setSeriesMarkerStyle($this, $value);
 	    }
 	    return $this;
@@ -207,7 +207,7 @@ class Series
 	
 	public function setMarkerSize($value)
 	{
-	    if ($this->jsWriter instanceOf \Malwarebytes\Altamira\JsWriter\Ability\Lineable ) {
+	    if ($this->jsWriter instanceOf \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability\Lineable ) {
 	        $this->jsWriter->setSeriesMarkerSize($this, $value);
 	    }
 	    return $this;

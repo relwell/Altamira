@@ -1,6 +1,6 @@
 <?php 
 
-namespace Malwarebytes\Altamira\JsWriter;
+namespace Malwarebytes\AltamiraBundle\Altamira\JsWriter;
 
 abstract class JsWriterAbstract
 {
@@ -15,7 +15,7 @@ abstract class JsWriterAbstract
     protected $library;
     protected $typeNamespace;
     
-    public function __construct(\Malwarebytes\Altamira\Chart $chart)
+    public function __construct(\Malwarebytes\AltamiraBundle\Altamira\Chart $chart)
     {
         $this->chart = $chart;
     }
@@ -65,7 +65,7 @@ abstract class JsWriterAbstract
     
     public function getOptionsForSeries($series)
     {
-        if ($series instanceOf \Malwarebytes\Altamira\Series) {
+        if ($series instanceOf \Malwarebytes\AltamiraBundle\Altamira\Series) {
             return $this->options['series'][$series->getTitle()];
         } else if (is_string($series)) {
             return $this->options['series'][$series];
@@ -74,7 +74,7 @@ abstract class JsWriterAbstract
     
     public function getSeriesOption($series, $option)
     {
-        if ($series instanceOf \Malwarebytes\Altamira\Series) {
+        if ($series instanceOf \Malwarebytes\AltamiraBundle\Altamira\Series) {
             return $this->options['series'][$series->getTitle()][$option];
         } else if (is_string($series)) {
             return $this->options['series'][$series][$option];
@@ -83,7 +83,7 @@ abstract class JsWriterAbstract
     
     public function setSeriesOption($series, $name, $value)
     {
-        if ($series instanceOf \Malwarebytes\Altamira\Series) {
+        if ($series instanceOf \Malwarebytes\AltamiraBundle\Altamira\Series) {
             $this->options['series'][$series->getTitle()][$name] = $value;
         } else if (is_string($series)) {
             $this->options['series'][$series][$name] = $value;
@@ -92,7 +92,7 @@ abstract class JsWriterAbstract
         return $this;
     }
     
-    public function initializeSeries( \Malwarebytes\Altamira\Series $series )
+    public function initializeSeries( \Malwarebytes\AltamiraBundle\Altamira\Series $series )
     {
         $this->options['seriesStorage'][$series->getTitle()] = array();
         $this->series[] = $series;
@@ -108,7 +108,7 @@ abstract class JsWriterAbstract
     
     public function setType( $type, $series = null )
     {
-        if ( $series instanceOf \Malwarebytes\Altamira\Series ) {
+        if ( $series instanceOf \Malwarebytes\AltamiraBundle\Altamira\Series ) {
             $series = $series->getTitle();
         }
         
@@ -124,7 +124,7 @@ abstract class JsWriterAbstract
     
     public function setTypeOption( $name, $option, $series=null )
     {
-        if ( $series instanceOf \Malwarebytes\Altamira\Series ) {
+        if ( $series instanceOf \Malwarebytes\AltamiraBundle\Altamira\Series ) {
             $series = $series->getTitle();
         }
         

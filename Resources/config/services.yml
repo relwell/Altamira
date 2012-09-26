@@ -5,3 +5,9 @@ services:
 #    malwarebytes_altamira.example:
 #        class: %malwarebytes_altamira.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+
+services:
+    charts_factory:
+        class: Malwarebytes\AltamiraBundle\Altamira\ChartFactory
+        arguments: [ "jqPlot" ]

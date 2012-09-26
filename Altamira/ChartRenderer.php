@@ -1,9 +1,9 @@
 <?php 
 
-namespace Malwarebytes\Altamira;
-use Malwarebytes\Altamira\ChartRenderer\RendererInterface;
+namespace Malwarebytes\AltamiraBundle\Altamira;
+use Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\RendererInterface;
 
-use Malwarebytes\Altamira\ChartRenderer;
+use Malwarebytes\AltamiraBundle\Altamira\ChartRenderer;
 
 class ChartRenderer
 {
@@ -12,7 +12,7 @@ class ChartRenderer
     public static function render( Chart $chart, array $styleOptions = array() )
     {
         if ( empty(self::$rendererChain) ) {
-            self::pushRenderer( '\Malwarebytes\Altamira\ChartRenderer\DefaultRenderer' );
+            self::pushRenderer( '\Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\DefaultRenderer' );
         } 
             
         $outputString = '';
@@ -32,7 +32,7 @@ class ChartRenderer
     
     public static function pushRenderer( $renderer )
     {
-        if (! (($renderer instanceOf ChartRenderer\RendererAbstract ) || is_subclass_of($renderer, 'Malwarebytes\Altamira\ChartRenderer\RendererAbstract') )) {
+        if (! (($renderer instanceOf ChartRenderer\RendererAbstract ) || is_subclass_of($renderer, 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\RendererAbstract') )) {
             throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
         }
         

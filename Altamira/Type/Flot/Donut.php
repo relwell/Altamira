@@ -1,6 +1,6 @@
 <?php 
 
-namespace Malwarebytes\Altamira\Type\Flot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\Flot;
 
 // note that this type doesn't accept nesting like in jqplot
 

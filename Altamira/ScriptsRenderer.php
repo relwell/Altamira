@@ -1,6 +1,6 @@
 <?php
 
-namespace Malwarebytes\Altamira;
+namespace Malwarebytes\AltamiraBundle\Altamira;
 
 class ScriptsRenderer extends \ArrayIterator
 {

@@ -1,3 +1,3 @@
 malwarebytes_altamira_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: MalwarebytesAltamiraBundle:Default:index }
+    pattern:  /example
+    defaults: { _controller: MalwarebytesAltamiraBundle:Example:index }

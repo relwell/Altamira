@@ -1,8 +1,8 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type\JqPlot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\JqPlot;
 
-class Bar extends \Malwarebytes\Altamira\Type\TypeAbstract
+class Bar extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 {
 
 	public function getOptions()

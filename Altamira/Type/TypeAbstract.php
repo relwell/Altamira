@@ -1,6 +1,6 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type;
 
 abstract class TypeAbstract
 {
@@ -11,7 +11,7 @@ abstract class TypeAbstract
 	
 	protected $allowedRendererOptions = array();
 	
-	public function __construct(\Malwarebytes\Altamira\JsWriter\JsWriterAbstract $jsWriter)
+	public function __construct(\Malwarebytes\AltamiraBundle\Altamira\JsWriter\JsWriterAbstract $jsWriter)
 	{
 	    
 	    $config = \parse_ini_file(__DIR__.'/../Type/TypeConfig.ini', true);

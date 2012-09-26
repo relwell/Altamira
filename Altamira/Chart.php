@@ -2,7 +2,7 @@
 
 namespace Malwarebytes\AltamiraBundle\Altamira;
 
-use Malwarebytes\Altamira\JsWriter\JqPlot;
+use Malwarebytes\AltamiraBundle\Altamira\JsWriter\JqPlot;
 
 class Chart
 {
@@ -25,7 +25,7 @@ class Chart
 	
 	protected $library;
 
-	protected $typeNamespace = '\\Altamira\\Type\\';
+	protected $typeNamespace = '\\Malwarebytes\\AltamiraBundle\\Altamira\\Type\\';
 
 	public function __construct($name = null, $library = 'jqPlot')
 	{
@@ -246,7 +246,7 @@ class Chart
 	public function getJsWriter()
 	{
 	    if (! $this->jsWriter ) {
-    	    $className = '\\Altamira\\JsWriter\\'.ucfirst($this->library);
+    	    $className = 'Malwarebytes\\AltamiraBundle\\Altamira\\JsWriter\\'.ucfirst($this->library);
     
     	    if (class_exists($className)) {
     	        $instance = new $className($this);

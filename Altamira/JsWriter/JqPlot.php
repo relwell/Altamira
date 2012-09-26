@@ -1,11 +1,11 @@
 <?php
 
-namespace Malwarebytes\Altamira\JsWriter;
+namespace Malwarebytes\AltamiraBundle\Altamira\JsWriter;
 
-use \Malwarebytes\Altamira\JsWriter\Ability;
+use \Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability;
 
 class JqPlot 
-    extends \Malwarebytes\Altamira\JsWriter\JsWriterAbstract
+    extends \Malwarebytes\AltamiraBundle\Altamira\JsWriter\JsWriterAbstract
     implements Ability\Cursorable, 
                Ability\Datable, 
                Ability\Fillable, 
@@ -18,7 +18,7 @@ class JqPlot
 {
     
     protected $library = 'jqplot';
-    protected $typeNamespace = '\\Malwarebytes\Altamira\\Type\\JqPlot\\';
+    protected $typeNamespace = '\\Malwarebytes\AltamiraBundle\Altamira\\Type\\JqPlot\\';
     
     public function generateScript()
     {
@@ -274,14 +274,15 @@ class JqPlot
         return $this->makeJSArray($opts);
     }
     
-    public function setSeriesOption( \Malwarebytes\Altamira\Series $series, $name, $value)
+    public function setSeriesOption( $series, $name, $value)
+    //public function setSeriesOption( \Malwarebtes\AltamiraBundle\Altamira\Series $series, $name, $value)
     {
         $this->options['seriesStorage'][$series->getTitle()][$name] = $value;
         
         return $this;
     }
     
-    public function useSeriesLabels( \Malwarebytes\Altamira\Series $series, array $labels = array() )
+    public function useSeriesLabels( \Malwarebytes\AltamiraBundle\Altamira\Series $series, array $labels = array() )
     {
         $this->seriesLabels[$series->getTitle()] = $labels;
         $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['show'] = true;
@@ -293,7 +294,7 @@ class JqPlot
         return $this;
     }
     
-    public function setSeriesLabelSetting( \Malwarebytes\Altamira\Series $series, $name, $value )
+    public function setSeriesLabelSetting( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $name, $value )
     {
         if($name === 'location' && in_array($value, array('n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'))) {
             $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
@@ -304,25 +305,25 @@ class JqPlot
         return $this;
     }
     
-    public function setSeriesLineWidth( \Malwarebytes\Altamira\Series $series, $value )
+    public function setSeriesLineWidth( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $value )
     {
         $this->options['seriesStorage'][$series->getTitle()]['lineWidth'] = $value;
         return $this;
     }
     
-    public function setSeriesShowLine( \Malwarebytes\Altamira\Series $series, $bool )
+    public function setSeriesShowLine( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $bool )
     {
         $this->options['seriesStorage'][$series->getTitle()]['showLine'] = $bool;
         return $this;
     }
     
-    public function setSeriesShowMarker( \Malwarebytes\Altamira\Series $series, $bool )
+    public function setSeriesShowMarker( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $bool )
     {
         $this->options['seriesStorage'][$series->getTitle()]['showMarker'] = $bool;
         return $this;
     }
     
-    public function setSeriesMarkerStyle( \Malwarebytes\Altamira\Series $series, $value )
+    public function setSeriesMarkerStyle( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $value )
     {
         $this->options['seriesStorage'][$series->getTitle()]['markerOptions'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['markerOptions'])
                                                                        ? $this->options['seriesStorage'][$series->getTitle()]['markerOptions']
@@ -331,7 +332,7 @@ class JqPlot
         return $this;
     }
     
-    public function setSeriesMarkerSize( \Malwarebytes\Altamira\Series $series, $value )
+    public function setSeriesMarkerSize( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $value )
     {
         $this->options['seriesStorage'][$series->getTitle()]['markerOptions'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['markerOptions'])
                 ? $this->options['seriesStorage'][$series->getTitle()]['markerOptions']

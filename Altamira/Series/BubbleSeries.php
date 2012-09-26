@@ -1,9 +1,9 @@
 <?php
 
-namespace Malwarebytes\Altamira\Series;
-use Malwarebytes\Altamira\JsWriter;
+namespace Malwarebytes\AltamiraBundle\Altamira\Series;
+use Malwarebytes\AltamiraBundle\Altamira\JsWriter;
 
-use Malwarebytes\Altamira\Series;
+use Malwarebytes\AltamiraBundle\Altamira\Series;
 
 class BubbleSeries extends Series
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type\JqPlot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\JqPlot;
 
-class Pie extends \Malwarebytes\Altamira\Type\TypeAbstract
+class Pie extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 {
 	protected $allowedRendererOptions = array();
 

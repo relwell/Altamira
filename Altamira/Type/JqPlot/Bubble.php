@@ -1,8 +1,8 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type\JqPlot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\JqPlot;
 
-class Bubble extends \Malwarebytes\Altamira\Type\TypeAbstract
+class Bubble extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 {
 }
 

@@ -1,11 +1,11 @@
 <?php 
 
-namespace Malwarebytes\Altamira\ChartRenderer;
+namespace Malwarebytes\AltamiraBundle\Altamira\ChartRenderer;
 
 class DefaultRenderer extends RendererAbstract
 {
     
-    public static function preRender( \Malwarebytes\Altamira\Chart $chart, array $styleOptions = array() )
+    public static function preRender( \Malwarebytes\AltamiraBundle\Altamira\Chart $chart, array $styleOptions = array() )
     {
         $style = self::renderStyle( $styleOptions );
         $data = self::renderData( $chart );
@@ -16,7 +16,7 @@ ENDDIV;
         
     }
     
-    public static function postRender( \Malwarebytes\Altamira\Chart $chart, array $styleOptions = array() )
+    public static function postRender( \Malwarebytes\AltamiraBundle\Altamira\Chart $chart, array $styleOptions = array() )
     {
         return '</div>';
     }

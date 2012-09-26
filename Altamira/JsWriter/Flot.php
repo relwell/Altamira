@@ -1,8 +1,8 @@
 <?php 
 
-namespace Malwarebytes\Altamira\JsWriter;
+namespace Malwarebytes\AltamiraBundle\Altamira\JsWriter;
 
-use Malwarebytes\Altamira\JsWriter\Ability;
+use Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability;
 
 class Flot 
     extends JsWriterAbstract
@@ -18,7 +18,7 @@ class Flot
                Ability\Lineable
 {
     protected $library = 'flot';
-    protected $typeNamespace = '\\Malwarebytes\Altamira\\Type\\Flot\\';
+    protected $typeNamespace = '\\Malwarebytes\AltamiraBundle\Altamira\\Type\\Flot\\';
     
     protected $dateAxes = array('x'=>false, 'y'=>false);
     protected $zooming = false;
@@ -70,13 +70,13 @@ class Flot
                 if (is_array($val)) {
                     $data[$key] = array_slice($val, 0, 2);
                     if ( isset($this->types['default']) ) { 
-                        if (   $this->types['default'] instanceOf \Malwarebytes\Altamira\Type\Flot\Pie
-                            || $this->types['default'] instanceOf \Malwarebytes\Altamira\Type\Flot\Donut ) {
+                        if (   $this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Pie
+                            || $this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Donut ) {
                         
                             $data[$key] = array('label' => $val[0], 'data' => $val[1]);
                             
                             
-                        } else if ($this->types['default'] instanceOf \Malwarebytes\Altamira\Type\Flot\Bubble ) {
+                        } else if ($this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bubble ) {
                             $bubblePoints = array_slice($val, 0, 3);
                             $bubblePoints[2] *= 10;
                             $data[$key] = $bubblePoints;
@@ -91,7 +91,7 @@ class Flot
                     }
                 } else {
                     $valueArray = array(($oneDimensional? $key+1 : $key), $val);
-                    if (isset($this->types['default']) && $this->types['default'] instanceOf \Malwarebytes\Altamira\Type\Flot\Bar ) {
+                    if (isset($this->types['default']) && $this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bar ) {
                         $baropts = $this->types['default']->getOptions();
                         if (isset($baropts['bars']['horizontal']) && $baropts['bars']['horizontal'] == true) {
                             $valueArray = array($val, $key);
@@ -103,7 +103,7 @@ class Flot
             
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
             
-            if ($this->types['default'] instanceOf \Malwarebytes\Altamira\Type\Flot\Bubble ) {
+            if ($this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bubble ) {
                 $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
             }
 
@@ -510,19 +510,19 @@ ENDJS;
         return $this;
     }
     
-    public function useSeriesLabels( \Malwarebytes\Altamira\Series $series, array $labels = array() )
+    public function useSeriesLabels( \Malwarebytes\AltamiraBundle\Altamira\Series $series, array $labels = array() )
     {
         $this->useLabels = true;
         $this->seriesLabels[$series->getTitle()] = $labels;
     }
     
-    public function setSeriesLabelSetting( \Malwarebytes\Altamira\Series $series, $name, $value )
+    public function setSeriesLabelSetting( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
     }
     
-    public function setSeriesLineWidth( \Malwarebytes\Altamira\Series $series, $value )
+    public function setSeriesLineWidth( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $value )
     {
         $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
                                                                ? $this->options['seriesStorage'][$series->getTitle()]['lines']
@@ -532,7 +532,7 @@ ENDJS;
         return $this;
     }
     
-    public function setSeriesShowLine( \Malwarebytes\Altamira\Series $series, $bool )
+    public function setSeriesShowLine( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $bool )
     {
         $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
                                                                ? $this->options['seriesStorage'][$series->getTitle()]['lines']
@@ -541,7 +541,7 @@ ENDJS;
         return $this;
     }
     
-    public function setSeriesShowMarker( \Malwarebytes\Altamira\Series $series, $bool )
+    public function setSeriesShowMarker( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $bool )
     {
         $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
                                                                 ? $this->options['seriesStorage'][$series->getTitle()]['points']
@@ -550,7 +550,7 @@ ENDJS;
         return $this;
     }
     
-    public function setSeriesMarkerStyle( \Malwarebytes\Altamira\Series $series, $value )
+    public function setSeriesMarkerStyle( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $value )
     {
         // jqplot compatibility preprocessing
         $value = str_replace('filled', '', $value);
@@ -568,7 +568,7 @@ ENDJS;
         return $this;    
     }
     
-    public function setSeriesMarkerSize( \Malwarebytes\Altamira\Series $series, $value )
+    public function setSeriesMarkerSize( \Malwarebytes\AltamiraBundle\Altamira\Series $series, $value )
     {
         $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
                 ? $this->options['seriesStorage'][$series->getTitle()]['points']
@@ -601,7 +601,7 @@ ENDJS;
     
     public function prepOpts( &$opts = array() )
     {
-        if (!(isset($this->types['default']) && $this->types['default'] instanceOf \Malwarebytes\Altamira\Type\Flot\Bubble)) {
+        if (!(isset($this->types['default']) && $this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bubble)) {
             if ( (! isset($this->options['series']['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
                 // show points by default
                 $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())

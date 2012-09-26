@@ -1,8 +1,8 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type\JqPlot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\JqPlot;
 
-class Stacked extends \Malwarebytes\Altamira\Type\TypeAbstract
+class Stacked extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 {
     
     protected $options = array(   'stackSeries'     => true,

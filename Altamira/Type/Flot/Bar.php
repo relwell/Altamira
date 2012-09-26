@@ -1,8 +1,8 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type\Flot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\Flot;
 
-class Bar extends \Malwarebytes\Altamira\Type\TypeAbstract
+class Bar extends \Malwarebytes\AltamiraBundle\Altamira\Type\TypeAbstract
 {
 
     protected $options = array('series'=>array('lines'    =>    array('show' => false),

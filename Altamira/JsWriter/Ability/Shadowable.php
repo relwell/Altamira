@@ -1,6 +1,6 @@
 <?php 
 
-namespace Malwarebytes\Altamira\JsWriter\Ability;
+namespace Malwarebytes\AltamiraBundle\Altamira\JsWriter\Ability;
 
 interface Shadowable
 {

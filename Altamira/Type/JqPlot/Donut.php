@@ -1,6 +1,6 @@
 <?php
 
-namespace Malwarebytes\Altamira\Type\JqPlot;
+namespace Malwarebytes\AltamiraBundle\Altamira\Type\JqPlot;
 
 class Donut extends Pie
 {
