@@ -285,3 +285,4 @@ class Chart
 	    return $this->options;
 	}
 }
+?>
