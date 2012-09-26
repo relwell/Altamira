@@ -9,5 +9,5 @@ services:
 
 services:
     charts_factory:
-        class: Malwarebytes\AltamiraBundle\Altamira\ChartFactory
+        class: Malwarebytes\AltamiraBundle\Altamira\AltamiraFactory
         arguments: [ "jqPlot" ]
