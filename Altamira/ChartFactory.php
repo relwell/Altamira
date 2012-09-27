@@ -11,8 +11,8 @@ class ChartFactory {
         echo "I AM CREATED with library ".$library."! this should be changed to debug message."; 
 
         if ($library == 'flot') {
-            ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\DefaultRenderer' );
-            ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
+            ChartRenderer::pushRenderer( 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\DefaultRenderer' );
+            ChartRenderer::pushRenderer( 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\TitleRenderer' );
         }
     }
 

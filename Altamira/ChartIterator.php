@@ -63,19 +63,25 @@ class ChartIterator extends \ArrayIterator
         return $plugin;
     }
     
-    public function renderScripts()
+    public function getScripts()
     {
-        echo "<script type='text/javascript'>\n";
+        $script="<script type='text/javascript'>\n";
         while ( $this->scripts->valid() ) {
             
-            $this->scripts->render()
-                          ->next();
+            $script.=$this->scripts->getScript();
+            $this->scripts->next();
             
         }
-        echo "\n</script>\n";
+        $script.="\n</script>\n";
         
+        return $script;
+        
+    }
+
+    public function renderScripts()
+    {
+        echo getScripts();
         return $this;
-        
     }
     
     /* TODO: This code is excessive. Might as well just look at the last value. Methinks this is broken. -jchan */
@@ -149,7 +155,7 @@ class ChartIterator extends \ArrayIterator
 
 
     public function getJSLibraries() {
-        $libraries= array( $this->getLibraries() );
+        $libraries= array( "bundles/malwarebytesaltamira/js/jquery.js", $this->getLibraries() );
         $libraries=array_merge(  $libraries ,$this->getPlugins());
         return $libraries;
     }

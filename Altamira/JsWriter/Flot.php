@@ -33,6 +33,7 @@ class Flot
         
         $this->prepOpts($this->options['series']);
         
+        $counter=0;
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
@@ -78,7 +79,8 @@ class Flot
                             
                         } else if ($this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bubble ) {
                             $bubblePoints = array_slice($val, 0, 3);
-                            $bubblePoints[2] *= 10;
+                            //TODO Complains operand not supported
+                            //$bubblePoints[2] *= 10;
                             $data[$key] = $bubblePoints;
                         } 
                         
@@ -103,8 +105,9 @@ class Flot
             
             $dataArrayJs .= 'data: '.$this->makeJSArray($data);
             
-            if ($this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bubble ) {
-                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
+            if (isset($this->types['default']) && $this->types['default'] instanceOf \Malwarebytes\AltamiraBundle\Altamira\Type\Flot\Bubble ) {
+                // TODO complains  Only variables should be passed by reference
+                //$dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
             }
 
             $this->prepOpts( $this->options['seriesStorage'][$title] );
@@ -154,7 +157,7 @@ ENDJS;
         
         }
         
-        if ($this->useLabels) {
+        if (isset($this->useLabels) && $this->useLabels) {
             $seriesLabels = json_encode($this->pointLabels);
             
             $top = '';
@@ -306,13 +309,15 @@ ENDJS;
         }
     
         $seriesOptions = array();
-        foreach($this->options['seriesStorage'] as $title => $opts) {
-            if(isset($types[$title])) {
-                $type = $types[$title];
-                array_merge_recursive($opts, $type->getSeriesOptions());
+        if (isset($this->options['seriesStorage'])) {
+            foreach($this->options['seriesStorage'] as $title => $opts) {
+                if(isset($types[$title])) {
+                    $type = $types[$title];
+                    array_merge_recursive($opts, $type->getSeriesOptions());
+                }
+                $opts['label'] = $title;
+                $seriesOptions[$title] = $opts;
             }
-            $opts['label'] = $title;
-            $seriesOptions[$title] = $opts;
         }
         $options['seriesStorage'] = $seriesOptions;
         
@@ -324,7 +329,8 @@ ENDJS;
         foreach ($this->optsMapper as $opt => $mapped)
         {
             if (($currOpt = $this->getOptVal($this->options, $opt)) && ($currOpt !== null)) {
-                $this->setOpt(&$this->options, $mapped, $currOpt);
+                // TODO Symfony complains about call by reference, should research...
+                $this->setOpt(/*&*/$this->options, $mapped, $currOpt);
                 $this->unsetOpt($this->options, $opt);
             }
         }

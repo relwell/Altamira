@@ -120,6 +120,7 @@ $charts[7]->setTitle('Vertical Stack Chart')->
 
         $altamiraJSLibraries=$chartIterator->getJSLibraries();
         $altamiraCSS=$chartIterator->getCSSPath();
+        $altamiraJSScript=$chartIterator->getScripts();
 
 
         while ($chartIterator->valid() ) {
@@ -129,6 +130,6 @@ $charts[7]->setTitle('Vertical Stack Chart')->
 
 
         //print_r($charts);
-        return $this->render('MalwarebytesAltamiraBundle:Default:example.html.twig', array('altamiraJSLibraries'=> $altamiraJSLibraries, 'altamiraCSS'=> $altamiraCSS, 'altamira_scripts' =>  "", 'altamiraCharts' => $altamiraCharts));
+        return $this->render('MalwarebytesAltamiraBundle:Default:example.html.twig', array('altamiraJSLibraries'=> $altamiraJSLibraries, 'altamiraCSS'=> $altamiraCSS, 'altamiraScripts' =>  $altamiraJSScript, 'altamiraCharts' => $altamiraCharts));
     }
 }
