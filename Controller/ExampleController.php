@@ -10,9 +10,36 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class ExampleController extends Controller
 {
+    /**
+     * just use the default library
+     */
     public function indexAction()
     {
+        return $this->sampleChartGenerator();
+    }
+
+
+    /**
+     * specify the flot library
+     */
+    public function flotAction() {
+        return $this->sampleChartGenerator("flot");
+    }
+
+    /**
+     * specify the jqplot library
+     */
+    public function jqplotAction() {
+        return $this->sampleChartGenerator("jqPlot");
+    }
+
+
+
+    private function sampleChartGenerator($library=null) {
         $chartsFactory=$this->get('charts_factory');
+        if ( !is_null($library) ) {
+            $chartsFactory->setLibrary($library);
+        };
         $charts=array();
 
         for ($i=1; $i<=8;$i++) {

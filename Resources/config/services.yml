@@ -10,5 +10,6 @@ services:
 services:
     charts_factory:
         class: Malwarebytes\AltamiraBundle\Altamira\ChartFactory
-        arguments: [ %malwarebytes_altamira.library_type% ]
-
+        arguments: [ %malwarebytes_altamira.library_type% , @logger]
+        tags:
+            - { name: monolog.logger, channel: malwarebytes } 

@@ -1,3 +1,11 @@
-malwarebytes_altamira_homepage:
+malwarebytes_altamira_default_library_example:
     pattern:  /example
     defaults: { _controller: MalwarebytesAltamiraBundle:Example:index }
+
+malwarebytes_altamira_flot_library_example:
+    pattern:  /example/flot
+    defaults: { _controller: MalwarebytesAltamiraBundle:Example:flot }
+
+malwarebytes_altamira_jqplot_library_example:
+    pattern:  /example/jqplot
+    defaults: { _controller: MalwarebytesAltamiraBundle:Example:jqplot }
