@@ -119,9 +119,16 @@ $charts[7]->setTitle('Vertical Stack Chart')->
         $chartIterator = $chartsFactory->getChartIterator($charts);
 
         $altamiraJSLibraries=$chartIterator->getJSLibraries();
+        $altamiraCSS=$chartIterator->getCSSPath();
+
+
+        while ($chartIterator->valid() ) {
+            $altamiraCharts[]=$chartIterator->current()->getDiv();
+            $chartIterator->next();
+        }
 
 
         //print_r($charts);
-        return $this->render('MalwarebytesAltamiraBundle:Default:example.html.twig', array('altamiraJSLibraries'=> $altamiraJSLibraries,'altamira_scripts' =>  "", 'charts' => $charts));
+        return $this->render('MalwarebytesAltamiraBundle:Default:example.html.twig', array('altamiraJSLibraries'=> $altamiraJSLibraries, 'altamiraCSS'=> $altamiraCSS, 'altamira_scripts' =>  "", 'altamiraCharts' => $altamiraCharts));
     }
 }

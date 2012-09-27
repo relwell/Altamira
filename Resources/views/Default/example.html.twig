@@ -3,8 +3,17 @@
 {% for jsPath in altamiraJSLibraries %}
 <script type='text/javascript' src='{{asset(jsPath)}}'></script>
 {% endfor %}
+
+{% if altamiraCSS is not null %}
+<link rel='stylesheet' type='text/css' href='{{asset(altamiraCSS)}}'></link>
+{% endif %}
 </head>
 <body>
-Blank canvas.
+
+{% for chart in altamiraCharts %}
+
+{{ chart|raw }}
+
+{% endfor %}
 </body>
 </html>

@@ -32,13 +32,15 @@ class ChartRenderer
     
     public static function pushRenderer( $renderer )
     {
-        if (! (($renderer instanceOf ChartRenderer\RendererAbstract ) || is_subclass_of($renderer, 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\RendererAbstract') )) {
-            throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
-        }
+        //TODO symfony somehow thows a nasty exception here.
+        //if (! (($renderer instanceOf ChartRenderer\RendererAbstract ) || is_subclass_of($renderer, 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\RendererAbstract') )) {
+        //    throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
+        //}
         
         array_push( self::$rendererChain, $renderer );
         
-        return self;
+        // TODO return self produces a notice, removed;
+        return;
     }
     
     public static function unshiftRenderer( $renderer )
@@ -49,14 +51,16 @@ class ChartRenderer
         
         array_unshift( self::$rendererChain, $renderer );
         
-        return self;
+        // TODO return self produces a notice, removed;
+        return;
     }
     
     public function reset()
     {
         self::$rendererChain = array();
         
-        return self;
+        // TODO return self produces a notice, removed;
+        return;
     }
     
 }

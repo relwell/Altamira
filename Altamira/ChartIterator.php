@@ -116,17 +116,36 @@ class ChartIterator extends \ArrayIterator
                     break;
                 case 'jqPlot':
                 default:
-                    $cssPath = 'css/jqplot.css';
+                    $cssPath = 'bundles/malwarebytesaltamira/css/jqplot.css';
             }
         
         }
         
         if (isset($cssPath)) {
-            echo "<link rel='stylesheet' type='text/css' href='{$cssPath}'></link>";
+            return "<link rel='stylesheet' type='text/css' href='{$cssPath}'></link>";
         }
         
         
     }
+
+
+    public function getCSSPath() {
+        foreach ($this->libraries as $library=>$junk) {
+            switch($library) {
+                case 'flot':
+                    break;
+                case 'jqPlot':
+                default:
+                    $cssPath = 'bundles/malwarebytesaltamira/css/jqplot.css';
+            }
+        
+        }
+        
+        if (isset($cssPath)) {
+            return ($cssPath);
+        }
+    }
+        
 
 
     public function getJSLibraries() {
