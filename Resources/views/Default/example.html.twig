@@ -1,12 +1,6 @@
 <html>
 <head>
-{% for jsPath in altamiraJSLibraries %}
-<script type='text/javascript' src='{{asset(jsPath)}}'></script>
-{% endfor %}
-
-{% if altamiraCSS is not null %}
-<link rel='stylesheet' type='text/css' href='{{asset(altamiraCSS)}}'></link>
-{% endif %}
+{% include 'MalwarebytesAltamiraBundle:Default:altamira_libs.html.twig' %}
 </head>
 <body>
 

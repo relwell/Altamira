@@ -1,0 +1,8 @@
+
+{% for jsPath in altamiraJSLibraries %}
+<script type='text/javascript' src='{{asset('bundles/malwarebytesaltamira/' ~ jsPath)}}'></script>
+{% endfor %}
+
+{% if altamiraCSS is not null %}
+<link rel='stylesheet' type='text/css' href='{{asset('bundles/malwarebytesaltamira/' ~ altamiraCSS)}}'></link>
+{% endif %}
