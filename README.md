@@ -8,18 +8,35 @@ A PHP abstraction library for JavaScript charting built as a Symfony 2 service b
 Getting Started
 ===================
 
-To run the example, you need the following dependencies:
+You need a working Symfony2 framework installed and setup. From your main symfony2 directory, run:
 
 
-Jquery
-JQPlot or Flot
-Flot Bubbles
+
+``` bash
+$ composer require friendsofsymfony/rest-bundle
+```
 
 
-1. Create a css/ and a js/ folder.
-2. Download jquery 1.7.2 and put it in the js/ folder. http://code.jquery.com/jquery-1.7.2.js
-3. Download and unpack latest jqplot and move dist/*.js files to the js/ folder. Move the dist/plugins folder to the js/ folder.
-4. Download and unpack the latest flot (https://github.com/flot/flot/zipball/v0.7). Copy excanvas.js and jquery.flot.js to the js/ folder. Move jquery.flot.*.js to js/plugins.
-5. For flot bubble support, clone the flot-plugins library from https://github.com/ubermajestix/flot-plugins. Copy jquery.flot.bubble.js to js/plugins.
+Enable the bundle:
 
-Run it from your apache or your favorite php serving web server.
+``` php
+<?php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+     $bundlles = array (
+         // ...
+         new Malwarebytes\AltamiraBundle\MalwarebytesAltamiraBundle(),
+     );
+}
+```
+
+If you would like to see example code, enable the example controller:
+
+``` yml
+# app/config/routing.yml
+
+altamira_example:
+    resource: "@MalwarebytesAltamiraBundle/Resources/config/routing.yml"
+    prefix:   /chart_demo
