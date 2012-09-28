@@ -1,6 +1,10 @@
 <?php
 
-namespace Malwarebytes\AltamiraBundle\Altamira;
+namespace Malwarebytes\AltamiraBundle;
+
+use Altamira\Chart;
+use Altamira\ChartIterator;
+use Altamira\ChartRenderer;
 
 class ChartFactory {
     protected $library;
@@ -18,8 +22,8 @@ class ChartFactory {
         $this->library=$library;
 
         if ($library == 'flot') {
-            ChartRenderer::pushRenderer( 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\DefaultRenderer' );
-            ChartRenderer::pushRenderer( 'Malwarebytes\AltamiraBundle\Altamira\ChartRenderer\TitleRenderer' );
+            ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\DefaultRenderer' );
+            ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\TitleRenderer' );
         }
     }
 
