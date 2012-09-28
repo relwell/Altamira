@@ -1,5 +1,5 @@
 {
-    "name": "Malwarebytes/AltamiraBundle",
+    "name": "malwarebytes/altamirabundle",
     "description": "Pretty JS Charts for Symfony using the Altamira library",
     "keywords": ["charts", "visualizations"],
     "type": "library",
