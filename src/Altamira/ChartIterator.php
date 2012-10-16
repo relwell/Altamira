@@ -7,9 +7,12 @@ class ChartIterator extends \ArrayIterator
     
     protected $plugins;
     protected $scripts;
+    protected $config;
     
-    public function __construct( $array, $pluginPath )
+    public function __construct( $array, $config )
     {
+        $this->config = $config;
+        
         //enforce that this is an array of charts
         $plugins = array();
         $scripts = array();
@@ -26,7 +29,7 @@ class ChartIterator extends \ArrayIterator
         }
 
         // yo dawg...
-        $this->plugins = new FilesRenderer($plugins, $pluginPath);
+        $this->plugins = new FilesRenderer($plugins, $config['js.pluginpath']);
         $this->scripts = new ScriptsRenderer($scripts);
         
         
@@ -72,8 +75,8 @@ class ChartIterator extends \ArrayIterator
     public function getLibraries()
     {
         $libraryToPath = array(
-                'flot'    =>    'js/jquery.flot.js',
-                'jqPlot'  =>    'js/jquery.jqplot.js'
+                'flot'    =>    $this->config['js.flotpath'],
+                'jqPlot'  =>    $this->config['js.jqplotpath']
                 );
         $libraryKeys = array_unique( array_keys( $this->libraries ) );
         $libraryPaths = array();
@@ -102,7 +105,7 @@ class ChartIterator extends \ArrayIterator
                     break;
                 case 'jqPlot':
                 default:
-                    $cssPath = 'css/jqplot.css';
+                    $cssPath = $this->config['css.jqplotpath'];
             }
         
         }
