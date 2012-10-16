@@ -8,7 +8,7 @@ class ChartIterator extends \ArrayIterator
     protected $plugins;
     protected $scripts;
     
-    public function __construct( $array )
+    public function __construct( $array, $pluginPath )
     {
         //enforce that this is an array of charts
         $plugins = array();
@@ -26,7 +26,7 @@ class ChartIterator extends \ArrayIterator
         }
 
         // yo dawg...
-        $this->plugins = new FilesRenderer($plugins, 'js/plugins/');
+        $this->plugins = new FilesRenderer($plugins, $pluginPath);
         $this->scripts = new ScriptsRenderer($scripts);
         
         

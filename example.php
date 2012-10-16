@@ -8,6 +8,8 @@ use Altamira\Series;
 use Altamira\Series\BubbleSeries;
 use Altamira\ChartRenderer;
 
+$config = parse_ini_file('altamira-config.ini');
+
 $library = isset($_GET['library']) ? $_GET['library'] : 'jqPlot';
 
 if ($library == 'flot') {
@@ -131,7 +133,7 @@ $charts = array($chart,
                 $chart8
                 );
 
-$chartIterator = new ChartIterator($charts);
+$chartIterator = new ChartIterator($charts, $config['js.pluginpath']);
 
 ?>
 <html>
