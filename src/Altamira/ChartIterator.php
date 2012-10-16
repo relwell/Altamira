@@ -69,22 +69,27 @@ class ChartIterator extends \ArrayIterator
         
     }
     
-    public function renderLibraries()
+    public function getLibraries()
     {
-        foreach ($this->libraries as $library=>$junk) {
-            
-            switch($library) {
-                case 'flot':
-                    $libraryPath = 'js/jquery.flot.js';
-                    break;
-                case 'jqPlot':
-                default:
-                    $libraryPath = 'js/jquery.jqplot.js';
-            }
-            
+        $libraryToPath = array(
+                'flot'    =>    'js/jquery.flot.js',
+                'jqPlot'  =>    'js/jquery.jqplot.js'
+                );
+        $libraryKeys = array_unique( array_keys( $this->libraries ) );
+        $libraryPaths = array();
+        
+        foreach ($libraryKeys as $key) {
+            $libraryPaths[] = $libraryToPath[$key];
         }
         
-        echo "<script type='text/javascript' src='$libraryPath'></script>";
+        return $libraryPaths;
+    }
+    
+    public function renderLibraries()
+    {
+        foreach ($this->getLibraries() as $libraryPath) {
+            echo "<script type='text/javascript' src='$libraryPath'></script>";
+        }
         
         return $this;
     }
