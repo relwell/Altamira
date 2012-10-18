@@ -35,21 +35,26 @@ class JqPlot
         
         foreach($this->chart->getSeries() as $series) {
             $num++;
-            $data = $series->getData($useTags);
-            $title = $series->getTitle();
+            $data        = $series->getData($useTags);
+            $dataPrepped = array();
+            $title       = $series->getTitle();
+            $labelCopy   = null;
             
             if (isset($this->seriesLabels[$title]) 
                 && !empty($this->seriesLabels[$title])) {
                 $labelCopy = $this->seriesLabels[$title];
-                foreach ($data as &$datum) {
-                    $datum[] = array_shift($labelCopy);
-                }
-                
             }
-
+            
+            foreach ($data as &$datum) {
+                if ( $labelCopy !== null ) {
+                    $datum->setLabel( array_shift( $labelCopy ) );
+                }
+                $dataPrepped[] = $datum->toArray();
+            }
+            
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
-            $output .= $varname . ' = ' . $this->makeJSArray($data) . ';';
+            $output .= $varname . ' = ' . $this->makeJSArray($dataPrepped) . ';';
         }
         
         $output .= 'plot = $.jqplot("' . $this->chart->getName() . '", ';

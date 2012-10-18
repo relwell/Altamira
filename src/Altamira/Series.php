@@ -3,6 +3,7 @@
 namespace Altamira;
 
 use Altamira\JsWriter\JsWriterAbstract;
+use Altamira\ChartDatum\ChartDatumAbstract;
 
 class Series
 {
@@ -24,20 +25,11 @@ class Series
 
 		$tagcount = 0;
 		foreach($data as $datum) {
-			if(is_array($datum) && count($datum) >= 2) {
-				$this->useTags = true;
-				$this->data[] = array_shift($datum);
-				$this->tags[] = array_shift($datum);
-			} else {
-				$this->data[] = $datum;
-				if(count($this->tags) > 0) {
-					$this->tags[] = end($this->tags) + 1;
-				} else {
-					$this->tags[] = 1;
-				}
-			}
-			$tagcount++;
+            if (! $datum instanceof ChartDatumAbstract ) {
+                throw new \UnexpectedValueException( "The data array must consist of instances inheriting from ChartDatumAbstract" );
+            }
 		}
+		$this->data = $data;
 
 		if(isset($title)) {
 			$this->title = $title;

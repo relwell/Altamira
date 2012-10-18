@@ -9,6 +9,7 @@ use Altamira\Series;
 use Altamira\Series\BubbleSeries;
 use Altamira\ChartRenderer;
 use Altamira\Config;
+use Altamira\ChartDatum\TwoDimensionalPoint;
 
 $config = new Config( 'altamira-config.ini' );
 
@@ -20,15 +21,28 @@ if ($library == 'flot') {
 }
 
 $chart = new Chart('chart1', $library);
-$chart->addSeries($chart->createSeries(array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6), 'Sales'))->
-    addSeries($chart->createSeries(array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3), 'Returns'))->
+
+$series1Points = array();
+foreach ( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) as $x => $y )
+{
+    $series1Points[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
+}
+
+$series2Points = array();
+foreach ( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) as $x => $y )
+{
+    $series2Points[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
+}
+
+$chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
+    addSeries($chart->createSeries($series2Points, 'Returns'))->
     setTitle('Basic Line Chart')->
     setAxisOptions('y', 'formatString', '$%d')->
     setAxisOptions('x', 'tickInterval', 1)->
     setAxisOptions('x', 'min', 0)->
     setLegend(array('on'=>true));
 
-
+/**
 $chart2 = new Chart('chart2', $library);
 $series = $chart2->createSeries(
         array(  array('1/4/1990', 850),
@@ -50,9 +64,8 @@ $seriesA = $chart3->createSeries(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
 $seriesB = $chart3->createSeries(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
 $seriesC = $chart3->createSeries(array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7), 'Third');
 
-/**
- * These styles are only supported by Flot
- */
+
+// These styles are only supported by Flot
 $seriesA->showMarker(false)->
     setLineWidth(8);
 $seriesB->setMarkerStyle('filledSquare')->
@@ -124,16 +137,16 @@ $chart8->setTitle('Vertical Stack Chart')->
     setLegend(array('on'=>true, 'location'=>'se', 'x'=>5, 'y'=>5))->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
-
+**/
 $charts = array($chart,
-                $chart2, 
+/*                $chart2, 
                 $chart3, 
                 $chart4, 
                 $chart5, 
                 $chart6, 
                 $chart7, 
                 $chart8
-                );
+*/                );
 
 $chartIterator = new ChartIterator($charts, $config);
 
