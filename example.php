@@ -1,5 +1,6 @@
 <?php
-error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+error_reporting(E_ALL&E_NOTICE);
 include(__DIR__ . '/autoload.php');
 
 use Altamira\Chart;
