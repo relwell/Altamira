@@ -21,7 +21,7 @@ You need a working Symfony2 framework installed and setup. From your main symfon
 
 
 ``` bash
-$ composer require friendsofsymfony/rest-bundle
+$ composer require malwarebytes/altamirabundle
 ```
 
 
@@ -53,8 +53,8 @@ If you would like to see example code, enable the example controller:
 
 altamira_example:
     resource: "@MalwarebytesAltamiraBundle/Resources/config/routing.yml"
-    prefix:   /chart_demo
-
+    prefix:   /chart_demo/example
+```
 
 Developing
 ===================
