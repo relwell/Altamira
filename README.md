@@ -53,7 +53,7 @@ If you would like to see example code, enable the example controller:
 
 altamira_example:
     resource: "@MalwarebytesAltamiraBundle/Resources/config/routing.yml"
-    prefix:   /chart_demo/example
+    prefix:   /chart_demo
 ```
 
 Developing
