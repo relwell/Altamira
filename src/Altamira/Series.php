@@ -86,6 +86,7 @@ class Series
 
 	public function getData($tags = false)
 	{
+	    return $this->data;
 		if($tags || $this->useTags) {
 			$data = array();
 			$tags = $this->tags;

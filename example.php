@@ -42,14 +42,20 @@ $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     setAxisOptions('x', 'min', 0)->
     setLegend(array('on'=>true));
 
-/**
+$seriesPoints = array();
+
+foreach( array( array('1/4/1990', 850),
+                array('2/27/1991', 427),
+                array('1/6/1994', 990),
+                array('8/6/1994', 127),
+                array('12/25/1995', 325) )
+        as $datum )
+{
+    $seriesPoints[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $datum[0], 'y' => $datum[1] ) );
+}
+
 $chart2 = new Chart('chart2', $library);
-$series = $chart2->createSeries(
-        array(  array('1/4/1990', 850),
-            array('2/27/1991', 427),
-            array('1/6/1994', 990),
-            array('8/6/1994', 127),
-            array('12/25/1995', 325)), 'Measured Readings');
+$series = $chart2->createSeries($seriesPoints, 'Measured Readings');
 $series->useLabels(array('a', 'b', 'c', 'd', 'e'))->
     setLabelSetting('location', 'w')->
     setLabelSetting('xpadding', 8)->
@@ -58,6 +64,7 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     addSeries($series)->
     useDates()->
     useHighlighting();
+
 /**
 $chart3 = new Chart('chart3', $library);
 $seriesA = $chart3->createSeries(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
@@ -139,7 +146,7 @@ $chart8->setTitle('Vertical Stack Chart')->
     setTypeOption('stackSeries', true);
 **/
 $charts = array($chart,
-//                $chart2, 
+                $chart2, 
 /*                $chart3, 
                 $chart4, 
                 $chart5, 

@@ -35,7 +35,8 @@ class Flot
         $this->prepOpts($this->options['series']);
         
         $counter = 0;
-        
+        ini_set('display_errors', 'on');
+        error_reporting(E_ALL);
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
@@ -44,7 +45,7 @@ class Flot
             
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
-            
+
             $oneDimensional = array_keys($data) == range(0, count($data)-1, 1);
             
             if (! empty($this->seriesLabels[$title]) ) {
@@ -61,12 +62,12 @@ class Flot
                         //@todo we can probably accomplish this with less iterations
                         switch ($axis) {
                             case 'x':                                
-                                $date = \DateTime::createFromFormat('m/d/Y', $data['x']);
-                                $data['x'] = $date->getTimestamp() * 1000;
+                                $date = \DateTime::createFromFormat('m/d/Y', $datum['x']);
+                                $datum['x'] = $date->getTimestamp() * 1000;
                                 break;
                             case 'y':
-                                $date = \DateTime::createFromFormat('m/d/Y', $data['y']);
-                                $data['y'] = $date->getTimestamp() * 1000;
+                                $date = \DateTime::createFromFormat('m/d/Y', $datum['y']);
+                                $datum['y'] = $date->getTimestamp() * 1000;
                                 break;
                         }
                     }

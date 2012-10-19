@@ -2,7 +2,8 @@
 
 namespace Altamira\ChartDatum;
 
-use Altamira\JsWriter\JsWriterAbstract;
+use \Altamira\JsWriter\JsWriterAbstract;
+use \Altamira\Series;
 
 /**
  * Data abstraction class for points.
@@ -19,8 +20,15 @@ abstract class ChartDatumAbstract implements \ArrayAccess
     
     /**
      * Used to determine how we render certain values
+     * @var Altamira\JsWriter\JsWriterAbstract
      */
     protected $jsWriter;
+    
+    /**
+     * Used to determine how we render certain values, based on, for instance, type
+     * @var Altamira\Series
+     */
+    protected $series;
     
     /**
      * Constructor method
@@ -50,13 +58,18 @@ abstract class ChartDatumAbstract implements \ArrayAccess
     
     /**
      * Sets the JsWriter relative to the datum
-     * @param JsWriterAbstract $jsWriter
+     * @param \Altamira\JsWriter\JsWriterAbstract $jsWriter
      * @return \Altamira\ChartDatum\ChartDatumAbstract
      */
     public function setJsWriter( JsWriterAbstract $jsWriter )
     {
         $this->jsWriter = $jsWriter;
         return $this;
+    }
+    
+    public function setSeries( Series $series )
+    {
+        $this->series = $series;
     }
     
     /**
