@@ -58,7 +58,7 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     addSeries($series)->
     useDates()->
     useHighlighting();
-
+/**
 $chart3 = new Chart('chart3', $library);
 $seriesA = $chart3->createSeries(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
 $seriesB = $chart3->createSeries(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
@@ -139,8 +139,8 @@ $chart8->setTitle('Vertical Stack Chart')->
     setTypeOption('stackSeries', true);
 **/
 $charts = array($chart,
-/*                $chart2, 
-                $chart3, 
+//                $chart2, 
+/*                $chart3, 
                 $chart4, 
                 $chart5, 
                 $chart6, 
