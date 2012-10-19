@@ -14,6 +14,7 @@ abstract class JsWriterAbstract
     protected $types = array();
     protected $library;
     protected $typeNamespace;
+    protected $useLabels = false;
     
     public function __construct(\Altamira\Chart $chart)
     {

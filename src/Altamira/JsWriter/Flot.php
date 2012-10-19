@@ -3,6 +3,7 @@
 namespace Altamira\JsWriter;
 
 use Altamira\JsWriter\Ability;
+use Altamira\ChartDatum;
 
 class Flot 
     extends JsWriterAbstract
@@ -33,6 +34,8 @@ class Flot
         
         $this->prepOpts($this->options['series']);
         
+        $counter = 0;
+        
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
@@ -48,48 +51,54 @@ class Flot
                 $labelCopy = $this->seriesLabels[$title];
             }
 
-            foreach ($data as $key=>$val) { 
+            $formattedData = array();
+            foreach ($data as $datum) { 
+                if (! $datum instanceof ChartDatum\ChartDatumAbstract ) {
+                    throw new \UnexpectedValueException('Chart data should be an object inheriting from ChartDatumAbstract');
+                }
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
+                        //@todo we can probably accomplish this with less iterations
                         switch ($axis) {
-                            case 'x':
-                                
-                                $date = \DateTime::createFromFormat('m/d/Y', $data[$key][0]);
-                                $data[$key][0] = $date->getTimestamp() * 1000;
+                            case 'x':                                
+                                $date = \DateTime::createFromFormat('m/d/Y', $data['x']);
+                                $data['x'] = $date->getTimestamp() * 1000;
                                 break;
                             case 'y':
-                                $date = \DateTime::createFromFormat('m/d/Y', $data[$key][1]);
-                                $data[$key][1] = $date->getTimestamp() * 1000;
+                                $date = \DateTime::createFromFormat('m/d/Y', $data['y']);
+                                $data['y'] = $date->getTimestamp() * 1000;
                                 break;
                         }
                     }
                 }
-                // update if date
-                $val = $data[$key];
 
-                if (is_array($val)) {
-                    $data[$key] = array_slice($val, 0, 2);
-                    if ( isset($this->types['default']) ) { 
+                    /*if ( isset($this->types['default']) ) { 
                         if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
                             || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
                         
+                            //@todo we should be checking for data type here
                             $data[$key] = array('label' => $val[0], 'data' => $val[1]);
                             
                             
                         } else if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
+                            //@todo we should be checking for data type here
                             $bubblePoints = array_slice($val, 0, 3);
                             $bubblePoints[2] *= 10;
                             $data[$key] = $bubblePoints;
                         } 
-                        
-                    }
+                    }*/
                         
                     
                     if (!empty($this->seriesLabels[$title])) {
-                        $dataPoints = "{$val[0]},{$val[1]}";
+                        $dataPoints = "{$datum['x']},{$datum['y']}";
+                        $datum->setLabel( $labelCopy );
                         $this->pointLabels[$dataPoints] = array_shift($labelCopy);
                     }
-                } else {
+                    
+                    $formattedData[] = $datum->toArray();
+                    
+                /**
+                 * this logic addresses bar stuff and one-dimensional stuff
                     $valueArray = array(($oneDimensional? $key+1 : $key), $val);
                     if (isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bar ) {
                         $baropts = $this->types['default']->getOptions();
@@ -98,12 +107,12 @@ class Flot
                         }
                     }
                     $data[$key] = $valueArray;
-                }
+                **/
             };
             
-            $dataArrayJs .= 'data: '.$this->makeJSArray($data);
+            $dataArrayJs .= 'data: '.$this->makeJSArray($formattedData);
             
-            if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
+            if (isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
                 $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
             }
 
