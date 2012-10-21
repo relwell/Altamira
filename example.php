@@ -80,13 +80,15 @@ $chart4->setTitle('Horizontal Bar Chart')->
     setTypeOption('horizontal', true)->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
     setLegend(array('on'=>true, 'location'=>'se', 'x'=>5, 'y'=>5));
-/**
+
+$manySeriesArray = array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12), );
+
 $chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
-    addSeries($chart5->createManySeries(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
+    addSeries($chart5->createManySeries($manySeriesArray, array( 'Altamira\ChartDatum\TwoDimensionalPointFactory', 'getFromNested' ), 'Utensils'))->
     setType('Pie')->
     setLegend();
-
+/**
 $chart6 = new Chart('chart6', $library);
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     addSeries($chart6->createManySeries(array(array('Metals', 3), array('Plastics', 5), array('Wood', 2), array('Glass', 7), array('Paper', 9)), 'Internal'))->
@@ -134,8 +136,8 @@ $charts = array($chart,
                 $chart2, 
                 $chart3, 
                 $chart4, 
-/*                $chart5, 
-                $chart6, 
+                $chart5, 
+/*                $chart6, 
                 $chart7, 
                 $chart8
 */                );

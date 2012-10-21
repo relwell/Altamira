@@ -175,18 +175,18 @@ class Chart
 	    }
 	}
 	
-	public function createManySeries($data, $title = null, $type = null)
+	public function createManySeries(array $dataSet, array $factorySettings , $title = null, $type = null)
 	{
 	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Flot ) {
 	        $seriesArray = array();
-	        foreach ($data as $datum) {
+	        foreach ($dataSet as $data) {
 	            $seriesArray[] = $type == 'Bubble' 
-	                           ? $this->createSeries($datum, end($datum), $type)
-	                           : $this->createSeries(array($datum[1]), $datum[0], $type);
+	                           ? $this->createSeries($data, end($data), $type)
+	                           : $this->createSeries( call_user_func( $factorySettings, array( $data ) ), $data[0], $type);
 	        }
 	        return $seriesArray;
 	    } else {
-	        return $this->createSeries($data, $title, $type);
+	        return $this->createSeries( call_user_func( $factorySettings, $dataSet ), $title, $type);
 	    }
 	}
 	
