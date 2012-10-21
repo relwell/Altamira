@@ -20,19 +20,25 @@ if ($library == 'flot') {
     ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
 }
 
+function make2dPoints1dArray( $oneDimensionalArray, $result = array() ) {
+    foreach ($oneDimensionalArray as $x => $y ) {
+        $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
+    }
+    return $result;
+}
+
+function make2dPointsNestedArray( $nestedArray, $result = array() ) {
+    foreach ( $nestedArray as $array ) {
+        $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $array[0], 'y' => $array[1] ) );
+    }
+    return $result;
+}
+
 $chart = new Chart('chart1', $library);
 
-$series1Points = array();
-foreach ( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) as $x => $y )
-{
-    $series1Points[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
-}
+$series1Points = make2dPoints1dArray( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) );
 
-$series2Points = array();
-foreach ( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) as $x => $y )
-{
-    $series2Points[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
-}
+$series2Points = make2dPoints1dArray( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) );
 
 $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     addSeries($chart->createSeries($series2Points, 'Returns'))->
@@ -42,18 +48,14 @@ $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     setAxisOptions('x', 'min', 0)->
     setLegend(array('on'=>true));
 
-$seriesPoints = array();
+$seriesPoints = make2dPointsNestedArray( array( array('1/4/1990', 850),
+                                                array('2/27/1991', 427),
+                                                array('1/6/1994', 990),
+                                                array('8/6/1994', 127),
+                                                array('12/25/1995', 325) ) 
+                                        );
 
-foreach( array( array('1/4/1990', 850),
-                array('2/27/1991', 427),
-                array('1/6/1994', 990),
-                array('8/6/1994', 127),
-                array('12/25/1995', 325) )
-        as $datum )
-{
-    $seriesPoints[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $datum[0], 'y' => $datum[1] ) );
-}
-
+//@todo this chart's labels aren't showing here in jqplot
 $chart2 = new Chart('chart2', $library);
 $series = $chart2->createSeries($seriesPoints, 'Measured Readings');
 $series->useLabels(array('a', 'b', 'c', 'd', 'e'))->
@@ -65,11 +67,10 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     useDates()->
     useHighlighting();
 
-/**
 $chart3 = new Chart('chart3', $library);
-$seriesA = $chart3->createSeries(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 'First');
-$seriesB = $chart3->createSeries(array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6), 'Second');
-$seriesC = $chart3->createSeries(array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7), 'Third');
+$seriesA = $chart3->createSeries(make2dPoints1dArray( array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) ), 'First');
+$seriesB = $chart3->createSeries(make2dPoints1dArray( array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6) ), 'Second');
+$seriesC = $chart3->createSeries(make2dPoints1dArray( array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7) ), 'Third');
 
 
 // These styles are only supported by Flot
@@ -86,7 +87,7 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
     addSeries($seriesB)->
     addSeries($seriesC)->
     useZooming();
-
+/**
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
     addSeries($chart4->createSeries(array(1, 4, 8, 2, 1, 5), 'Runs'))->
@@ -147,8 +148,8 @@ $chart8->setTitle('Vertical Stack Chart')->
 **/
 $charts = array($chart,
                 $chart2, 
-/*                $chart3, 
-                $chart4, 
+                $chart3, 
+/*                $chart4, 
                 $chart5, 
                 $chart6, 
                 $chart7, 
@@ -183,3 +184,4 @@ while ( $chartIterator->valid() ) {
 <?php $chartIterator->renderScripts() ?>
 
 </body>
+</html>

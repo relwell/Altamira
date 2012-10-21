@@ -56,7 +56,6 @@ class JqPlot
             $vars[] = '#' . $varname . '#';
             $output .= $varname . ' = ' . $this->makeJSArray($dataPrepped) . ';';
         }
-        
         $output .= 'plot = $.jqplot("' . $this->chart->getName() . '", ';
         $output .= $this->makeJSArray($vars);
         $output .= ', ';
@@ -243,14 +242,18 @@ class JqPlot
     protected function getSeriesOptions(array $options)
     {
         $types = $this->types;
+        $defaults = array(  'highlighter' => array('show' => false),
+			                'cursor'      => array('showTooltip' => false, 'show' => false)
+                             );
         if(isset($types['default'])) {
-            $defaults = $options['seriesDefaults'];
             $renderer = $types['default']->getRenderer();
-            if(isset($renderer))
+            if(isset($renderer)) {
                 $defaults['renderer'] = $renderer;
+            }
             $defaults['rendererOptions'] = $types['default']->getRendererOptions();
-            if(count($defaults['rendererOptions']) == 0)
+            if(count($defaults['rendererOptions']) == 0) {
                 unset($defaults['rendererOptions']);
+            }
             $options['seriesDefaults'] = $defaults;
         }
         
@@ -267,7 +270,9 @@ class JqPlot
                 $seriesOptions[] = $opts;
             }
         }
+        
         $options['seriesStorage'] = $seriesOptions;
+        $options['seriesDefaults'] = $defaults;
         
         return $options;
     }

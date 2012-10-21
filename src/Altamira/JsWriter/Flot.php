@@ -35,8 +35,6 @@ class Flot
         $this->prepOpts($this->options['series']);
         
         $counter = 0;
-        ini_set('display_errors', 'on');
-        error_reporting(E_ALL);
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';

@@ -93,7 +93,10 @@ abstract class JsWriterAbstract
     
     public function initializeSeries( \Altamira\Series $series )
     {
-        $this->options['seriesStorage'][$series->getTitle()] = array();
+        $this->options['seriesStorage'][$series->getTitle()] = array('pointLabels' => array('show' => false),
+					                                                 'highlighter' => array('show' => false),
+					                                                 'cursor' => array('showTooltip' => false, 'show' => false)
+                                                                    );
         $this->series[] = $series;
     }
     

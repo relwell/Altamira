@@ -13,10 +13,7 @@ class Chart
 	protected $types = array();
 	
 	// @todo chart shouldn't even have options -- put it all in jswriter
-	protected $options = array(	'seriesDefaults' => array('pointLabels' => array('show' => false)),
-					'highlighter' => array('show' => false),
-					'cursor' => array('showTooltip' => false, 'show' => false)
-				  );
+	protected $options = array();
 	protected $series = array();
 	protected $labels = array();
 	protected $files = array();
