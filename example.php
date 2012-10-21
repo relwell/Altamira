@@ -10,6 +10,7 @@ use Altamira\Series\BubbleSeries;
 use Altamira\ChartRenderer;
 use Altamira\Config;
 use Altamira\ChartDatum\TwoDimensionalPoint;
+use Altamira\ChartDatum\SingleValue;
 
 $config = new Config( 'altamira-config.ini' );
 
@@ -23,6 +24,13 @@ if ($library == 'flot') {
 function make2dPoints1dArray( $oneDimensionalArray, $result = array() ) {
     foreach ($oneDimensionalArray as $x => $y ) {
         $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
+    }
+    return $result;
+}
+
+function make1dPoints1dArray( $oneDimensionalArray, $result = array() ) {
+    foreach ($oneDimensionalArray as $val ) {
+        $result[] = new Altamira\ChartDatum\SingleValue( array('val' => $val ) );
     }
     return $result;
 }
@@ -87,16 +95,16 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
     addSeries($seriesB)->
     addSeries($seriesC)->
     useZooming();
-/**
+
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
-    addSeries($chart4->createSeries(array(1, 4, 8, 2, 1, 5), 'Runs'))->
-    addSeries($chart4->createSeries(array(3, 3, 5, 4, 2, 6), 'Walks'))->
+    addSeries($chart4->createSeries(make1dPoints1dArray( array(1, 4, 8, 2, 1, 5) ), 'Runs'))->
+    addSeries($chart4->createSeries(make1dPoints1dArray( array(3, 3, 5, 4, 2, 6) ), 'Walks'))->
     setType('Bar')->
     setTypeOption('horizontal', true)->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
     setLegend(array('on'=>true, 'location'=>'se', 'x'=>5, 'y'=>5));
-
+/**
 $chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
     addSeries($chart5->createManySeries(array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12)), 'Utensils'))->
@@ -149,8 +157,8 @@ $chart8->setTitle('Vertical Stack Chart')->
 $charts = array($chart,
                 $chart2, 
                 $chart3, 
-/*                $chart4, 
-                $chart5, 
+                $chart4, 
+/*                $chart5, 
                 $chart6, 
                 $chart7, 
                 $chart8
