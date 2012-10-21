@@ -18,7 +18,8 @@ abstract class TypeAbstract
 	    
 	    $libConfig = $config[strtolower($jsWriter->getLibrary())];
 
-	    $class = end(explode('\\', strtolower(get_class($this))));
+	    $nsPathExploded = explode('\\', strtolower(get_class($this)));
+	    $class = end( $nsPathExploded );
 	    
 	    foreach ( preg_grep("/$class\./i", array_keys($libConfig)) as $key ) {
 	        $attribute = preg_replace("/{$class}\./i", '', $key);
