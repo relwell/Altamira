@@ -32,9 +32,9 @@ class TwoDimensionalPoint extends ChartDatumAbstract
     
     /**
      * (non-PHPdoc)
-     * @see Altamira\ChartDatum.ChartDatumAbstract::toArray()
+     * @see Altamira\ChartDatum.ChartDatumAbstract::getRenderData
      */
-    public function toArray( $useLabel = false )
+    public function getRenderData( $useLabel = false )
     {
         return array($this['x'], $this['y']) + ($useLabel ? array($this->getLabel()) : array());
     }

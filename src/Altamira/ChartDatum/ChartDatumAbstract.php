@@ -40,10 +40,10 @@ abstract class ChartDatumAbstract implements \ArrayAccess
     
     /**
      * Used for rendering into json string
-     * @param  boolean $useLabel whether to add label to the array
+     * @param  boolean $useLabel whether to use a label (doesn't always apply)
      * @return array
      */
-    abstract public function toArray( $useLabel = false );
+    abstract public function getRenderData( $useLabel = false );
     
     /**
      * Set the label for this datum

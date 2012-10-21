@@ -94,8 +94,7 @@ class Flot
                         $this->pointLabels[$dataPoints] = array_shift($labelCopy);
                     }
                     
-                    $formattedData[] = $datum->toArray();
-                    
+                    $formattedData[] = $datum->getRenderData();
                 /**
                  * this logic addresses bar stuff and one-dimensional stuff
                     $valueArray = array(($oneDimensional? $key+1 : $key), $val);

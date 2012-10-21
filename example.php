@@ -1,6 +1,4 @@
-<?php
-ini_set('display_errors', 'On');
-error_reporting(E_ALL&E_NOTICE);
+<?php 
 include(__DIR__ . '/autoload.php');
 
 use Altamira\Chart;
@@ -21,16 +19,23 @@ if ($library == 'flot') {
     ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
 }
 
-function make2dPoints1dArray( $oneDimensionalArray, $result = array() ) {
+function make2dPoints1dXArray( $oneDimensionalArray, $result = array() ) {
     foreach ($oneDimensionalArray as $x => $y ) {
         $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
     }
     return $result;
 }
 
+function make2dPoints1dYArray( $oneDimensionalArray, $result = array() ) {
+    foreach ($oneDimensionalArray as $y => $x ) {
+        $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x, 'y' => $y+1 ) );
+    }
+    return $result;
+}
+
 function make1dPoints1dArray( $oneDimensionalArray, $result = array() ) {
     foreach ($oneDimensionalArray as $val ) {
-        $result[] = new Altamira\ChartDatum\SingleValue( array('val' => $val ) );
+        $result[] = new Altamira\ChartDatum\SingleValue( array( $val ) );
     }
     return $result;
 }
@@ -44,9 +49,9 @@ function make2dPointsNestedArray( $nestedArray, $result = array() ) {
 
 $chart = new Chart('chart1', $library);
 
-$series1Points = make2dPoints1dArray( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) );
+$series1Points = make2dPoints1dXArray( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) );
 
-$series2Points = make2dPoints1dArray( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) );
+$series2Points = make2dPoints1dXArray( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) );
 
 $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     addSeries($chart->createSeries($series2Points, 'Returns'))->
@@ -76,9 +81,9 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     useHighlighting();
 
 $chart3 = new Chart('chart3', $library);
-$seriesA = $chart3->createSeries(make2dPoints1dArray( array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) ), 'First');
-$seriesB = $chart3->createSeries(make2dPoints1dArray( array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6) ), 'Second');
-$seriesC = $chart3->createSeries(make2dPoints1dArray( array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7) ), 'Third');
+$seriesA = $chart3->createSeries(make2dPoints1dXArray( array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) ), 'First');
+$seriesB = $chart3->createSeries(make2dPoints1dXArray( array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6) ), 'Second');
+$seriesC = $chart3->createSeries(make2dPoints1dXArray( array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7) ), 'Third');
 
 
 // These styles are only supported by Flot
@@ -98,8 +103,8 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
 
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
-    addSeries($chart4->createSeries(make1dPoints1dArray( array(1, 4, 8, 2, 1, 5) ), 'Runs'))->
-    addSeries($chart4->createSeries(make1dPoints1dArray( array(3, 3, 5, 4, 2, 6) ), 'Walks'))->
+    addSeries($chart4->createSeries(make2dPoints1dYArray( array(1, 4, 8, 2, 1, 5) ), 'Runs'))->
+    addSeries($chart4->createSeries(make2dPoints1dYArray( array(3, 3, 5, 4, 2, 6) ), 'Walks'))->
     setType('Bar')->
     setTypeOption('horizontal', true)->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
@@ -179,7 +184,6 @@ $chartIterator = new ChartIterator($charts, $config);
                  ->renderPlugins() ?>
 </head>
 <body>
-
 <?php  
 while ( $chartIterator->valid() ) {
     

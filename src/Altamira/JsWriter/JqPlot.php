@@ -49,9 +49,8 @@ class JqPlot
                 if ( $labelCopy !== null ) {
                     $datum->setLabel( array_shift( $labelCopy ) );
                 }
-                $dataPrepped[] = $datum->toArray();
+                $dataPrepped[] = $datum->getRenderData();
             }
-            
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
             $output .= $varname . ' = ' . $this->makeJSArray($dataPrepped) . ';';

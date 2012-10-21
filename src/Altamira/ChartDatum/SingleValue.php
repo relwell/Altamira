@@ -22,7 +22,7 @@ class SingleValue extends ChartDatumAbstract
             $this->setLabel( $label );
         }
         
-        if ( count( $dimensions ) !== 0 ) {
+        if ( count( $dimensions ) !== 1 ) {
             throw new \InvalidArgumentException( 'Altamira\ChartDatum\SingleValue requires a singleton array as its first argument.' );
         }
         
@@ -31,11 +31,11 @@ class SingleValue extends ChartDatumAbstract
     
     /**
      * (non-PHPdoc)
-     * @see Altamira\ChartDatum.ChartDatumAbstract::toArray()
+     * @see Altamira\ChartDatum.ChartDatumAbstract::getRenderData()
      */
-    public function toArray( $useLabel = false )
+    public function getRenderData( $useLabel = false )
     {
-       return $useLabel ? array( $this['value'], $this['label'] ) : array( $this['value'] );
+       return $this['value'];
     }
     
 }
