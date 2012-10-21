@@ -7,8 +7,7 @@ use Altamira\Series;
 use Altamira\Series\BubbleSeries;
 use Altamira\ChartRenderer;
 use Altamira\Config;
-use Altamira\ChartDatum\TwoDimensionalPoint;
-use Altamira\ChartDatum\SingleValue;
+use Altamira\ChartDatum\TwoDimensionalPointFactory;
 
 $config = new Config( 'altamira-config.ini' );
 
@@ -19,39 +18,11 @@ if ($library == 'flot') {
     ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
 }
 
-function make2dPoints1dXArray( $oneDimensionalArray, $result = array() ) {
-    foreach ($oneDimensionalArray as $x => $y ) {
-        $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x+1, 'y' => $y ) );
-    }
-    return $result;
-}
-
-function make2dPoints1dYArray( $oneDimensionalArray, $result = array() ) {
-    foreach ($oneDimensionalArray as $y => $x ) {
-        $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $x, 'y' => $y+1 ) );
-    }
-    return $result;
-}
-
-function make1dPoints1dArray( $oneDimensionalArray, $result = array() ) {
-    foreach ($oneDimensionalArray as $val ) {
-        $result[] = new Altamira\ChartDatum\SingleValue( array( $val ) );
-    }
-    return $result;
-}
-
-function make2dPointsNestedArray( $nestedArray, $result = array() ) {
-    foreach ( $nestedArray as $array ) {
-        $result[] = new Altamira\ChartDatum\TwoDimensionalPoint( array('x' => $array[0], 'y' => $array[1] ) );
-    }
-    return $result;
-}
-
 $chart = new Chart('chart1', $library);
 
-$series1Points = make2dPoints1dXArray( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) );
+$series1Points = TwoDimensionalPointFactory::getFromYValues( array(2, 8, 5, 3, 8, 9, 7, 8, 4, 2, 1, 6) );
 
-$series2Points = make2dPoints1dXArray( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) );
+$series2Points = TwoDimensionalPointFactory::getFromYValues( array(7, 3, 7, 8, 2, 3, 1, 2, 5, 7, 8, 3) );
 
 $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     addSeries($chart->createSeries($series2Points, 'Returns'))->
@@ -61,12 +32,12 @@ $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     setAxisOptions('x', 'min', 0)->
     setLegend(array('on'=>true));
 
-$seriesPoints = make2dPointsNestedArray( array( array('1/4/1990', 850),
-                                                array('2/27/1991', 427),
-                                                array('1/6/1994', 990),
-                                                array('8/6/1994', 127),
-                                                array('12/25/1995', 325) ) 
-                                        );
+$seriesPoints = TwoDimensionalPointFactory::getFromNested( array( array('1/4/1990', 850),
+                                                                  array('2/27/1991', 427),
+                                                                  array('1/6/1994', 990),
+                                                                  array('8/6/1994', 127),
+                                                                  array('12/25/1995', 325) ) 
+                                                                );
 
 //@todo this chart's labels aren't showing here in jqplot
 $chart2 = new Chart('chart2', $library);
@@ -81,9 +52,9 @@ $chart2->setTitle('Line Chart With Highlights and Labels')->
     useHighlighting();
 
 $chart3 = new Chart('chart3', $library);
-$seriesA = $chart3->createSeries(make2dPoints1dXArray( array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) ), 'First');
-$seriesB = $chart3->createSeries(make2dPoints1dXArray( array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6) ), 'Second');
-$seriesC = $chart3->createSeries(make2dPoints1dXArray( array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7) ), 'Third');
+$seriesA = $chart3->createSeries( TwoDimensionalPointFactory::getFromYValues( array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) ), 'First' );
+$seriesB = $chart3->createSeries( TwoDimensionalPointFactory::getFromYValues( array(1, 10, 2, 9, 3, 8, 4, 7, 5, 6) ), 'Second' );
+$seriesC = $chart3->createSeries( TwoDimensionalPointFactory::getFromYValues( array(10, 7, 6, 5, 3, 1, 3, 5, 6, 7) ), 'Third' );
 
 
 // These styles are only supported by Flot
@@ -103,8 +74,8 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
 
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
-    addSeries($chart4->createSeries(make2dPoints1dYArray( array(1, 4, 8, 2, 1, 5) ), 'Runs'))->
-    addSeries($chart4->createSeries(make2dPoints1dYArray( array(3, 3, 5, 4, 2, 6) ), 'Walks'))->
+    addSeries($chart4->createSeries( TwoDimensionalPointFactory::getFromXValues( array(1, 4, 8, 2, 1, 5) ), 'Runs') )->
+    addSeries($chart4->createSeries( TwoDimensionalPointFactory::getFromXValues( array(3, 3, 5, 4, 2, 6) ), 'Walks') )->
     setType('Bar')->
     setTypeOption('horizontal', true)->
     setAxisTicks('y', array('1st Inning', '2nd Inning', '3rd Inning', '4th Inning', '5th Inning', '6th Inning'))->
