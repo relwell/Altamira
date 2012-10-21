@@ -281,7 +281,6 @@ class JqPlot
         $opts = $this->options;
         $opts['series'] = $opts['seriesStorage'];
         unset($opts['series']);
-        
         return $this->makeJSArray($opts);
     }
     

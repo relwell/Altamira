@@ -31,8 +31,7 @@ abstract class JsWriterAbstract
     
     public function makeJSArray($array)
     {
-        $options = json_encode($array);
-        $optionString = preg_replace('/"#(.*?)#"/', '$1', $options);
+        $optionString = preg_replace('/"#([^#":]*)#"/U', '$1', json_encode($array) );
         
         foreach ( $this->callbacks as $placeHolder => $callback ) {
             $optionString = str_replace("\"{$placeHolder}\"", $callback, $optionString);

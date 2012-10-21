@@ -83,22 +83,27 @@ $chart4->setTitle('Horizontal Bar Chart')->
 
 $manySeriesArray = array(array('Pots', 7), array('Pans', 5), array('Spoons', 2), array('Knives', 5), array('Forks', 12), );
 
+$nestedFactoryMethod = array( 'Altamira\ChartDatum\TwoDimensionalPointFactory', 'getFromNested' );
+
 $chart5 = new Chart('chart5', $library);
 $chart5->setTitle('Pie Chart')->
-    addSeries($chart5->createManySeries($manySeriesArray, array( 'Altamira\ChartDatum\TwoDimensionalPointFactory', 'getFromNested' ), 'Utensils'))->
+    addSeries($chart5->createManySeries($manySeriesArray, $nestedFactoryMethod, 'Utensils'))->
     setType('Pie')->
     setLegend();
-/**
+
+$chart6Many1 = array(array('Metals', 3), array('Plastics', 5), array('Wood', 2), array('Glass', 7), array('Paper', 9));
+$chart6Many2 = array(array('Metals', 4), array('Plastics', 2), array('Wood', 5), array('Glass', 4), array('Paper', 12));
+
 $chart6 = new Chart('chart6', $library);
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
-    addSeries($chart6->createManySeries(array(array('Metals', 3), array('Plastics', 5), array('Wood', 2), array('Glass', 7), array('Paper', 9)), 'Internal'))->
-    addSeries($chart6->createManySeries(array(array('Metals', 4), array('Plastics', 2), array('Wood', 5), array('Glass', 4), array('Paper', 12)), 'External'))->
+    addSeries($chart6->createManySeries($chart6Many1, $nestedFactoryMethod, 'Internal'))->
+    addSeries($chart6->createManySeries($chart6Many2, $nestedFactoryMethod, 'External'))->
     setSeriesColors(array('#dd3333', '#d465f1', '#aa2211', '#3377aa', '#6699bb', '#9933aa'))->
     setType('Donut')->
     setLegend()->
     setTypeOption('sliceMargin', 3)->
     setTypeOption('showDataLabels', true);
-
+/**
 $chart7 = new Chart('chart7', $library);
 $chart7->addSeries($chart7->createManySeries(
     array(  array(4, 7, 5, 'Screws'),
@@ -132,13 +137,13 @@ $chart8->setTitle('Vertical Stack Chart')->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
 **/
-$charts = array($chart,
-                $chart2, 
-                $chart3, 
-                $chart4, 
-                $chart5, 
-/*                $chart6, 
-                $chart7, 
+$charts = array(//$chart,
+                //$chart2, 
+                //$chart3, 
+                //$chart4, 
+                //$chart5, 
+                $chart6, 
+/*                $chart7, 
                 $chart8
 */                );
 

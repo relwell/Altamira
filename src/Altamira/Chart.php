@@ -108,7 +108,6 @@ class Chart
 	public function setSeriesColors($colors)
 	{
 		$this->options['seriesColors'] = $colors;
-
 		return $this;
 	}
 
