@@ -28,7 +28,8 @@ class Series
             if (! $datum instanceof ChartDatumAbstract ) {
                 throw new \UnexpectedValueException( "The data array must consist of instances inheriting from ChartDatumAbstract" );
             }
-            $datum->setJsWriter($jsWriter);
+            $datum->setJsWriter($jsWriter)
+                  ->setSeries($this);
 		}
 		$this->data = $data;
 

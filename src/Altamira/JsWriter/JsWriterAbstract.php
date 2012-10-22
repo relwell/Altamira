@@ -92,10 +92,10 @@ abstract class JsWriterAbstract
     
     public function initializeSeries( \Altamira\Series $series )
     {
-        $this->options['seriesStorage'][$series->getTitle()] = array('pointLabels' => array('show' => false),
+        $this->options['seriesStorage'][$series->getTitle()] = array();/**'pointLabels' => array('show' => false),
 					                                                 'highlighter' => array('show' => false),
 					                                                 'cursor' => array('showTooltip' => false, 'show' => false)
-                                                                    );
+                                                                    );*/
         $this->series[] = $series;
     }
     
@@ -121,6 +121,11 @@ abstract class JsWriterAbstract
         }
         
         return $this;
+    }
+    
+    public function getType( $key = 'default' )
+    {
+        return isset($this->types[$key]) ? $this->types[$key] : $this->types['default'];
     }
     
     public function setTypeOption( $name, $option, $series=null )

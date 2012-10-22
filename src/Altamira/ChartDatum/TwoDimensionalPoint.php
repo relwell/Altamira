@@ -36,7 +36,15 @@ class TwoDimensionalPoint extends ChartDatumAbstract
      */
     public function getRenderData( $useLabel = false )
     {
-        return array($this['x'], $this['y']) + ($useLabel ? array($this->getLabel()) : array());
+        if ( $type = $this->jsWriter->getType( $this->series->getTitle() ) ) {
+            $typeName = preg_replace('/.*\\\(.*)$/', '$1', get_class($type));
+        }
+        
+        if ( $typeName == 'Donut' && $this->jsWriter instanceof \Altamira\JsWriter\Flot ) {
+            return array( 1, $this['y'] );
+        } else {
+            return array($this['x'], $this['y']) + ($useLabel ? array($this->getLabel()) : array());
+        }
     }
     
 }

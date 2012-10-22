@@ -70,7 +70,7 @@ class Flot
                         }
                     }
                 }
-
+                
                     /*if ( isset($this->types['default']) ) { 
                         if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
                             || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
@@ -110,8 +110,10 @@ class Flot
             
             $dataArrayJs .= 'data: '.$this->makeJSArray($formattedData);
             
-            if (isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
-                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
+            if (isset($this->types['default']) && 
+               ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble
+                || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) ) {
+                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', $series->getTitle() ) . '"';
             }
 
             $this->prepOpts( $this->options['seriesStorage'][$title] );
