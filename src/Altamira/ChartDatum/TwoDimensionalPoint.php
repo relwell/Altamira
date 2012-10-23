@@ -36,6 +36,7 @@ class TwoDimensionalPoint extends ChartDatumAbstract
      */
     public function getRenderData( $useLabel = false )
     {
+        $typeName = '';
         if ( $type = $this->jsWriter->getType( $this->series->getTitle() ) ) {
             $typeName = preg_replace('/.*\\\(.*)$/', '$1', get_class($type));
         }

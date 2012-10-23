@@ -125,7 +125,12 @@ abstract class JsWriterAbstract
     
     public function getType( $key = 'default' )
     {
-        return isset($this->types[$key]) ? $this->types[$key] : $this->types['default'];
+        if ( isset( $this->types[$key] ) ) {
+            return $this->types[$key];
+        } else if ( isset( $this->types['default'] ) ) {
+            return $this->types['default'];
+        } 
+        return null;
     }
     
     public function setTypeOption( $name, $option, $series=null )
