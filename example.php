@@ -137,11 +137,11 @@ $chart8->setTitle('Vertical Stack Chart')->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
 **/
-$charts = array(//$chart,
-                //$chart2, 
-                //$chart3, 
-                //$chart4, 
-                //$chart5, 
+$charts = array($chart,
+                $chart2, 
+                $chart3, 
+                $chart4, 
+                $chart5,
                 $chart6, 
 /*                $chart7, 
                 $chart8
