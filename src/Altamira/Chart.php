@@ -181,12 +181,9 @@ class Chart
 	                && $this->jsWriter->getType() == 'Donut' ) {
 	            throw new \Exception("Flot doesn't allow donut charts with multiple series");
 	        }
-	        
 	        $seriesArray = array();
 	        foreach ($dataSet as $data) {
-	            $seriesArray[] = $type == 'Bubble' 
-	                           ? $this->createSeries($data, end($data), $type)
-	                           : $this->createSeries( call_user_func( $factorySettings, array( $data ) ), $data[0], $type);
+	            $seriesArray[] = $this->createSeries( call_user_func( $factorySettings, array( $data ) ), $data[0], $type);
 	        }
 	        return $seriesArray;
 	    } else {

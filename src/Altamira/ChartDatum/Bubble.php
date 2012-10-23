@@ -38,6 +38,10 @@ class Bubble extends ChartDatumAbstract
      */
     public function getRenderData( $useLabel = false )
     {
+        if ( $this->jsWriter instanceof \Altamira\JsWriter\Flot ) {
+            return array( $this['x'], $this['y'], $this['radius']*10 )
+            +  ( $useLabel ? array( $this['label']  ) : array() );
+        }
         return array( $this['x'], $this['y'], $this['radius'] ) 
             +  ( $useLabel ? array( $this['label']  ) : array() );
     }

@@ -120,22 +120,22 @@ if ( $library == 'flot' ) {
         ->addSeries($chart6->createManySeries($chart6Many2, $nestedFactoryMethod, 'External'));
 }
 
+$bubbleFactoryMethod = array( 'Altamira\ChartDatum\BubbleFactory', 'getBubbleDatumFromTupleSet' );
 
-/**
 $chart7 = new Chart('chart7', $library);
 $chart7->addSeries($chart7->createManySeries(
-    array(  array(4, 7, 5, 'Screws'),
-        array(5, 3, 6, 'Nails'),
-        array(4, 5, 7, 'Bolts'),
-        array(3.5, 4, 6, 'Nuts'),
-        array(3, 2, 5, 'Washers'),
-        array(4, 1, 5, 'Pliers'),
-        array(4.5, 6, 6, 'Hammers')), null, 'Bubble'))->
+    array(  array('Screws', 4, 7, 5),
+        array('Nails', 5, 3, 6),
+        array('Bolts', 4, 5, 7),
+        array('Nuts', 3.5, 4, 6),
+        array('Washers', 3, 2, 5),
+        array('Pliers', 4, 1, 5),
+        array('Hammers', 4.5, 6, 6)), $bubbleFactoryMethod, 'Bubble'))->
     setTitle('Bubble Chart')->
     setType('Bubble')->
     setTypeOption('bubbleAlpha', .5)->
     setTypeOption('highlightAlpha', .7);
-
+/**
 $array1 = array(1, 4, 8, 2, 1, 5);
 $array2 = array(3, 3, 5, 4, 2, 6);
 
@@ -161,9 +161,9 @@ $charts = array($chart,
                 $chart4, 
                 $chart5,
                 $chart6, 
-/*                $chart7, 
-                $chart8
-*/                );
+                $chart7, 
+//                $chart8
+                );
 
 if ( $library == 'flot' ) {
     $charts[] = $chart6a;

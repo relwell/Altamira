@@ -49,7 +49,6 @@ class Flot
             if (! empty($this->seriesLabels[$title]) ) {
                 $labelCopy = $this->seriesLabels[$title];
             }
-
             $formattedData = array();
             foreach ($data as $datum) { 
                 if (! $datum instanceof ChartDatum\ChartDatumAbstract ) {
@@ -87,7 +86,6 @@ class Flot
                         } 
                     }*/
                         
-                    
                     if (!empty($this->seriesLabels[$title])) {
                         $dataPoints = "{$datum['x']},{$datum['y']}";
                         $datum->setLabel( $labelCopy );
