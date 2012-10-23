@@ -315,13 +315,15 @@ ENDJS;
         }
     
         $seriesOptions = array();
-        foreach($this->options['seriesStorage'] as $title => $opts) {
-            if(isset($types[$title])) {
-                $type = $types[$title];
-                array_merge_recursive($opts, $type->getSeriesOptions());
+        if ( isset( $this->options['seriesStorage'] ) ) { 
+            foreach($this->options['seriesStorage'] as $title => $opts) {
+                if(isset($types[$title])) {
+                    $type = $types[$title];
+                    array_merge_recursive($opts, $type->getSeriesOptions());
+                }
+                $opts['label'] = $title;
+                $seriesOptions[$title] = $opts;
             }
-            $opts['label'] = $title;
-            $seriesOptions[$title] = $opts;
         }
         $options['seriesStorage'] = $seriesOptions;
         

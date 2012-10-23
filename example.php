@@ -96,13 +96,31 @@ $chart6Many2 = array(array('Metals', 4), array('Plastics', 2), array('Wood', 5),
 
 $chart6 = new Chart('chart6', $library);
 $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
-    addSeries($chart6->createManySeries($chart6Many1, $nestedFactoryMethod, 'Internal'))->
-    addSeries($chart6->createManySeries($chart6Many2, $nestedFactoryMethod, 'External'))->
     setSeriesColors(array('#dd3333', '#d465f1', '#aa2211', '#3377aa', '#6699bb', '#9933aa'))->
     setType('Donut')->
     setLegend()->
     setTypeOption('sliceMargin', 3)->
     setTypeOption('showDataLabels', true);
+
+if ( $library == 'flot' ) {
+    $chart6->addSeries($chart6->createManySeries( $chart6Many1, $nestedFactoryMethod, 'Internal' ) );
+    // Flot doesn't support inner and outer, but you can always use extra js to superimpose
+    $chart6a = new Chart('chart6a', $library);
+    $chart6a
+        ->addSeries( $chart6->createManySeries($chart6Many2, $nestedFactoryMethod, 'External' ) )
+        ->setTitle('Donut Chart With Custom Colors And Labels')
+        ->setSeriesColors(array('#dd3333', '#d465f1', '#aa2211', '#3377aa', '#6699bb', '#9933aa'))
+        ->setType('Donut')
+        ->setLegend()
+        ->setTypeOption('sliceMargin', 3)
+        ->setTypeOption('showDataLabels', true);
+} else {
+    $chart6
+        ->addSeries($chart6->createManySeries($chart6Many1, $nestedFactoryMethod, 'Internal'))
+        ->addSeries($chart6->createManySeries($chart6Many2, $nestedFactoryMethod, 'External'));
+}
+
+
 /**
 $chart7 = new Chart('chart7', $library);
 $chart7->addSeries($chart7->createManySeries(
@@ -146,6 +164,10 @@ $charts = array($chart,
 /*                $chart7, 
                 $chart8
 */                );
+
+if ( $library == 'flot' ) {
+    $charts[] = $chart6a;
+}
 
 $chartIterator = new ChartIterator($charts, $config);
 

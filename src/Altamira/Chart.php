@@ -177,6 +177,11 @@ class Chart
 	public function createManySeries(array $dataSet, array $factorySettings , $title = null, $type = null)
 	{
 	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Flot ) {
+	        if (   !empty( $this->series )
+	                && $this->jsWriter->getType() == 'Donut' ) {
+	            throw new \Exception("Flot doesn't allow donut charts with multiple series");
+	        }
+	        
 	        $seriesArray = array();
 	        foreach ($dataSet as $data) {
 	            $seriesArray[] = $type == 'Bubble' 
