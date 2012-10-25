@@ -13,10 +13,7 @@ class Chart
 	protected $types = array();
 	
 	// @todo chart shouldn't even have options -- put it all in jswriter
-	protected $options = array(	'seriesDefaults' => array('pointLabels' => array('show' => false)),
-					'highlighter' => array('show' => false),
-					'cursor' => array('showTooltip' => false, 'show' => false)
-				  );
+	protected $options = array();
 	protected $series = array();
 	protected $labels = array();
 	protected $files = array();
@@ -111,7 +108,6 @@ class Chart
 	public function setSeriesColors($colors)
 	{
 		$this->options['seriesColors'] = $colors;
-
 		return $this;
 	}
 
@@ -178,18 +174,20 @@ class Chart
 	    }
 	}
 	
-	public function createManySeries($data, $title = null, $type = null)
+	public function createManySeries(array $dataSet, array $factorySettings , $title = null, $type = null)
 	{
 	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Flot ) {
+	        if (   !empty( $this->series )
+	                && $this->jsWriter->getType() == 'Donut' ) {
+	            throw new \Exception("Flot doesn't allow donut charts with multiple series");
+	        }
 	        $seriesArray = array();
-	        foreach ($data as $datum) {
-	            $seriesArray[] = $type == 'Bubble' 
-	                           ? $this->createSeries($datum, end($datum), $type)
-	                           : $this->createSeries(array($datum[1]), $datum[0], $type);
+	        foreach ($dataSet as $data) {
+	            $seriesArray[] = $this->createSeries( call_user_func( $factorySettings, array( $data ) ), $data[0], $type);
 	        }
 	        return $seriesArray;
 	    } else {
-	        return $this->createSeries($data, $title, $type);
+	        return $this->createSeries( call_user_func( $factorySettings, $dataSet ), $title, $type);
 	    }
 	}
 	

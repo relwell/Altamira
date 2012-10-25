@@ -6,7 +6,7 @@ abstract class JsWriterAbstract
 {
     protected $chart;
     
-    protected $options = array('series'=>array());
+    protected $options = array('seriesStorage'=>array());
     protected $files = array();
     protected $callbacks = array();
     protected $seriesLabels = array();
@@ -14,6 +14,7 @@ abstract class JsWriterAbstract
     protected $types = array();
     protected $library;
     protected $typeNamespace;
+    protected $useLabels = false;
     
     public function __construct(\Altamira\Chart $chart)
     {
@@ -30,8 +31,7 @@ abstract class JsWriterAbstract
     
     public function makeJSArray($array)
     {
-        $options = json_encode($array);
-        $optionString = preg_replace('/"#(.*?)#"/', '$1', $options);
+        $optionString = preg_replace('/"#([^#":]*)#"/U', '$1', json_encode($array) );
         
         foreach ( $this->callbacks as $placeHolder => $callback ) {
             $optionString = str_replace("\"{$placeHolder}\"", $callback, $optionString);
@@ -66,24 +66,26 @@ abstract class JsWriterAbstract
     public function getOptionsForSeries($series)
     {
         if ($series instanceOf \Altamira\Series) {
-            return $this->options['series'][$series->getTitle()];
+            return $this->options['seriesStorage'][$series->getTitle()];
         } else if (is_string($series)) {
-            return $this->options['series'][$series];
+            return $this->options['seriesStorage'][$series];
         }
     }
     
     public function getSeriesOption($series, $option)
     {
         if ($series instanceOf \Altamira\Series) {
-            return $this->options['series'][$series->getTitle()][$option];
+            return isset($this->options['seriesStorage'][$series->getTitle()]) && isset($this->options['seriesStorage'][$series->getTitle()][$option]) 
+                    ? $this->options['seriesStorage'][$series->getTitle()][$option]
+                    : null;
         } else if (is_string($series)) {
-            return $this->options['series'][$series][$option];
+            return $this->options['seriesStorage'][$series][$option];
         }
     }
     
     public function setSeriesOption( \Altamira\Series  $series, $name, $value)
     {
-        $this->options['series'][$series->getTitle()][$name] = $value;
+        $this->options['seriesStorage'][$series->getTitle()][$name] = $value;
         
         return $this;
     }
@@ -116,6 +118,16 @@ abstract class JsWriterAbstract
         }
         
         return $this;
+    }
+    
+    public function getType( $key = 'default' )
+    {
+        if ( isset( $this->types[$key] ) ) {
+            return $this->types[$key];
+        } else if ( isset( $this->types['default'] ) ) {
+            return $this->types['default'];
+        } 
+        return null;
     }
     
     public function setTypeOption( $name, $option, $series=null )

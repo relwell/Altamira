@@ -3,6 +3,7 @@
 namespace Altamira\JsWriter;
 
 use Altamira\JsWriter\Ability;
+use Altamira\ChartDatum;
 
 class Flot 
     extends JsWriterAbstract
@@ -31,8 +32,7 @@ class Flot
         $name = $this->chart->getName();
         $dataArrayJs = '[';
         
-        $this->prepOpts($this->options['series']);
-        
+        $counter = 0;
         foreach ($this->chart->getSeries() as $title=>$series) {
             
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
@@ -41,70 +41,48 @@ class Flot
             
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
-            
+
             $oneDimensional = array_keys($data) == range(0, count($data)-1, 1);
             
             if (! empty($this->seriesLabels[$title]) ) {
                 $labelCopy = $this->seriesLabels[$title];
             }
-
-            foreach ($data as $key=>$val) { 
+            $formattedData = array();
+            foreach ($data as $datum) { 
+                if (! $datum instanceof ChartDatum\ChartDatumAbstract ) {
+                    throw new \UnexpectedValueException('Chart data should be an object inheriting from ChartDatumAbstract');
+                }
                 foreach ($this->dateAxes as $axis=>$flag) { 
                     if ($flag) {
+                        //@todo we can probably accomplish this with less iterations
                         switch ($axis) {
-                            case 'x':
-                                
-                                $date = \DateTime::createFromFormat('m/d/Y', $data[$key][0]);
-                                $data[$key][0] = $date->getTimestamp() * 1000;
+                            case 'x':                                
+                                $date = \DateTime::createFromFormat('m/d/Y', $datum['x']);
+                                $datum['x'] = $date->getTimestamp() * 1000;
                                 break;
                             case 'y':
-                                $date = \DateTime::createFromFormat('m/d/Y', $data[$key][1]);
-                                $data[$key][1] = $date->getTimestamp() * 1000;
+                                $date = \DateTime::createFromFormat('m/d/Y', $datum['y']);
+                                $datum['y'] = $date->getTimestamp() * 1000;
                                 break;
                         }
                     }
                 }
-                // update if date
-                $val = $data[$key];
-
-                if (is_array($val)) {
-                    $data[$key] = array_slice($val, 0, 2);
-                    if ( isset($this->types['default']) ) { 
-                        if (   $this->types['default'] instanceOf \Altamira\Type\Flot\Pie
-                            || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) {
                         
-                            $data[$key] = array('label' => $val[0], 'data' => $val[1]);
-                            
-                            
-                        } else if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
-                            $bubblePoints = array_slice($val, 0, 3);
-                            $bubblePoints[2] *= 10;
-                            $data[$key] = $bubblePoints;
-                        } 
-                        
-                    }
-                        
-                    
-                    if (!empty($this->seriesLabels[$title])) {
-                        $dataPoints = "{$val[0]},{$val[1]}";
-                        $this->pointLabels[$dataPoints] = array_shift($labelCopy);
-                    }
-                } else {
-                    $valueArray = array(($oneDimensional? $key+1 : $key), $val);
-                    if (isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bar ) {
-                        $baropts = $this->types['default']->getOptions();
-                        if (isset($baropts['bars']['horizontal']) && $baropts['bars']['horizontal'] == true) {
-                            $valueArray = array($val, $key);
-                        }
-                    }
-                    $data[$key] = $valueArray;
+                if (!empty($this->seriesLabels[$title])) {
+                    $dataPoints = "{$datum['x']},{$datum['y']}";
+                    $datum->setLabel( $labelCopy );
+                    $this->pointLabels[$dataPoints] = array_shift($labelCopy);
                 }
-            };
+                
+                $formattedData[] = $datum->getRenderData();
+            }
             
-            $dataArrayJs .= 'data: '.$this->makeJSArray($data);
+            $dataArrayJs .= 'data: '.$this->makeJSArray($formattedData);
             
-            if ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble ) {
-                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', end(end($series->getData()))) . '"';
+            if (isset($this->types['default']) && 
+               ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble
+                || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) ) {
+                $dataArrayJs .= ', label: "' . str_replace('"', '\\"', $series->getTitle() ) . '"';
             }
 
             $this->prepOpts( $this->options['seriesStorage'][$title] );
@@ -302,17 +280,19 @@ ENDJS;
         $types = $this->types;
     
         if(isset($types['default'])) {
-            array_merge_recursive($options['series'], $types['default']->getOptions());
+            array_merge_recursive($options['seriesStorage'], $types['default']->getOptions());
         }
     
         $seriesOptions = array();
-        foreach($this->options['seriesStorage'] as $title => $opts) {
-            if(isset($types[$title])) {
-                $type = $types[$title];
-                array_merge_recursive($opts, $type->getSeriesOptions());
+        if ( isset( $this->options['seriesStorage'] ) ) { 
+            foreach($this->options['seriesStorage'] as $title => $opts) {
+                if(isset($types[$title])) {
+                    $type = $types[$title];
+                    array_merge_recursive($opts, $type->getSeriesOptions());
+                }
+                $opts['label'] = $title;
+                $seriesOptions[$title] = $opts;
             }
-            $opts['label'] = $title;
-            $seriesOptions[$title] = $opts;
         }
         $options['seriesStorage'] = $seriesOptions;
         
@@ -324,7 +304,7 @@ ENDJS;
         foreach ($this->optsMapper as $opt => $mapped)
         {
             if (($currOpt = $this->getOptVal($this->options, $opt)) && ($currOpt !== null)) {
-                $this->setOpt(&$this->options, $mapped, $currOpt);
+                $this->setOpt($this->options, $mapped, $currOpt);
                 $this->unsetOpt($this->options, $opt);
             }
         }
@@ -332,8 +312,8 @@ ENDJS;
         $opts = $this->options;
         
         // stupid pie plugin
-        if (!isset($opts['series']['pie']['show'])) {
-            $opts = array_merge_recursive($opts, array('series'=>array('pie'=>array('show'=>false))));
+        if (!isset($opts['seriesStorage']['pie']['show'])) {
+            $opts = array_merge_recursive($opts, array('seriesStorage'=>array('pie'=>array('show'=>false))));
         }
 
         unset($opts['seriesStorage']);
@@ -514,12 +494,15 @@ ENDJS;
     {
         $this->useLabels = true;
         $this->seriesLabels[$series->getTitle()] = $labels;
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
+        return $this;
     }
     
     public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
+        return $this;
     }
     
     public function setSeriesLineWidth( \Altamira\Series $series, $value )
@@ -601,14 +584,16 @@ ENDJS;
     
     public function prepOpts( &$opts = array() )
     {
-        if (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble)) {
-            if ( (! isset($this->options['series']['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
+        if (   (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble))
+            && (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bar))
+                ) {
+            if ( (! isset($this->options['seriesStorage']['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
                 // show points by default
                 $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
                                 + array('show'=>true);
             }
             
-            if ( (! isset($this->options['series']['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
+            if ( (! isset($this->options['seriesStorage']['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
                 // show lines by default
                 $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
                 + array('show'=>true);

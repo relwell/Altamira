@@ -7,7 +7,18 @@ use Altamira\ChartRenderer;
 
 class ChartRenderer
 {
+    protected static $instance;
     protected static $rendererChain = array();
+    
+    protected function __construct(){}
+    
+    protected static function getInstance()
+    {
+        if ( self::$instance === null ) {
+            self::$instance = new ChartRenderer();
+        }
+        return self::$instance;
+    }
     
     public static function render( Chart $chart, array $styleOptions = array() )
     {
@@ -38,7 +49,7 @@ class ChartRenderer
         
         array_push( self::$rendererChain, $renderer );
         
-        return self;
+        return self::getInstance();
     }
     
     public static function unshiftRenderer( $renderer )
@@ -49,14 +60,14 @@ class ChartRenderer
         
         array_unshift( self::$rendererChain, $renderer );
         
-        return self;
+        return self::getInstance();
     }
     
-    public function reset()
+    public static function reset()
     {
         self::$rendererChain = array();
         
-        return self;
+        return self::getInstance();
     }
     
 }

@@ -35,23 +35,26 @@ class JqPlot
         
         foreach($this->chart->getSeries() as $series) {
             $num++;
-            $data = $series->getData($useTags);
-            $title = $series->getTitle();
+            $data        = $series->getData($useTags);
+            $dataPrepped = array();
+            $title       = $series->getTitle();
+            $labelCopy   = null;
             
             if (isset($this->seriesLabels[$title]) 
                 && !empty($this->seriesLabels[$title])) {
                 $labelCopy = $this->seriesLabels[$title];
-                foreach ($data as &$datum) {
-                    $datum[] = array_shift($labelCopy);
-                }
-                
             }
-
+            
+            foreach ($data as &$datum) {
+                if ( $labelCopy !== null ) {
+                    $datum->setLabel( array_shift( $labelCopy ) );
+                }
+                $dataPrepped[] = $datum->getRenderData();
+            }
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
-            $output .= $varname . ' = ' . $this->makeJSArray($data) . ';';
+            $output .= $varname . ' = ' . $this->makeJSArray($dataPrepped) . ';';
         }
-        
         $output .= 'plot = $.jqplot("' . $this->chart->getName() . '", ';
         $output .= $this->makeJSArray($vars);
         $output .= ', ';
@@ -238,29 +241,38 @@ class JqPlot
     protected function getSeriesOptions(array $options)
     {
         $types = $this->types;
+        $defaults = array(  'highlighter' => array('show' => false),
+			                'cursor'      => array('showTooltip' => false, 'show' => false),
+                            'pointLabels' => array('show' => false)
+                             );
         if(isset($types['default'])) {
-            $defaults = $options['seriesDefaults'];
             $renderer = $types['default']->getRenderer();
-            if(isset($renderer))
+            if(isset($renderer)) {
                 $defaults['renderer'] = $renderer;
+            }
             $defaults['rendererOptions'] = $types['default']->getRendererOptions();
-            if(count($defaults['rendererOptions']) == 0)
+            if(count($defaults['rendererOptions']) == 0) {
                 unset($defaults['rendererOptions']);
+            }
             $options['seriesDefaults'] = $defaults;
         }
         
         $seriesOptions = array();
-        foreach($this->options['seriesStorage'] as $title => $opts) {
-            if(isset($types[$title])) {
-                $type = $types[$title];
-                $opts['renderer'] = $type->getRenderer();
-                array_merge_recursive($opts, $type->getSeriesOptions());
+        if (isset($this->options['seriesStorage'])) {
+            foreach($this->options['seriesStorage'] as $title => $opts) {
+                if(isset($types[$title])) {
+                    $type = $types[$title];
+                    $opts['renderer'] = $type->getRenderer();
+                    array_merge_recursive($opts, $type->getSeriesOptions());
+                }
+                $opts['label'] = $title;
+                
+                $seriesOptions[] = $opts;
             }
-            $opts['label'] = $title;
-            
-            $seriesOptions[] = $opts;
         }
+        
         $options['seriesStorage'] = $seriesOptions;
+        $options['seriesDefaults'] = $defaults;
         
         return $options;
     }
@@ -269,8 +281,7 @@ class JqPlot
     {
         $opts = $this->options;
         $opts['series'] = $opts['seriesStorage'];
-        unset($opts['series']);
-        
+        unset($opts['seriesStorage']);
         return $this->makeJSArray($opts);
     }
     
@@ -284,12 +295,15 @@ class JqPlot
     public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
     {
         $this->seriesLabels[$series->getTitle()] = $labels;
+        if (!isset($this->options['seriesStorage'][$series->getTitle()]['pointLabels'])) {
+            $this->options['seriesStorage'][$series->getTitle()]['pointLabels'] = array();
+        }
         $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['show'] = true;
-        
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['labels'] = $labels;
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
         if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
             $this->files[] = 'jqplot.pointLabels.min.js';
         }
-        
         return $this;
     }
     
@@ -300,7 +314,6 @@ class JqPlot
         } elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
             $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
         }
-        
         return $this;
     }
     

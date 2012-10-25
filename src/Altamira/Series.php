@@ -3,6 +3,7 @@
 namespace Altamira;
 
 use Altamira\JsWriter\JsWriterAbstract;
+use Altamira\ChartDatum\ChartDatumAbstract;
 
 class Series
 {
@@ -24,20 +25,13 @@ class Series
 
 		$tagcount = 0;
 		foreach($data as $datum) {
-			if(is_array($datum) && count($datum) >= 2) {
-				$this->useTags = true;
-				$this->data[] = array_shift($datum);
-				$this->tags[] = array_shift($datum);
-			} else {
-				$this->data[] = $datum;
-				if(count($this->tags) > 0) {
-					$this->tags[] = end($this->tags) + 1;
-				} else {
-					$this->tags[] = 1;
-				}
-			}
-			$tagcount++;
+            if (! $datum instanceof ChartDatumAbstract ) {
+                throw new \UnexpectedValueException( "The data array must consist of instances inheriting from ChartDatumAbstract" );
+            }
+            $datum->setJsWriter($jsWriter)
+                  ->setSeries($this);
 		}
+		$this->data = $data;
 
 		if(isset($title)) {
 			$this->title = $title;
@@ -93,6 +87,7 @@ class Series
 
 	public function getData($tags = false)
 	{
+	    return $this->data;
 		if($tags || $this->useTags) {
 			$data = array();
 			$tags = $this->tags;
@@ -125,7 +120,6 @@ class Series
     		$this->useTags = true;
     		$this->useLabels = true;
     		$this->jsWriter->useSeriesLabels($this, $labels);
-            $this->jsWriter->setSeriesOption($this, 'pointLabels', array('show' => true, 'edgeTolerance' => 3));
 	    }
 
 		return $this;
