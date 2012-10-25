@@ -299,10 +299,11 @@ class JqPlot
             $this->options['seriesStorage'][$series->getTitle()]['pointLabels'] = array();
         }
         $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['show'] = true;
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['labels'] = $labels;
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
         if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
             $this->files[] = 'jqplot.pointLabels.min.js';
         }
-        
         return $this;
     }
     

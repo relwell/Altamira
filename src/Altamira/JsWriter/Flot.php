@@ -494,12 +494,15 @@ ENDJS;
     {
         $this->useLabels = true;
         $this->seriesLabels[$series->getTitle()] = $labels;
+        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
+        return $this;
     }
     
     public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
+        return $this;
     }
     
     public function setSeriesLineWidth( \Altamira\Series $series, $value )

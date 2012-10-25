@@ -120,7 +120,6 @@ class Series
     		$this->useTags = true;
     		$this->useLabels = true;
     		$this->jsWriter->useSeriesLabels($this, $labels);
-            $this->jsWriter->setSeriesOption($this, 'pointLabels', array('show' => true, 'edgeTolerance' => 3));
 	    }
 
 		return $this;
