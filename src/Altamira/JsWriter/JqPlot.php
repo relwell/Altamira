@@ -242,7 +242,8 @@ class JqPlot
     {
         $types = $this->types;
         $defaults = array(  'highlighter' => array('show' => false),
-			                'cursor'      => array('showTooltip' => false, 'show' => false)
+			                'cursor'      => array('showTooltip' => false, 'show' => false),
+                            'pointLabels' => array('show' => false)
                              );
         if(isset($types['default'])) {
             $renderer = $types['default']->getRenderer();
@@ -280,7 +281,7 @@ class JqPlot
     {
         $opts = $this->options;
         $opts['series'] = $opts['seriesStorage'];
-        unset($opts['series']);
+        unset($opts['seriesStorage']);
         return $this->makeJSArray($opts);
     }
     
