@@ -135,7 +135,7 @@ $chart7->addSeries($chart7->createManySeries(
     setType('Bubble')->
     setTypeOption('bubbleAlpha', .5)->
     setTypeOption('highlightAlpha', .7);
-/**
+
 $array1 = array(1, 4, 8, 2, 1, 5);
 $array2 = array(3, 3, 5, 4, 2, 6);
 
@@ -148,13 +148,13 @@ for($i = 0; $i < $num; $i++) {
 
 $chart8 = new Chart('chart8', $library);
 $chart8->setTitle('Vertical Stack Chart')->
-    addSeries($chart8->createSeries($array1, 'Is'))->
-    addSeries($chart8->createSeries($array2, 'Is Not'))->
+    addSeries($chart8->createSeries(TwoDimensionalPointFactory::getFromYValues( $array1 ), 'Is'))->
+    addSeries($chart8->createSeries(TwoDimensionalPointFactory::getFromYValues( $array2 ), 'Is Not'))->
     setType('Bar')->
     setLegend(array('on'=>true, 'location'=>'se', 'x'=>5, 'y'=>5))->
     setAxisOptions('y', 'max', 100)->
     setTypeOption('stackSeries', true);
-**/
+
 $charts = array($chart,
                 $chart2, 
                 $chart3, 
@@ -162,7 +162,7 @@ $charts = array($chart,
                 $chart5,
                 $chart6, 
                 $chart7, 
-//                $chart8
+                $chart8
                 );
 
 if ( $library == 'flot' ) {
