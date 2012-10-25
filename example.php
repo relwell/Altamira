@@ -30,7 +30,11 @@ $chart->addSeries($chart->createSeries($series1Points, 'Sales'))->
     setAxisOptions('y', 'formatString', '$%d')->
     setAxisOptions('x', 'tickInterval', 1)->
     setAxisOptions('x', 'min', 0)->
-    setLegend(array('on'=>true));
+    setLegend(array('on'=>true))
+    ->setAxisOptions( 'x', 'min', 0)
+    ->setAxisOptions( 'x', 'max', 14)
+    ->setAxisOptions( 'y', 'min', 0)
+    ->setAxisOptions( 'y', 'max', 10);
 
 $seriesPoints = TwoDimensionalPointFactory::getFromNested( array( array('1/4/1990', 850),
                                                                   array('2/27/1991', 427),
@@ -70,7 +74,11 @@ $chart3->setTitle('Line Chart With Custom Formats And Zoom (drag to zoom, double
     addSeries($seriesA)->
     addSeries($seriesB)->
     addSeries($seriesC)->
-    useZooming();
+    useZooming()
+    ->setAxisOptions( 'x', 'min', 0)
+    ->setAxisOptions( 'x', 'max', 12)
+    ->setAxisOptions( 'y', 'min', 0)
+    ->setAxisOptions( 'y', 'max', 12);
 
 $chart4 = new Chart('chart4', $library);
 $chart4->setTitle('Horizontal Bar Chart')->
@@ -134,7 +142,11 @@ $chart7->addSeries($chart7->createManySeries(
     setTitle('Bubble Chart')->
     setType('Bubble')->
     setTypeOption('bubbleAlpha', .5)->
-    setTypeOption('highlightAlpha', .7);
+    setTypeOption('highlightAlpha', .7)
+    ->setAxisOptions( 'x', 'min', 2)
+    ->setAxisOptions( 'x', 'max', 6)
+    ->setAxisOptions( 'y', 'min', -2)
+    ->setAxisOptions( 'y', 'max', 10);
 
 $array1 = array(1, 4, 8, 2, 1, 5);
 $array2 = array(3, 3, 5, 4, 2, 6);
