@@ -295,8 +295,10 @@ class JqPlot
     public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
     {
         $this->seriesLabels[$series->getTitle()] = $labels;
+        if (!isset($this->options['seriesStorage'][$series->getTitle()]['pointLabels'])) {
+            $this->options['seriesStorage'][$series->getTitle()]['pointLabels'] = array();
+        }
         $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['show'] = true;
-        
         if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
             $this->files[] = 'jqplot.pointLabels.min.js';
         }
@@ -311,7 +313,6 @@ class JqPlot
         } elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
             $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
         }
-        
         return $this;
     }
     

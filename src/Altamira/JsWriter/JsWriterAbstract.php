@@ -6,7 +6,7 @@ abstract class JsWriterAbstract
 {
     protected $chart;
     
-    protected $options = array('series'=>array());
+    protected $options = array('seriesStorage'=>array());
     protected $files = array();
     protected $callbacks = array();
     protected $seriesLabels = array();
@@ -66,36 +66,33 @@ abstract class JsWriterAbstract
     public function getOptionsForSeries($series)
     {
         if ($series instanceOf \Altamira\Series) {
-            return $this->options['series'][$series->getTitle()];
+            return $this->options['seriesStorage'][$series->getTitle()];
         } else if (is_string($series)) {
-            return $this->options['series'][$series];
+            return $this->options['seriesStorage'][$series];
         }
     }
     
     public function getSeriesOption($series, $option)
     {
         if ($series instanceOf \Altamira\Series) {
-            return isset($this->options['series'][$series->getTitle()]) && isset($this->options['series'][$series->getTitle()][$option]) 
-                    ? $this->options['series'][$series->getTitle()][$option]
+            return isset($this->options['seriesStorage'][$series->getTitle()]) && isset($this->options['seriesStorage'][$series->getTitle()][$option]) 
+                    ? $this->options['seriesStorage'][$series->getTitle()][$option]
                     : null;
         } else if (is_string($series)) {
-            return $this->options['series'][$series][$option];
+            return $this->options['seriesStorage'][$series][$option];
         }
     }
     
     public function setSeriesOption( \Altamira\Series  $series, $name, $value)
     {
-        $this->options['series'][$series->getTitle()][$name] = $value;
+        $this->options['seriesStorage'][$series->getTitle()][$name] = $value;
         
         return $this;
     }
     
     public function initializeSeries( \Altamira\Series $series )
     {
-        $this->options['seriesStorage'][$series->getTitle()] = array();/**'pointLabels' => array('show' => false),
-					                                                 'highlighter' => array('show' => false),
-					                                                 'cursor' => array('showTooltip' => false, 'show' => false)
-                                                                    );*/
+        $this->options['seriesStorage'][$series->getTitle()] = array();
         $this->series[] = $series;
     }
     
