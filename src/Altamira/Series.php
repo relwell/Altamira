@@ -68,24 +68,33 @@ class Series
 		$this->jsWriter->initializeSeries($this);
 	}
 
-	public function setShadow($opts = array('use'=>true, 
-                                            'angle'=>45, 
-                                            'offset'=>1.25, 
-                                            'depth'=>3, 
-                                            'alpha'=>0.1))
+	/**
+	 * Sets the shadow for this series. Refer to default options.
+	 * @param array $opts refer to the defaults for the kind of options 
+	 * @return \Altamira\Series provides fluent interface
+	 */
+	public function setShadow( $opts = array( 'use'    =>    true, 
+                                              'angle'  =>    45, 
+                                              'offset' =>    1.25, 
+                                              'depth'  =>    3, 
+                                              'alpha'  =>    0.1 ) )
 	{
 	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Shadowable ) {
-	        $this->jsWriter->setShadow($this->getTitle(), $opts);
+	        $this->jsWriter->setShadow( $this->getTitle(), $opts );
 	    }
 	    
 		return $this;
 	}
 
-	public function setFill($opts = array('use' => true, 
-                                                   'stroke' => false, 
-                                                   'color' => null, 
-                                                   'alpha' => null
-                                                  ))
+	/**
+	 * Sets fill option for JSWriter for this series
+	 * @param array $opts see constructor for keys
+	 * @return \Altamira\Series provides fluent interface
+	 */
+	public function setFill( $opts = array( 'use'    => true, 
+                                            'stroke' => false, 
+                                            'color'  => null, 
+                                            'alpha'  => null ) )
 	{
         if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Fillable ) {
     	    $this->jsWriter->setFill($this->getTitle(), $opts);
@@ -94,11 +103,20 @@ class Series
 		return $this;
 	}
 
+	/**
+	 * Returns the array of ChartDatumAbstract instances set during construction
+	 * @return array of ChartDatumAbstract instances
+	 */
 	public function getData()
 	{
 	    return $this->data;
 	}
 
+	/**
+	 * 
+	 * @param string $title
+	 * @return \Altamira\Series
+	 */
 	public function setTitle($title)
 	{
 		$this->title = $title;
@@ -106,10 +124,15 @@ class Series
 		return $this;
 	}
 
+	/**
+	 * Set the labels to be used for this series in the JsWriter
+	 * @param array $labels all strings
+	 * @return \Altamira\Series provides fluent interface
+	 */
 	public function useLabels( $labels = array() )
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
-    		$this->jsWriter->useSeriesLabels($this, $labels);
+    		$this->jsWriter->useSeriesLabels($this->getTitle(), $labels);
 	    }
 
 		return $this;
@@ -118,7 +141,7 @@ class Series
 	public function setLabelSetting($name, $value)
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
-    		$this->jsWriter->setSeriesLabelSetting($this, $name, $value);
+    		$this->jsWriter->setSeriesLabelSetting($this->getTitle(), $name, $value);
 	    }
 		
 		return $this;

@@ -287,27 +287,27 @@ class JqPlot
         return $this;
     }
     
-    public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
+    public function useSeriesLabels( $seriesTitle, array $labels = array() )
     {
-        $this->seriesLabels[$series->getTitle()] = $labels;
-        if (!isset($this->options['seriesStorage'][$series->getTitle()]['pointLabels'])) {
-            $this->options['seriesStorage'][$series->getTitle()]['pointLabels'] = array();
+        $this->seriesLabels[$seriesTitle] = $labels;
+        if (!isset($this->options['seriesStorage'][$seriesTitle]['pointLabels'])) {
+            $this->options['seriesStorage'][$seriesTitle]['pointLabels'] = array();
         }
-        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['show'] = true;
-        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['labels'] = $labels;
-        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
+        $this->options['seriesStorage'][$seriesTitle]['pointLabels']['show'] = true;
+        $this->options['seriesStorage'][$seriesTitle]['pointLabels']['labels'] = $labels;
+        $this->options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance'] = 3;
         if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
             $this->files[] = 'jqplot.pointLabels.min.js';
         }
         return $this;
     }
     
-    public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
+    public function setSeriesLabelSetting( $seriesTitle, $name, $value )
     {
         if($name === 'location' && in_array($value, array('n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'))) {
-            $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
+            $this->setSeriesOption($seriesTitle, 'pointLabels', (($a = $this->getSeriesOption($seriesTitle, 'pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
         } elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
-            $this->setSeriesOption($series, 'pointLabels', (($a = $this->getSeriesOption($series, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
+            $this->setSeriesOption($seriesTitle, 'pointLabels', (($a = $this->getSeriesOption($seriesTitle, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
         }
         return $this;
     }

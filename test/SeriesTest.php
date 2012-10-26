@@ -5,6 +5,12 @@ use Altamira\ChartDatum\TwoDimensionalPointFactory;
 
 class SeriesTest extends PHPUnit_Framework_TestCase
 {
+    protected $data;
+    protected $mockJqPlotWriter;
+    protected $mockFlotWriter;
+    protected $flotSeries;
+    protected $jqPlotSeries;
+    
     public function setUp()
     {
         $data = array();
@@ -34,12 +40,16 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         $this->data                = TwoDimensionalPointFactory::getFromXValues( $data );
         $this->mockJqPlotWriter    = $this->getMock( '\Altamira\JsWriter\JqPlot', $jsWriterMethods, array( $mockChart ) );
         $this->mockFlotWriter      = $this->getMock( '\Altamira\JsWriter\JqPlot', $jsWriterMethods, array( $mockChart ) );
+        $this->jqPlotSeries        = new Series( $this->data, 'jqPlot', $this->mockJqPlotWriter );
+        $this->flotSeries          = new Series( $this->data, 'Flot', $this->mockFlotWriter );
         
     }
     
     /**
      * @covers \Altamira\Series::__construct
      * @covers \Altamira\Series::getTitle
+     * @covers \Altamira\Series::getData
+     * @covers \Altamira\Series::setTitle
      */
     public function testConstruct()
     {
@@ -99,6 +109,93 @@ class SeriesTest extends PHPUnit_Framework_TestCase
                 $seriesJsWriterProperty->getValue( $series ),
                 'A series should store the JsWriter passed to it in the JsWriter property.'
         );
+        
+        $series->setTitle( 'Bar' );
+        
+        $this->assertEquals(
+                'Bar',
+                $series->getTitle(),
+                '\Altamira\Series::setTitle() should set at title that can be retrieved with \Altamira\Series::getTitle()'
+        ); 
+        
+    }
+    
+    /**
+     * @covers \Altamira\Series::setShadow
+     * @covers \Altamira\Series::setFill
+     */
+    public function testSetters()
+    {
+        $setShadowDefaultVals = array( 'use'    =>    true, 
+                                       'angle'  =>    45, 
+                                       'offset' =>    1.25, 
+                                       'depth'  =>    3, 
+                                       'alpha'  =>    0.1 );
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setShadow' )
+                ->with              ( $this->jqPlotSeries->getTitle(), $setShadowDefaultVals )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setShadow' )
+               ->with               ( $this->flotSeries->getTitle(), $setShadowDefaultVals )
+        ;
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setShadow(),
+                'Series::setShadow() should provide a fluent interface'
+        );
+        $this->jqPlotSeries->setShadow();
+
+        $setFillDefaults =  array( 'use'    => true, 
+                                   'stroke' => false, 
+                                   'color'  => null, 
+                                   'alpha'  => null );
+
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setFill' )
+                ->with              ( $this->jqPlotSeries->getTitle(), $setFillDefaults )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setFill' )
+               ->with               ( $this->flotSeries->getTitle(), $setFillDefaults )
+        ;
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setFill(),
+                'Series::setFill() should provide a fluent interface'
+        );  
+        $this->jqPlotSeries->setFill();
+    }
+    
+    /**
+     * @covers \Altamira\Series::useLabels
+     */
+    public function testUseLabels()
+    {
+        $labels = array( 'a', 'b', 'c', 'd', 'e', 'f', 'g' );
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'useSeriesLabels' )
+                ->with              ( $this->jqPlotSeries->getTitle(), $labels )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'useSeriesLabels' )
+               ->with               ( $this->flotSeries->getTitle(), $labels )
+        ;
+        
+        $this->assertEquals(
+                $this->jqPlotSeries,
+                $this->jqPlotSeries->useLabels( $labels ),
+                '\Altamira\Series::useLabels() should provide a fluent interface'
+        );
+        $this->flotSeries->useLabels( $labels );
     }
     
 }

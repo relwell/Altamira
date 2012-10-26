@@ -490,15 +490,15 @@ ENDJS;
         return $this;
     }
     
-    public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
+    public function useSeriesLabels( $seriesTitle, array $labels = array() )
     {
         $this->useLabels = true;
-        $this->seriesLabels[$series->getTitle()] = $labels;
-        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
+        $this->seriesLabels[$seriesTitle] = $labels;
+        $this->options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance'] = 3;
         return $this;
     }
     
-    public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
+    public function setSeriesLabelSetting( $seriesTitle, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
