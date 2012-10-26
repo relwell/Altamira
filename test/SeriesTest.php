@@ -56,6 +56,10 @@ class SeriesTest extends PHPUnit_Framework_TestCase
                 'A series should throw an exception if it is passed data that is not formatted into ChartDatumAbstract'
         );
         
+        $this   ->mockJqPlotWriter
+                ->expects          ( $this->any() )
+                ->method           ( 'initializedSeries' );
+        
         $series = new Series( $this->data, 'Foo', $this->mockJqPlotWriter );
         
         $this->assertEquals(
@@ -64,10 +68,12 @@ class SeriesTest extends PHPUnit_Framework_TestCase
                 'A series should return the data that has been passed to it during instantiation.'
         );
         
-        $datumJsWriterProperty = new ReflectionProperty('\Altamira\ChartDatum\ChartDatumAbstract', 'jsWriter');
-        $datumSeriesProperty   = new ReflectionProperty('\Altamira\ChartDatum\ChartDatumAbstract', 'series');
+        $datumJsWriterProperty  = new ReflectionProperty('\Altamira\ChartDatum\ChartDatumAbstract', 'jsWriter');
+        $datumSeriesProperty    = new ReflectionProperty('\Altamira\ChartDatum\ChartDatumAbstract', 'series');
+        $seriesJsWriterProperty = new ReflectionProperty('\Altamira\Series', 'jsWriter');
         $datumJsWriterProperty->setAccessible( true );
         $datumSeriesProperty->setAccessible( true );
+        $seriesJsWriterProperty->setAccessible( true );
         
         foreach( $series->getData() as $datum ) {
             $this->assertEquals(
@@ -85,9 +91,14 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
                 'Foo',
                 $series->getTitle(),
-                'Series title should be set during construct, and accessible via Series::getTitle'c
+                'Series title should be set during construct, and accessible via Series::getTitle'
         );
         
+        $this->assertEquals(
+                $this->mockJqPlotWriter,
+                $seriesJsWriterProperty->getValue( $series ),
+                'A series should store the JsWriter passed to it in the JsWriter property.'
+        );
     }
     
 }

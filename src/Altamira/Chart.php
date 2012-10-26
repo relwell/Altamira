@@ -209,10 +209,6 @@ class Chart
 
 	public function getFiles()
 	{
-		foreach($this->series as $series) {
-			$this->files = array_merge_recursive($this->files, $series->getFiles());
-		}
-
 		return array_unique(array_merge($this->files, $this->jsWriter->getFiles()));
 	}
 

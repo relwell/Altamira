@@ -15,17 +15,27 @@ class Series
 	
 	/**
 	 * An array of ChartDatumAbstract children
-	 * @var array
+	 * @var array of \Altamira\ChartDatum\ChartDatumAbstract
 	 */
 	protected $data = array();
 	
-	protected $useLabels = false;
-
+	/**
+	 * The JsWriter instance responsible for rendering this series
+	 * @var \Altamira\JsWriter\JsWriterAbstract
+	 */
 	protected $jsWriter;
 	
+	/**
+	 * The title of the series, used for labeling
+	 * @var string
+	 */
 	protected $title;
-	protected $labels= array();
-	protected $files = array();
+	
+	/**
+	 * The labels for each datum, tracked by array index against the data array
+	 * @var array of strings
+	 */
+	protected $labels = array();
 
 	/**
 	 * Constructor method
@@ -56,11 +66,6 @@ class Series
 
 		$this->jsWriter = $jsWriter;
 		$this->jsWriter->initializeSeries($this);
-	}
-
-	public function getFiles()
-	{
-		return $this->files;
 	}
 
 	public function setShadow($opts = array('use'=>true, 
@@ -104,7 +109,6 @@ class Series
 	public function useLabels( $labels = array() )
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
-    		$this->useLabels = true;
     		$this->jsWriter->useSeriesLabels($this, $labels);
 	    }
 
