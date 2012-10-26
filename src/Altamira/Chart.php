@@ -2,8 +2,6 @@
 
 namespace Altamira;
 
-use Altamira\JsWriter\JqPlot;
-
 class Chart
 {
 	protected $name;
