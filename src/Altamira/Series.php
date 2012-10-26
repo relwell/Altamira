@@ -101,7 +101,7 @@ class Series
 		return $this;
 	}
 
-	public function useLabels($labels = array())
+	public function useLabels( $labels = array() )
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
     		$this->useLabels = true;
@@ -140,11 +140,6 @@ class Series
 	public function getOptions()
 	{
         return $this->jsWriter->getOptionsForSeries($this->getTitle());
-	}
-	
-	public function usesLabels()
-	{
-	    return isset($this->useLabels) && $this->useLabels === true;
 	}
 	
 	public function setLineWidth($val)

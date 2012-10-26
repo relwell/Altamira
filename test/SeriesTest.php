@@ -37,6 +37,10 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         
     }
     
+    /**
+     * @covers \Altamira\Series::__construct
+     * @covers \Altamira\Series::getTitle
+     */
     public function testConstruct()
     {
         $exception = false;
@@ -53,6 +57,36 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         );
         
         $series = new Series( $this->data, 'Foo', $this->mockJqPlotWriter );
+        
+        $this->assertEquals(
+                $this->data,
+                $series->getData(),
+                'A series should return the data that has been passed to it during instantiation.'
+        );
+        
+        $datumJsWriterProperty = new ReflectionProperty('\Altamira\ChartDatum\ChartDatumAbstract', 'jsWriter');
+        $datumSeriesProperty   = new ReflectionProperty('\Altamira\ChartDatum\ChartDatumAbstract', 'series');
+        $datumJsWriterProperty->setAccessible( true );
+        $datumSeriesProperty->setAccessible( true );
+        
+        foreach( $series->getData() as $datum ) {
+            $this->assertEquals(
+                    $this->mockJqPlotWriter,
+                    $datumJsWriterProperty->getValue( $datum ),
+                    'A series should inject its JsWriter into each datum.'
+            );
+            $this->assertEquals(
+                    $series,
+                    $datumSeriesProperty->getValue( $datum ),
+                    'A series should inject itself into each datum.'
+            );
+        }
+        
+        $this->assertEquals(
+                'Foo',
+                $series->getTitle(),
+                'Series title should be set during construct, and accessible via Series::getTitle'c
+        );
         
     }
     
