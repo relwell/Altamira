@@ -53,19 +53,19 @@ class Series
             if (! $datum instanceof ChartDatumAbstract ) {
                 throw new \UnexpectedValueException( "The data array must consist of instances inheriting from ChartDatumAbstract" );
             }
-            $datum->setJsWriter($jsWriter)
-                  ->setSeries($this);
+            $datum->setJsWriter  ( $jsWriter )
+                  ->setSeries    ( $this) ;
 		}
 		$this->data = $data;
 
-		if(isset($title)) {
+		if( isset( $title ) ) {
 			$this->title = $title;
 		} else {
 			$this->title = 'Series ' . self::$count;
 		}
 
 		$this->jsWriter = $jsWriter;
-		$this->jsWriter->initializeSeries($this);
+		$this->jsWriter->initializeSeries( $this );
 	}
 
 	/**
@@ -132,13 +132,19 @@ class Series
 	public function useLabels( $labels = array() )
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
-    		$this->jsWriter->useSeriesLabels($this->getTitle(), $labels);
+    		$this->jsWriter->useSeriesLabels( $this->getTitle(), $labels);
 	    }
 
 		return $this;
 	}
 
-	public function setLabelSetting($name, $value)
+	/**
+	 * Set additional metadata around labels, such as margin and position
+	 * @param string $name
+	 * @param string $value
+	 * @return \Altamira\Series provides fluent interface
+	 */
+	public function setLabelSetting( $name, $value )
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
     		$this->jsWriter->setSeriesLabelSetting($this->getTitle(), $name, $value);
@@ -147,14 +153,24 @@ class Series
 		return $this;
 	}
 
+	/**
+	 * Returns the title set during construciton 
+	 * @return string
+	 */
 	public function getTitle()
 	{
 		return $this->title;
 	}
 
-	public function setOption($name, $value)
+	/**
+	 * Sets an option for this specific series within the JsWriter
+	 * @param string $name
+	 * @param string $value
+	 * @return \Altamira\Series
+	 */
+	public function setOption( $name, $value )
 	{
-		$this->jsWriter->setSeriesOption($this, $name, $value);
+		$this->jsWriter->setSeriesOption( $this->getTitle(), $name, $value );
 
 		return $this;
 	}

@@ -280,9 +280,9 @@ class JqPlot
         return $this->makeJSArray($opts);
     }
     
-    public function setSeriesOption( \Altamira\Series $series, $name, $value)
+    public function setSeriesOption( $seriesTitle, $name, $value)
     {
-        $this->options['seriesStorage'][$series->getTitle()][$name] = $value;
+        $this->options['seriesStorage'][$seriesTitle][$name] = $value;
         
         return $this;
     }

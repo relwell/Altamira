@@ -67,8 +67,8 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         );
         
         $this   ->mockJqPlotWriter
-                ->expects          ( $this->any() )
-                ->method           ( 'initializedSeries' );
+                ->expects          ( $this->once() )
+                ->method           ( 'initializeSeries' );
         
         $series = new Series( $this->data, 'Foo', $this->mockJqPlotWriter );
         
@@ -123,6 +123,9 @@ class SeriesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \Altamira\Series::setShadow
      * @covers \Altamira\Series::setFill
+     * @covers \Altamira\Series::setLabelSetting
+     * @covers \Altamira\Series::setOption
+     * @covers \Altamira\Series::getOption
      */
     public function testSetters()
     {
@@ -170,6 +173,43 @@ class SeriesTest extends PHPUnit_Framework_TestCase
                 'Series::setFill() should provide a fluent interface'
         );  
         $this->jqPlotSeries->setFill();
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesLabelSetting' )
+                ->with              ( $this->jqPlotSeries->getTitle(), 'foo', 'bar' )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesLabelSetting' )
+               ->with               ( $this->flotSeries->getTitle(), 'foo', 'bar' )
+        ;
+        
+        $this->assertEquals(
+                $this->jqPlotSeries,
+                $this->jqPlotSeries->setLabelSetting( 'foo', 'bar' ),
+                '\Altamira\Series::setLabelSetting should provide fluent interface'
+        );
+        
+        $this->flotSeries->setLabelSetting( 'foo', 'bar' );
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesOption' )
+                ->with              ( $this->jqPlotSeries->getTitle(), 'foo', 'bar' )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesOption' )
+               ->with               ( $this->flotSeries->getTitle(), 'foo', 'bar' )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setOption( 'foo', 'bar' ),
+                '\Altamira\Series::setOption should provide fluent interface'
+        );
+        $this->jqPlotSeries->setOption( 'foo', 'bar' );
     }
     
     /**
