@@ -7,10 +7,18 @@ use Altamira\ChartDatum\ChartDatumAbstract;
 
 class Series
 {
+    /**
+     * Counter used when a series title is not provided.
+     * @var int
+     */
 	static protected $count = 0;
+	
+	/**
+	 * An array of ChartDatumAbstract children
+	 * @var array
+	 */
 	protected $data = array();
-	protected $tags = array();
-	protected $useTags = false;
+	
 	protected $useLabels = false;
 
 	protected $jsWriter;
@@ -19,6 +27,13 @@ class Series
 	protected $labels= array();
 	protected $files = array();
 
+	/**
+	 * Constructor method
+	 * @param array            $data an array of ChartDatumAbstract instances
+	 * @param string           $title the desired title of the series (used to label a series)
+	 * @param JsWriterAbstract $jsWriter the jswriter, dependency-injected for rendering
+	 * @throws \UnexpectedValueException
+	 */
 	public function __construct($data, $title = null, JsWriterAbstract $jsWriter)
 	{
 		self::$count++;
@@ -48,17 +63,6 @@ class Series
 		return $this->files;
 	}
 
-	public function setSteps($start, $step)
-	{
-		$num = $start;
-		$this->tags = array();
-
-		foreach($this->data as $item) {
-			$this->tags[] = $num;
-			$num += $step;
-		}
-	}
-
 	public function setShadow($opts = array('use'=>true, 
                                             'angle'=>45, 
                                             'offset'=>1.25, 
@@ -85,26 +89,9 @@ class Series
 		return $this;
 	}
 
-	public function getData($tags = false)
+	public function getData()
 	{
 	    return $this->data;
-		if($tags || $this->useTags) {
-			$data = array();
-			$tags = $this->tags;
-			foreach($this->data as $datum) {
-				if(is_array($datum)) {
-					$item = $datum;
-					$item[] = array_shift($tags);
-				} else {
-					$item = array($datum, array_shift($tags));
-				}
-				
-				$data[] = $item;
-			}
-			return $data;
-		} else {
-			return $this->data;
-		}
 	}
 
 	public function setTitle($title)
@@ -117,7 +104,6 @@ class Series
 	public function useLabels($labels = array())
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
-    		$this->useTags = true;
     		$this->useLabels = true;
     		$this->jsWriter->useSeriesLabels($this, $labels);
 	    }
@@ -125,7 +111,6 @@ class Series
 		return $this;
 	}
 
-	// @todo this logic should probably be in the jswriter
 	public function setLabelSetting($name, $value)
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Labelable) {
@@ -160,11 +145,6 @@ class Series
 	public function usesLabels()
 	{
 	    return isset($this->useLabels) && $this->useLabels === true;
-	}
-	
-	public function getUseTags()
-	{
-	    return $this->useTags;
 	}
 	
 	public function setLineWidth($val)

@@ -57,14 +57,6 @@ class Bar extends \Altamira\Type\TypeAbstract
 
 		return $opts;
 	}
-
-	public function getUseTags()
-	{
-		if(isset($this->options['horizontal']) && $this->options['horizontal'])
-			return true;
-
-		return false;
-	}
 }
 
 ?>

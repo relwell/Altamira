@@ -4,7 +4,6 @@ include(__DIR__ . '/autoload.php');
 use Altamira\Chart;
 use Altamira\ChartIterator;
 use Altamira\Series;
-use Altamira\Series\BubbleSeries;
 use Altamira\ChartRenderer;
 use Altamira\Config;
 use Altamira\ChartDatum\TwoDimensionalPointFactory;

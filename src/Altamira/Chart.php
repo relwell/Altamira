@@ -7,7 +7,6 @@ class Chart
 	protected $name;
 	protected $handler;
 
-	protected $useTags = false;
 	protected $types = array();
 	
 	// @todo chart shouldn't even have options -- put it all in jswriter
@@ -54,11 +53,6 @@ class Chart
 	    return isset($this->options['title']) ? $this->options['title'] : $this->name;
 	}
 	
-	public function getUseTags()
-	{
-	    return $this->useTags;
-	}
-
 	public function useHighlighting(array $opts = array('size'=>7.5))
 	{
 	    $this->jsWriter->useHighlighting($opts);
@@ -134,13 +128,6 @@ class Chart
 		return $this;
 	}
 
-	public function useTags($use = true)
-	{
-		$this->useTags = $use;
-
-		return $this;
-	}
-
 	public function setLegend(array $opts = array('on' => 'true', 
                                                   'location' => 'ne', 
                                                   'x' => 0, 
@@ -164,12 +151,7 @@ class Chart
 	
 	public function createSeries($data, $title = null, $type = null)
 	{
-	    switch ($type) {
-	        case 'Bubble':
-	            return new Series\BubbleSeries($data, $title, $this->jsWriter);
-	        default:
-	            return new Series($data, $title, $this->jsWriter);
-	    }
+        return new Series($data, $title, $this->jsWriter);
 	}
 	
 	public function createManySeries(array $dataSet, array $factorySettings , $title = null, $type = null)

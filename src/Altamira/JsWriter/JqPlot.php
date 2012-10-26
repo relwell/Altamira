@@ -26,16 +26,11 @@ class JqPlot
         $output .= '$.jqplot.config.enablePlugins = true;';
         
         $num = 0;
-        $vars = array();
-        
-        $useTags = (isset($this->types['default']) 
-                 && $this->types['default']->getUseTags()) 
-                 || ($this->chart->getUseTags());
-        
+        $vars = array();        
         
         foreach($this->chart->getSeries() as $series) {
             $num++;
-            $data        = $series->getData($useTags);
+            $data        = $series->getData();
             $dataPrepped = array();
             $title       = $series->getTitle();
             $labelCopy   = null;
