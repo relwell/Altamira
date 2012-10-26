@@ -312,15 +312,15 @@ class JqPlot
         return $this;
     }
     
-    public function setSeriesLineWidth( \Altamira\Series $series, $value )
+    public function setSeriesLineWidth( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['lineWidth'] = $value;
+        $this->options['seriesStorage'][$seriesTitle]['lineWidth'] = $value;
         return $this;
     }
     
-    public function setSeriesShowLine( \Altamira\Series $series, $bool )
+    public function setSeriesShowLine( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['showLine'] = $bool;
+        $this->options['seriesStorage'][$seriesTitle]['showLine'] = $bool;
         return $this;
     }
     

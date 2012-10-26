@@ -505,20 +505,20 @@ ENDJS;
         return $this;
     }
     
-    public function setSeriesLineWidth( \Altamira\Series $series, $value )
+    public function setSeriesLineWidth( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
-                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$seriesTitle]['lines'] = ( isset($this->options['seriesStorage'][$seriesTitle]['lines'])
+                                                               ? $this->options['seriesStorage'][$seriesTitle]['lines']
                                                                : array() )
                                                                + array('lineWidth'=>$value);
         
         return $this;
     }
     
-    public function setSeriesShowLine( \Altamira\Series $series, $bool )
+    public function setSeriesShowLine( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
-                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$seriesTitle]['lines'] = ( isset($this->options['seriesStorage'][$seriesTitle]['lines'])
+                                                               ? $this->options['seriesStorage'][$seriesTitle]['lines']
                                                                : array() )
                                                                + array('show'=>$bool);
         return $this;

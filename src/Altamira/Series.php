@@ -175,32 +175,52 @@ class Series
 		return $this;
 	}
 	
-	public function getOption($option)
+	/**
+	 * Returns data stored in JsWriter for a given option for this series
+	 * @param  string $option
+	 * @return string|null
+	 */
+	public function getOption( $option )
 	{
-	    return $this->jsWriter->getSeriesOption($this->getTitle(), $option);
+	    return $this->jsWriter->getSeriesOption( $this->getTitle(), $option );
 	}
 
+	/**
+	 * Gets an array of options that have been set for this series
+	 * @return array of options
+	 */
 	public function getOptions()
 	{
-        return $this->jsWriter->getOptionsForSeries($this->getTitle());
+        return $this->jsWriter->getOptionsForSeries( $this->getTitle() );
 	}
 	
-	public function setLineWidth($val)
+	/**
+	 * Sets the line width for the series
+	 * @param string|int $val
+	 * @return \Altamira\Series
+	 */
+	public function setLineWidth( $val )
 	{
-	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
-	        $this->jsWriter->setSeriesLineWidth($this, $val);
+	    if ( $this->jsWriter instanceof \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesLineWidth( $this->getTitle(), $val );
 	    }
 	    return $this;
 	}
 	
-	public function showLine($bool = true)
+	/**
+	 * Sets whether to show a line for this series
+	 * @param bool $bool
+	 * @return \Altamira\Series
+	 */
+	public function showLine( $bool = true )
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
-    	    $this->jsWriter->setSeriesShowLine($this, $bool);
+    	    $this->jsWriter->setSeriesShowLine( $this->getTitle(), $bool );
 	    }
 	    return $this;
 	}
 	
+	//@todo finish these up
 	public function showMarker($bool = true)
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {

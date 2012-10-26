@@ -126,8 +126,11 @@ class SeriesTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\Series::setLabelSetting
      * @covers \Altamira\Series::setOption
      * @covers \Altamira\Series::getOption
+     * @covers \Altamira\Series::getOptions
+     * @covers \Altamira\Series::setLineWidth
+     * @covers \Altamira\Series::showLine
      */
-    public function testSetters()
+    public function testSettersAndGetters()
     {
         $setShadowDefaultVals = array( 'use'    =>    true, 
                                        'angle'  =>    45, 
@@ -188,7 +191,7 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
                 $this->jqPlotSeries,
                 $this->jqPlotSeries->setLabelSetting( 'foo', 'bar' ),
-                '\Altamira\Series::setLabelSetting should provide fluent interface'
+                '\Altamira\Series::setLabelSetting() should provide fluent interface'
         );
         
         $this->flotSeries->setLabelSetting( 'foo', 'bar' );
@@ -207,9 +210,96 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
                 $this->flotSeries,
                 $this->flotSeries->setOption( 'foo', 'bar' ),
-                '\Altamira\Series::setOption should provide fluent interface'
+                '\Altamira\Series::setOption() should provide fluent interface'
         );
         $this->jqPlotSeries->setOption( 'foo', 'bar' );
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'getSeriesOption' )
+                ->with              ( $this->jqPlotSeries->getTitle(), 'foo' )
+                ->will              ( $this->returnValue( 'bar' ) )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'getSeriesOption' )
+               ->with               ( $this->flotSeries->getTitle(), 'foo' )
+               ->will               ( $this->returnValue( 'bar' ) )
+        ;
+        
+        $this->assertEquals(
+                'bar',
+                $this->jqPlotSeries->getOption( 'foo' ),
+                '\Altamira\Series::getOption() should return the value for an option that has been set'
+        );
+        $this->assertEquals(
+                'bar',
+                $this->flotSeries->getOption( 'foo' ),
+                '\Altamira\Series::getOption() should return the value for an option that has been set'
+        );
+        
+        $mockOptions = array( 'foo' => 'bar' );
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'getOptionsForSeries' )
+                ->with              ( $this->jqPlotSeries->getTitle() )
+                ->will              ( $this->returnValue( $mockOptions ) )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'getOptionsForSeries' )
+               ->with               ( $this->flotSeries->getTitle() )
+               ->will               ( $this->returnValue( $mockOptions ) )
+        ;
+        
+        $this->assertEquals(
+                $mockOptions,
+                $this->flotSeries->getOptions(),
+                '\Altamira\Series::getOptions() should return the appropriately keyed value for \Altamira\JsWriter\JsWriterAbstract::getOptionsForSeries()'
+        );
+        $this->assertEquals(
+                $mockOptions,
+                $this->jqPlotSeries->getOptions(),
+                '\Altamira\Series::getOptions() should return the appropriately keyed value for \Altamira\JsWriter\JsWriterAbstract::getOptionsForSeries()'
+        );
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesLineWidth' )
+                ->with              ( $this->jqPlotSeries->getTitle(), 1 )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesLineWidth' )
+               ->with               ( $this->flotSeries->getTitle(), 1 )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setLineWidth( 1 ),
+                '\Altamira\Series::setLineWidth should provide fluent interface'
+        );
+        $this->jqPlotSeries->setLineWidth( 1 );
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesShowLine' )
+                ->with              ( $this->jqPlotSeries->getTitle(), true )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesShowLine' )
+               ->with               ( $this->flotSeries->getTitle(), true )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->showLine( true ),
+                '\Altamira\Series::showLine should provide fluent interface'
+        );
+        $this->jqPlotSeries->showLine( 1 );
+        
+        
     }
     
     /**
