@@ -5,6 +5,9 @@ namespace Altamira;
 use Altamira\JsWriter\JsWriterAbstract;
 use Altamira\ChartDatum\ChartDatumAbstract;
 
+/**
+ * This class represents a series of ChartDatum instances that can be plotted on a chart.
+ */
 class Series
 {
     /**
@@ -166,7 +169,7 @@ class Series
 	 * Sets an option for this specific series within the JsWriter
 	 * @param string $name
 	 * @param string $value
-	 * @return \Altamira\Series
+	 * @return \Altamira\Series provides fluent interface
 	 */
 	public function setOption( $name, $value )
 	{
@@ -197,7 +200,7 @@ class Series
 	/**
 	 * Sets the line width for the series
 	 * @param string|int $val
-	 * @return \Altamira\Series
+	 * @return \Altamira\Series provides fluent interface
 	 */
 	public function setLineWidth( $val )
 	{
@@ -210,44 +213,63 @@ class Series
 	/**
 	 * Sets whether to show a line for this series
 	 * @param bool $bool
-	 * @return \Altamira\Series
+	 * @return \Altamira\Series provides fluent interface
 	 */
 	public function showLine( $bool = true )
 	{
-	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
     	    $this->jsWriter->setSeriesShowLine( $this->getTitle(), $bool );
 	    }
 	    return $this;
 	}
 	
-	//@todo finish these up
-	public function showMarker($bool = true)
+	/**
+	 * Sets whether to show markers for this series in the JS Writer
+	 * @param bool $bool
+	 * @return \Altamira\Series provides fluent interface
+	 */
+	public function showMarker( $bool = true )
 	{
-	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
-	        $this->jsWriter->setSeriesShowMarker($this, $bool);
+	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesShowMarker( $this->getTitle(), $bool );
 	    }
 	    return $this;
 	}
 	
+	/**
+	 * Sets the kind of marker tos how for this series in the JS writer
+	 * @param unknown_type $value
+	 * @return \Altamira\Series provides fluent interface
+	 */
 	public function setMarkerStyle($value)
 	{
-	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
-	        $this->jsWriter->setSeriesMarkerStyle($this, $value);
+	    if ( $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
+	        $this->jsWriter->setSeriesMarkerStyle( $this->getTitle(), $value );
 	    }
 	    return $this;
 	}
 	
+	/**
+	 * Sets the size of the marker
+	 * @param string|int $value
+	 * @return \Altamira\Series provides fluent interface
+	 */
 	public function setMarkerSize($value)
 	{
 	    if ($this->jsWriter instanceOf \Altamira\JsWriter\Ability\Lineable ) {
-	        $this->jsWriter->setSeriesMarkerSize($this, $value);
+	        $this->jsWriter->setSeriesMarkerSize($this->getTitle(), $value);
 	    }
 	    return $this;
 	}
 	
-	public function setType($type)
+	/**
+	 * Sets the rendering type for this series
+	 * @param string $type
+	 * @return \Altamira\Series provides fluent interface
+	 */
+	public function setType( $type )
 	{
-	    $this->jsWriter->setType($type, $this);
+	    $this->jsWriter->setType( $type, $this->getTitle() );
 	    
 	    return $this;
 	}

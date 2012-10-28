@@ -299,6 +299,77 @@ class SeriesTest extends PHPUnit_Framework_TestCase
         );
         $this->jqPlotSeries->showLine( 1 );
         
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesShowMarker' )
+                ->with              ( $this->jqPlotSeries->getTitle(), true )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesShowMarker' )
+               ->with               ( $this->flotSeries->getTitle(), true )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->showMarker( true ),
+                '\Altamira\Series::showMarker should provide fluent interface'
+        );
+        $this->jqPlotSeries->showMarker( 1 );        
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesMarkerStyle' )
+                ->with              ( $this->jqPlotSeries->getTitle(), 'diamond' )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesMarkerStyle' )
+               ->with               ( $this->flotSeries->getTitle(), 'diamond' )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setMarkerStyle( 'diamond' ),
+                '\Altamira\Series::setMarkerStyle should provide fluent interface'
+        );
+        $this->jqPlotSeries->setMarkerStyle( 'diamond' );   
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setSeriesMarkerSize' )
+                ->with              ( $this->jqPlotSeries->getTitle(), '5px' )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setSeriesMarkerSize' )
+               ->with               ( $this->flotSeries->getTitle(), '5px' )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setMarkerSize( '5px' ),
+                '\Altamira\Series::setMarkerSize should provide fluent interface'
+        );
+        $this->jqPlotSeries->setMarkerSize( '5px' );   
+        
+        $this   ->mockJqPlotWriter
+                ->expects           ( $this->once() )
+                ->method            ( 'setType' )
+                ->with              ( 'Bubble', $this->jqPlotSeries->getTitle() )
+        ;
+        $this  ->mockFlotWriter
+               ->expects            ( $this->once() )
+               ->method             ( 'setType' )
+               ->with               ( 'Bubble', $this->flotSeries->getTitle() )
+        ;
+        
+        $this->assertEquals(
+                $this->flotSeries,
+                $this->flotSeries->setType( 'Bubble' ),
+                '\Altamira\Series::setType should provide fluent interface'
+        );
+        $this->jqPlotSeries->setType( 'Bubble' );
         
     }
     

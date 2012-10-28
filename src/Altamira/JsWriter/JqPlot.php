@@ -324,25 +324,25 @@ class JqPlot
         return $this;
     }
     
-    public function setSeriesShowMarker( \Altamira\Series $series, $bool )
+    public function setSeriesShowMarker( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['showMarker'] = $bool;
+        $this->options['seriesStorage'][$seriesTitle]['showMarker'] = $bool;
         return $this;
     }
     
-    public function setSeriesMarkerStyle( \Altamira\Series $series, $value )
+    public function setSeriesMarkerStyle( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['markerOptions'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['markerOptions'])
-                                                                       ? $this->options['seriesStorage'][$series->getTitle()]['markerOptions']
+        $this->options['seriesStorage'][$seriesTitle]['markerOptions'] = ( isset($this->options['seriesStorage'][$seriesTitle]['markerOptions'])
+                                                                       ? $this->options['seriesStorage'][$seriesTitle]['markerOptions']
                                                                        : array() )
                                                                        + array('style'=>$value);
         return $this;
     }
     
-    public function setSeriesMarkerSize( \Altamira\Series $series, $value )
+    public function setSeriesMarkerSize( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['markerOptions'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['markerOptions'])
-                ? $this->options['seriesStorage'][$series->getTitle()]['markerOptions']
+        $this->options['seriesStorage'][$seriesTitle]['markerOptions'] = ( isset($this->options['seriesStorage'][$seriesTitle]['markerOptions'])
+                ? $this->options['seriesStorage'][$seriesTitle]['markerOptions']
                 : array() )
                 + array('size'=>$value);
         return $this;

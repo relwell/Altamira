@@ -524,16 +524,16 @@ ENDJS;
         return $this;
     }
     
-    public function setSeriesShowMarker( \Altamira\Series $series, $bool )
+    public function setSeriesShowMarker( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
-                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
+                                                                ? $this->options['seriesStorage'][$seriesTitle]['points']
                                                                 : array() )
                                                                 + array('show'=>$bool);
         return $this;
     }
     
-    public function setSeriesMarkerStyle( \Altamira\Series $series, $value )
+    public function setSeriesMarkerStyle( $seriesTitle, $value )
     {
         // jqplot compatibility preprocessing
         $value = str_replace('filled', '', $value);
@@ -543,18 +543,18 @@ ENDJS;
             $this->files[] = 'jquery.flot.symbol.js';
         }
         
-        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
-                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
+                                                                ? $this->options['seriesStorage'][$seriesTitle]['points']
                                                                 : array() )
                                                                 + array('symbol'=>$value);
         
         return $this;    
     }
     
-    public function setSeriesMarkerSize( \Altamira\Series $series, $value )
+    public function setSeriesMarkerSize( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
-                ? $this->options['seriesStorage'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
+                ? $this->options['seriesStorage'][$seriesTitle]['points']
                 : array() )
                 + array('radius'=>(int) ($value / 2));
         
