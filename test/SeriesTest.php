@@ -129,6 +129,10 @@ class SeriesTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\Series::getOptions
      * @covers \Altamira\Series::setLineWidth
      * @covers \Altamira\Series::showLine
+     * @covers \Altamira\Series::showMarker
+     * @covers \Altamira\Series::setMarkerStyle
+     * @covers \Altamira\Series::setMarkerSize
+     * @covers \Altamira\Series::setType
      */
     public function testSettersAndGetters()
     {
