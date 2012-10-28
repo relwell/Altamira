@@ -3,8 +3,8 @@
 class RendererTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \Altamira\ScriptsRenderer::__construct()
-     * @covers \Altamira\ScriptsRenderer::render()
+     * @covers \Altamira\ScriptsRenderer::__construct
+     * @covers \Altamira\ScriptsRenderer::render
      */
     public function testScriptsRenderer()
     {
@@ -105,7 +105,7 @@ ENDDIV;
         );
     }
     
-/**
+    /**
      * @covers \Altamira\ChartRenderer\TitleRenderer::preRender
      * @covers \Altamira\ChartRenderer\TitleRenderer::postRender
      * @covers \Altamira\ChartRenderer\TitleRenderer::renderStyle
@@ -166,6 +166,107 @@ ENDDIV;
                 \Altamira\ChartRenderer\TitleRenderer::postRender( $mockChart, $styleOptions ),
                 '\Altamira\ChartRenderer\TitleRenderer::postRender() should return a closing div tag.'
         );
+    }
+    
+    /**
+     * @covers \Altamira\ChartRenderer::getInstance
+     * @covers \Altamira\ChartRenderer::pushRenderer
+     * @covers \Altamira\ChartRenderer::render
+     * @covers \Altamira\ChartRenderer::reset
+     * @covers \Altamira\ChartRenderer::unshiftRenderer
+     */
+    public function testChartRenderer()
+    {
+        $method = new ReflectionMethod( '\Altamira\ChartRenderer', '__construct' );
+        
+        $this->assertTrue(
+                $method->isProtected(),
+                '\Altamira\ChartRenderer should implement singleton design pattern'
+        );
+        
+        $styleOptions = array( 'float' => 'left', 'border' => '1px solid #cccccc' );
+        
+        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getLibrary', 'getName', 'getTitle' ) );
+        
+        $mockChart
+            ->expects( $this->any() )
+            ->method ( 'getLibrary' )
+            ->will   ( $this->returnValue( 'flot' ) )
+        ;
+        $mockChart
+            ->expects( $this->any() )
+            ->method ( 'getName' )
+            ->will   ( $this->returnValue( 'foo' ) )
+        ;
+        $mockChart
+            ->expects( $this->any() )
+            ->method ( 'getTitle' )
+            ->will   ( $this->returnValue( 'foo' ) )
+        ;
+        
+        $expectedStyle = 'float: left; border: 1px solid #cccccc; ';
+        
+        $defaultOutput = \Altamira\ChartRenderer::render( $mockChart, $styleOptions );
+        
+        $expectedOutput = <<<ENDOUTPUT
+<div class="flot" id="foo" style="{$expectedStyle}"></div>
+ENDOUTPUT;
+        
+        $this->assertEquals(
+                $expectedOutput,
+                $defaultOutput,
+                '\Altamira\ChartRenderer::render() should render the chart using only \Altamira\ChartRenderer\DefaultRenderer by default' 
+        );
+        
+        $getInstanceMethod = new ReflectionMethod( '\Altamira\ChartRenderer', 'getInstance' );
+        $getInstanceMethod->setAccessible( true );
+        $instance = $getInstanceMethod->invoke( null );
+        
+        $this->assertEquals(
+                $instance,
+                \Altamira\ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\TitleRenderer' ),
+                '\Altamira\ChartRenderer::pushRenderer should provide a fluent interface'
+        );
+        
+        $rendererChain = new ReflectionProperty( '\Altamira\ChartRenderer', 'rendererChain' );
+        $rendererChain->setAccessible( 'true' );
+        
+        $this->assertEquals(
+                array( '\Altamira\ChartRenderer\DefaultRenderer', '\Altamira\ChartRenderer\TitleRenderer' ),
+                $rendererChain->getValue( $instance ),
+                '\Altamira\ChartRenderer::pushRenderer should add the renderer to the end of the renderer chain'
+        );
+        
+        $fullExpectedOutput = <<<ENDOUTPUT
+<div class="altamira-chart-title">
+    <h3>foo</h3>
+<div class="flot" id="foo" style="{$expectedStyle}"></div></div>
+ENDOUTPUT;
+        
+        $this->assertEquals(
+                $fullExpectedOutput,
+                \Altamira\ChartRenderer::render( $mockChart, $styleOptions ),
+                '\Alamira\ChartRenderer::render() should take a nested approach to parsing, '
+                . 'prerendering from the top of the stack to the bottom, and postrendering from the bottom to the top.'
+        ); 
+        
+        \Altamira\ChartRenderer::reset();
+        
+        $this->assertEmpty(
+                $rendererChain->getValue( $instance ),
+                '\Altamira\ChartRenderer::reset() should empty the renderer chain'
+        );
+        
+        \Altamira\ChartRenderer::unshiftRenderer( '\Altamira\ChartRenderer\DefaultRenderer');
+        \Altamira\ChartRenderer::unshiftRenderer( '\Altamira\ChartRenderer\TitleRenderer');
+        
+        $this->assertEquals(
+                array( '\Altamira\ChartRenderer\TitleRenderer', '\Altamira\ChartRenderer\DefaultRenderer' ),
+                $rendererChain->getValue( $instance ),
+                '\Altamira\ChartRenderer::pushRenderer should add the renderer to the beginning of the renderer chain'
+        );
+        
+        
     }
     
 }
