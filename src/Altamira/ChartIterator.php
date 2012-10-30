@@ -107,8 +107,8 @@ class ChartIterator extends \ArrayIterator
     public function getLibraries()
     {
         $libraryToPath = array(
-                'flot'    =>    $this->config['js.flotpath'],
-                'jqPlot'  =>    $this->config['js.jqplotpath']
+                \Altamira\JsWriter\Flot::LIBRARY    =>    $this->config['js.flotpath'],
+                \Altamira\JsWriter\JqPlot::LIBRARY  =>    $this->config['js.jqplotpath']
                 );
         $libraryKeys = array_unique( array_keys( $this->libraries ) );
         $libraryPaths = array();
@@ -141,9 +141,9 @@ class ChartIterator extends \ArrayIterator
     {
         foreach ( $this->libraries as $library => $junk ) {
             switch( $library ) {
-                case 'flot':
+                case \Altamira\JsWriter\Flot::LIBRARY:
                     break;
-                case 'jqPlot':
+                case \Altamira\JsWriter\JqPlot::LIBRARY:
                 default:
                     $cssPath = $this->config['css.jqplotpath'];
             }

@@ -36,7 +36,7 @@ class SeriesTest extends PHPUnit_Framework_TestCase
                 'setType'
         ); 
         
-        $mockChart                 = $this->getMock( '\Altamira\Chart' );
+        $mockChart                 = $this->getMock( '\Altamira\Chart', array(), array( 'mockChart' ) );
         $this->data                = TwoDimensionalPointFactory::getFromXValues( $data );
         $this->mockJqPlotWriter    = $this->getMock( '\Altamira\JsWriter\JqPlot', $jsWriterMethods, array( $mockChart ) );
         $this->mockFlotWriter      = $this->getMock( '\Altamira\JsWriter\JqPlot', $jsWriterMethods, array( $mockChart ) );

@@ -16,6 +16,7 @@ class JqPlot
                Ability\Labelable,
                Ability\Lineable
 {
+    const LIBRARY = 'jqplot';
     
     protected $library = 'jqplot';
     protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';

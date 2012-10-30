@@ -18,6 +18,8 @@ class Flot
                Ability\Labelable,
                Ability\Lineable
 {
+    const LIBRARY = 'flot';
+    
     protected $library = 'flot';
     protected $typeNamespace = '\\Altamira\\Type\\Flot\\';
     

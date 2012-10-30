@@ -29,8 +29,8 @@ class ChartTest extends PHPUnit_Framework_TestCase
                 '\Altamira\ChartIterator::__construct should test that the array passed to it contains only instances of \Altamira\Chart'
         );
         
-        $mockChart1 = $this->getMock( '\Altamira\Chart', array( 'getFiles', 'getScript', 'getLibrary' ) );
-        $mockChart2 = $this->getMock( '\Altamira\Chart', array( 'getFiles', 'getScript', 'getLibrary' ) );
+        $mockChart1 = $this->getMock( '\Altamira\Chart', array( 'getFiles', 'getScript', 'getLibrary' ), array( 'Mock Chart 1' ) );
+        $mockChart2 = $this->getMock( '\Altamira\Chart', array( 'getFiles', 'getScript', 'getLibrary' ), array( 'Mock Chart 2' ) );
         
         $mockChart1
             ->expects( $this->once() )
@@ -60,7 +60,7 @@ class ChartTest extends PHPUnit_Framework_TestCase
         $mockChart2
             ->expects( $this->once() )
             ->method ( 'getLibrary' )
-            ->will   ( $this->returnValue( 'jqPlot' ) )
+            ->will   ( $this->returnValue( \Altamira\JsWriter\JqPlot::LIBRARY ) )
         ;
         $cssPath = 'css/jqplot.css';
         $mockConfig
@@ -113,7 +113,8 @@ class ChartTest extends PHPUnit_Framework_TestCase
         );
         
         $this->assertEquals(
-                array( 'flot' => true, 'jqPlot' => true ),
+                array( \Altamira\JsWriter\Flot::LIBRARY   => true, 
+                       \Altamira\JsWriter\JqPlot::LIBRARY => true ),
                 $libraries->getValue( $chartIterator ),
                 '\Altamira\ChartIterator should unique-keyed hash table of all libraries used by all charts'
         );

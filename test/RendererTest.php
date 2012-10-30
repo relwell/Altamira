@@ -62,7 +62,7 @@ ENDSCRIPT;
      */
     public function testDefaultRenderer()
     {
-        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getLibrary', 'getName' ) );
+        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getLibrary', 'getName' ), array( 'Mock Chart' ) );
         
         $mockChart
             ->expects( $this->any() )
@@ -112,7 +112,7 @@ ENDDIV;
      */
     public function testTitleRenderer()
     {
-        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getTitle' ) );
+        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getTitle' ), array( 'Mock Chart' ) );
         
         $mockChart
             ->expects( $this->any() )
@@ -186,7 +186,7 @@ ENDDIV;
         
         $styleOptions = array( 'float' => 'left', 'border' => '1px solid #cccccc' );
         
-        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getLibrary', 'getName', 'getTitle' ) );
+        $mockChart = $this->getMock( '\Altamira\Chart', array( 'getLibrary', 'getName', 'getTitle' ), array( 'Mock Chart' ) );
         
         $mockChart
             ->expects( $this->any() )

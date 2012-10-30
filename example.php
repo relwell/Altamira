@@ -10,9 +10,9 @@ use Altamira\ChartDatum\TwoDimensionalPointFactory;
 
 $config = new Config( 'altamira-config.ini' );
 
-$library = isset($_GET['library']) ? $_GET['library'] : 'jqPlot';
+$library = isset($_GET['library']) ? $_GET['library'] : \Altamira\JsWriter\JqPlot::LIBRARY;
 
-if ($library == 'flot') {
+if ($library == \Altamira\JsWriter\Flot::LIBRARY) {
     ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\DefaultRenderer' );
     ChartRenderer::pushRenderer( 'Altamira\ChartRenderer\TitleRenderer' );
 }
@@ -109,7 +109,7 @@ $chart6->setTitle('Donut Chart With Custom Colors And Labels')->
     setTypeOption('sliceMargin', 3)->
     setTypeOption('showDataLabels', true);
 
-if ( $library == 'flot' ) {
+if ( $library == \Altamira\JsWriter\Flot::LIBRARY ) {
     $chart6->addSeries($chart6->createManySeries( $chart6Many1, $nestedFactoryMethod, 'Internal' ) );
     // Flot doesn't support inner and outer, but you can always use extra js to superimpose
     $chart6a = new Chart('chart6a', $library);
@@ -176,7 +176,7 @@ $charts = array($chart,
                 $chart8
                 );
 
-if ( $library == 'flot' ) {
+if ( $library == \Altamira\JsWriter\Flot::LIBRARY ) {
     $charts[] = $chart6a;
 }
 

@@ -22,8 +22,7 @@ abstract class JsWriterAbstract
     
     public function getScript()
     {
-        $options = array_merge($this->chart->getOptions(), $this->options);
-        $this->options = $this->getTypeOptions($this->getSeriesOptions($options));
+        $this->options = $this->getTypeOptions( $this->getSeriesOptions( $this->options ) );
         
         return $this->generateScript();
     }
@@ -87,6 +86,18 @@ abstract class JsWriterAbstract
         $this->options['seriesStorage'][$seriesTitle][$name] = $value;
         
         return $this;
+    }
+    
+    public function setOption( $key, $value )
+    {
+        $this->options[$key] = $value;
+        
+        return $this;
+    }
+    
+    public function getOption( $key, $default = null )
+    {
+        return isset( $this->options[$key] ) ? $this->options[$key] : $default;
     }
     
     public function initializeSeries( \Altamira\Series $series )
