@@ -260,7 +260,7 @@ class Chart
 	
 	/**
 	 * Instantiates a series based on the data provided
-	 * @param array  $data
+	 * @param array  $data array must consist of ChartDatumAbstract instances
 	 * @param string|null $title
 	 * @param string|null $type
 	 * @return \Altamira\Series
