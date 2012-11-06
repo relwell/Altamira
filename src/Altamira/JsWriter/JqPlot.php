@@ -18,7 +18,6 @@ class JqPlot
 {
     const LIBRARY = 'jqplot';
     
-    protected $library = 'jqplot';
     protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';
     
     public function generateScript()
@@ -297,68 +296,92 @@ class JqPlot
         $this->options['seriesStorage'][$seriesTitle]['pointLabels']['show'] = true;
         $this->options['seriesStorage'][$seriesTitle]['pointLabels']['labels'] = $labels;
         $this->options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance'] = 3;
-        if (!in_array('jqplot.pointLabels.min.js', $this->files)) {
+        if ( !in_array( 'jqplot.pointLabels.min.js', $this->files ) ) {
             $this->files[] = 'jqplot.pointLabels.min.js';
         }
         return $this;
     }
     
+    /**
+     * Sets label setting option values
+     * @param string $seriesTitle
+     * @param string $name
+     * @param mixed $value
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setSeriesLabelSetting( $seriesTitle, $name, $value )
     {
-        if($name === 'location' && in_array($value, array('n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'))) {
-            $this->setSeriesOption($seriesTitle, 'pointLabels', (($a = $this->getSeriesOption($seriesTitle, 'pointLabels')) && is_array($a) ? $a : array()) + array('location'=>$value));
-        } elseif(in_array($name, array('xpadding', 'ypadding', 'edgeTolerance', 'stackValue'))) {
-            $this->setSeriesOption($seriesTitle, 'pointLabels', (($a = $this->getSeriesOption($seriesTitle, 'pointLabels')) && is_array($a) ? $a : array()) + array($name=>$value));
+        if (  ( $name === 'location' && in_array( $value, array( 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw' ) ) ) 
+            ||( in_array( $name, array( 'xpadding', 'ypadding', 'edgeTolerance', 'stackValue' ) ) ) ) {
+            return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', $name, $value );
         }
         return $this;
     }
     
+    /**
+     * Determines the width of the line we will show, if we're showing it
+     * @param string $seriesTitle
+     * @param mixed $value
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setSeriesLineWidth( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$seriesTitle]['lineWidth'] = $value;
-        return $this;
+        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'lineWidth', $value );
     }
     
+    /**
+     * Determines whether we show the line for a series
+     * @param string $seriesTitle
+     * @param bool $bool
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setSeriesShowLine( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$seriesTitle]['showLine'] = $bool;
-        return $this;
+        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'showLine', $bool );
     }
     
+    /**
+     * Determines whether we show the marker for a series
+     * @param string $seriesTitle
+     * @param bool $bool
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setSeriesShowMarker( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$seriesTitle]['showMarker'] = $bool;
-        return $this;
+        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'showMarker', $bool );
     }
     
+    /**
+     * Sets the style of the marker
+     * @param string $seriesTitle
+     * @param string $value
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setSeriesMarkerStyle( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$seriesTitle]['markerOptions'] = ( isset($this->options['seriesStorage'][$seriesTitle]['markerOptions'])
-                                                                       ? $this->options['seriesStorage'][$seriesTitle]['markerOptions']
-                                                                       : array() )
-                                                                       + array('style'=>$value);
-        return $this;
+        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'markerOptions', 'style', $value );
     }
     
+    /**
+     * Sets the size of the marker
+     * @param string $seriesTitle
+     * @param mixed $value
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setSeriesMarkerSize( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$seriesTitle]['markerOptions'] = ( isset($this->options['seriesStorage'][$seriesTitle]['markerOptions'])
-                ? $this->options['seriesStorage'][$seriesTitle]['markerOptions']
-                : array() )
-                + array('size'=>$value);
-        return $this;
+        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'markerOptions', 'size', $value );
     }
     
-    public function setAxisTicks($axis, $ticks)
+    /**
+     * Sets the labels demarcated on a given axis
+     * @param string $axis
+     * @param array $ticks
+     * @return \Altamira\JsWriter\JqPlot
+     */
+    public function setAxisTicks( $axis, array $ticks )
     {
-
-        if(strtolower($axis) === 'x') {
-            $this->options['axes']['xaxis']['ticks'] = $ticks;
-        } elseif(strtolower($axis) === 'y') {
-            $this->options['axes']['yaxis']['ticks'] = $ticks;
-        }
-        
-        return $this;
+        return $this->setRecursiveOptVal( $this->options, 'axes', $axis.'axis', 'ticks', $ticks );
     }
     
 }

@@ -7,9 +7,8 @@ use Altamira\ChartDatum\Bubble;
 class BubbleFactory
 {
     
-    public static function getBubbleDatumFromTupleSet( array $tupleSet ) 
+    public static function getBubbleDatumFromTupleSet( array $tupleSet, $results = array() ) 
     {
-        $results = array();
         foreach ( $tupleSet as $tuple )
         {
             list( $label, $x, $y, $radius ) = $tuple;

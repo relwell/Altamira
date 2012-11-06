@@ -171,8 +171,8 @@ ENDSTRING;
      * @covers \Altamira\Chart::getSeries
      * @covers \Altamira\Chart::addSeries
      * @covers \Altamira\Chart::addSingleSeries
-     * @covers \Altamira\Chart::createManySeries
      * @covers \Altamira\Chart::createSeries
+     * @covers \Altamira\Chart::getDiv
      */
     public function testChart()
     {
@@ -413,9 +413,43 @@ ENDSTRING;
                 $series->getData(),
                 '\Altamira\Chart::createSeries should set the series data'
         );
+        
+        $this->assertEquals(
+                $flotChart,
+                $flotChart->addSeries( $series ),
+                '\Altamira\Chart::addSeries should provide a fluent interface and support single series' 
+        );
+        
+        $crudArray = array( $series, 'foo' );
+        
+        $addException = null;
+        try {
+            $flotChart->addSeries( $crudArray );
+        } catch ( Exception $addException ) { }
+        
+        $this->assertInstanceOf(
+                'Exception',
+                $addException,
+                '\Altamira\Chart::addSeries should throw an exception if passed an array that includes a non-series value.'
+        );
+        
+        $jqplotChart->addSingleSeries( $series );
+        
+        $this->assertEquals(
+                array( $series->getTitle() => $series ),
+                $jqplotChart->getSeries(),
+                '\Altamira\Chart::getSeries should return an array containing all series that have been added'
+        );
 
-        //@todo complete series creation and management stuff here
-        //@todo rendering
+        $styleOptions = array( 'width' => '500px', 'height' => '400px' );
+
+        $this->assertEquals(
+                \Altamira\ChartRenderer::render( $flotChart, $styleOptions ),
+                $flotChart->getDiv(),
+                '\Altamira\Chart::getDiv() should invoke ChartRenderer::render() and pass the appropriate height and width style options.'
+        );
+        
+        //@todo test createManySeries
     }
     
 }

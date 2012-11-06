@@ -42,10 +42,14 @@ class TwoDimensionalPoint extends ChartDatumAbstract
         }
         
         if ( $typeName == 'Donut' && $this->jsWriter instanceof \Altamira\JsWriter\Flot ) {
-            return array( 1, $this['y'] );
+            $value = array( 1, $this['y'] );
         } else {
-            return array($this['x'], $this['y']) + ($useLabel ? array($this->getLabel()) : array());
+            $value = array($this['x'], $this['y']);
+            if ( $useLabel ) {
+                $value[] = $this->getLabel();
+            }
         }
+        return $value;
     }
     
 }
