@@ -245,6 +245,10 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::setSeriesMarkerStyle
      * @covers \Altamira\JsWriter\JqPlot::setSeriesShowMarker
      * @covers \Altamira\JsWriter\JqPlot::setSeriesShowLine
+     * @covers \Altamira\JsWriter\JqPlot::setSeriesLineWidth
+     * @covers \Altamira\JsWriter\JqPlot::setSeriesLabelSetting
+     * @covers \Altamira\JsWriter\JqPlot::useSeriesLabels
+     * @covers \Altamira\JsWriter\JqPlot::setSeriesOption
      */
     public function testJqPlot() 
     {
@@ -265,7 +269,7 @@ JSON;
                 '\Altamira\JsWriter\JsWriterAbstract::initializeSeries should provide a fluent interface'
         );
         
-        
+        $labels = array( 'label1', 'label2' );
         $ticks = array( 'foo', 'bar', 'baz' );
         $this->assertEquals(
                 $jsWriter,
@@ -299,6 +303,16 @@ JSON;
                 $jsWriter,
                 $jsWriter->setSeriesLabelSetting( $seriesTitle, 'xpadding', '10' )
         );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->useSeriesLabels( $seriesTitle, $labels )
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setSeriesOption( $seriesTitle, 'foo', 'bar' )
+        );
+        
+        
         
         $optionAttr = new ReflectionProperty( '\Altamira\JsWriter\JqPlot', 'options' );
         $optionAttr->setAccessible( true );
@@ -334,6 +348,23 @@ JSON;
                 10,
                 $options['seriesStorage'][$seriesTitle]['pointLabels']['xpadding']
         );
+        $this->assertEquals(
+                true,
+                $options['seriesStorage'][$seriesTitle]['pointLabels']['show']
+        );
+        $this->assertEquals(
+                $labels,
+                $options['seriesStorage'][$seriesTitle]['pointLabels']['labels']
+        );
+        $this->assertEquals(
+                3,
+                $options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance']
+        );
+        $this->assertEquals(
+                'bar',
+                $options['seriesStorage'][$seriesTitle]['foo']
+        );
+        
         
     }
     

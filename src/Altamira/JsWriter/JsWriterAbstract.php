@@ -175,14 +175,14 @@ abstract class JsWriterAbstract
     
     /**
      * Set a series-specific value for rendering JS
-     * @param string $seriesTitle
+     * @param string|\Altamira\Series $series
      * @param string $name
      * @param mixed $value
      * @return \Altamira\JsWriter\JsWriterAbstract
      */
-    public function setSeriesOption( $seriesTitle, $name, $value )
+    public function setSeriesOption( $series, $name, $value )
     {
-        $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, $name, $value );
+        $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), $name, $value );
         return $this;
     }
     
