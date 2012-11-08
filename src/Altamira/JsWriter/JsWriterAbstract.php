@@ -140,11 +140,21 @@ abstract class JsWriterAbstract
      */
     public function getOptionsForSeries( $series )
     {
-        $seriesTitle = ( $series instanceOf \Altamira\Series ) ? $series->getTitle() : $series;
+        $seriesTitle = $this->getSeriesTitle( $series );
         if (! isset( $this->options['seriesStorage'][$seriesTitle] ) ) {
             throw new \Exception( 'Series not registered with JsWriter' );
         } 
         return $this->options['seriesStorage'][$seriesTitle];
+    }
+    
+    /**
+     * supports accessing series values by instance or title
+     * @param string|\Altamira\Series $series
+     * @return string
+     */
+    protected function getSeriesTitle( $series )
+    {
+        return ( $series instanceof \Altamira\Series ) ? $series->getTitle() : $series;
     }
     
     /**
@@ -156,7 +166,7 @@ abstract class JsWriterAbstract
      */
     public function getSeriesOption( $series, $option, $default = null )
     {
-        $seriesTitle = ( $series instanceOf \Altamira\Series ) ? $series->getTitle() : $series; 
+        $seriesTitle = $this->getSeriesTitle( $series ); 
 
         return ( isset( $this->options['seriesStorage'][$seriesTitle] ) && isset( $this->options['seriesStorage'][$seriesTitle][$option] ) )
             ?  $this->options['seriesStorage'][$seriesTitle][$option]
@@ -172,8 +182,7 @@ abstract class JsWriterAbstract
      */
     public function setSeriesOption( $seriesTitle, $name, $value )
     {
-        $this->options['seriesStorage'][$seriesTitle][$name] = $value;
-        
+        $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, $name, $value );
         return $this;
     }
     
@@ -229,9 +238,7 @@ abstract class JsWriterAbstract
      */
     public function setType( $type, $series = null )
     {
-        if ( $series instanceOf \Altamira\Series ) {
-            $series = $series->getTitle();
-        }
+        $series = $this->getSeriesTitle( $series );
         
         $title = $series ?: 'default';
     
@@ -251,7 +258,7 @@ abstract class JsWriterAbstract
     public function getType( $series = null )
     {
         $series = $series ?: 'default';
-        $seriesTitle = ( $series instanceof \Altamira\Series ) ? $series->getTitle() : $series;
+        $seriesTitle = $this->getSeriesTitle( $series );
         
         return isset( $this->types[$seriesTitle] ) ? $this->types[$seriesTitle] : null;
     }
@@ -265,9 +272,7 @@ abstract class JsWriterAbstract
      */
     public function setTypeOption( $name, $option, $series=null )
     {
-        if ( $series instanceOf \Altamira\Series ) {
-            $series = $series->getTitle();
-        }
+        $series = $this->getSeriesTitle( $series );
         
         $title = $series ?: 'default';
         
@@ -287,7 +292,12 @@ abstract class JsWriterAbstract
      */
     protected function setRecursiveOptVal( array &$options )
     {
+        //@codeCoverageIgnoreStart
         $args = func_get_args();
+        
+        if ( count( $args ) < 3 ) {
+            throw new \BadMethodCallException( '\Altamira\JsWriterAbstract::setRecursiveOptVal requires at least three arguments' );
+        }
         
         // ditch the first one
         array_shift( $args );
@@ -305,6 +315,7 @@ abstract class JsWriterAbstract
         $options[array_shift( $args )] = array_shift( $args );
         
         return $this;
+        //@codeCoverageIgnoreEnd
     }
     
     

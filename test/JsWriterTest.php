@@ -16,6 +16,8 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\JsWriter\JsWriterAbstract::setTypeOption
      * @covers \Altamira\JsWriter\JsWriterAbstract::getCallbackPlaceholder
      * @covers \Altamira\JsWriter\JsWriterAbstract::makeJSArray
+     * @covers \Altamira\JsWriter\JsWriterAbstract::getScript
+     * @covers \Altamira\JsWriter\JsWriterAbstract::getSeriesTitle
      */
     public function testParentMethods()
     {
@@ -214,6 +216,27 @@ JSON;
                 $jsWriter->makeJSArray( $jsvals ),
                 '\Altamira\JsWriter\JsWriterAbstract::makeJSArray should json-encode an array, replacing callbacks and properly evaluating values wrapped in hashes'
         );
+        $this->assertNotEmpty(
+                $jsWriter->getScript()
+        );
+        $this->assertNotEmpty(
+            $jsWriter->getFiles()
+        );
+        
+        $getSeriesTitle = new ReflectionMethod( '\Altamira\JsWriter\JsWriterAbstract', 'getSeriesTitle' );
+        $getSeriesTitle->setAccessible( true );
+        
+        $this->assertEquals(
+                $seriesTitle,
+                $getSeriesTitle->invoke( $jsWriter, $mockSeries ),
+                '\Altamira\JsWriter\JsWriterAbstract::getSeriesTitle should return the title string of a series, if passed to it'
+        );
+        $this->assertEquals(
+                $seriesTitle,
+                $getSeriesTitle->invoke( $jsWriter, $seriesTitle ),
+                '\Altamira\JsWriter\JsWriterAbstract::getSeriesTitle should return a string if passed to it'
+        );
+        
     }
     
     /**
