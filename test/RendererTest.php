@@ -169,6 +169,7 @@ ENDDIV;
     }
     
     /**
+     * @covers \Altamira\ChartRenderer::__construct
      * @covers \Altamira\ChartRenderer::getInstance
      * @covers \Altamira\ChartRenderer::pushRenderer
      * @covers \Altamira\ChartRenderer::render
@@ -226,6 +227,24 @@ ENDOUTPUT;
                 $instance,
                 \Altamira\ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\TitleRenderer' ),
                 '\Altamira\ChartRenderer::pushRenderer should provide a fluent interface'
+        );
+        
+        $exception = null;
+        try {
+            \Altamira\ChartRenderer::pushRenderer( '\Altamira\Chart' );
+        } catch ( Exception $exception ) {}
+        $this->assertInstanceOf(
+                'UnexpectedValueException',
+                $exception
+        );
+        
+        $exception = null;
+        try {
+            \Altamira\ChartRenderer::unshiftRenderer( '\Altamira\Chart' );
+        } catch ( Exception $exception ) {}
+        $this->assertInstanceOf(
+                'UnexpectedValueException',
+                $exception
         );
         
         $rendererChain = new ReflectionProperty( '\Altamira\ChartRenderer', 'rendererChain' );

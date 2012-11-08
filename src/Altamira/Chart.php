@@ -123,9 +123,11 @@ class Chart
 	 */
 	public function useCursor()
 	{
+	    //@codeCoverageIgnoreStart
 	    if (! $this->jsWriter instanceOf \AltaMira\JsWriter\Ability\Cursorable ) {
             throw new \BadMethodCallException( "JsWriter cannot use cursor" );
 	    }
+	    //@codeCoverageIgnoreEnd
 	    
 	    $this->jsWriter->useCursor();
 	    
@@ -249,9 +251,11 @@ class Chart
 	 */
 	public function setGrid( array $opts = array( 'on' => true ) )
 	{
+	    //@codeCoverageIgnoreStart
 	    if (! $this->jsWriter instanceOf JsWriter\Ability\Griddable ) {
 	        throw new \BadMethodCallException( "JsWriter not Griddable");
 	    }
+	    //@codeCoverageIgnoreEnd
 	    
 	    $this->jsWriter->setGrid( $opts );
 	    

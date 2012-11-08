@@ -413,6 +413,29 @@ ENDSTRING;
                 $series->getData(),
                 '\Altamira\Chart::createSeries should set the series data'
         );
+        
+        $jqplotChart->addSeries( $series );
+        $seriesArray = $jqplotChart->getSeries();
+        $this->assertEquals(
+                array( $series->getTitle() => $series ),
+                $seriesArray
+        );
+        
+        $this->assertArrayHasKey(
+                $series->getTitle(),
+                $seriesArray
+        );
+        
+        $this->assertEquals(
+                $jqplotChart->getLibrary(),
+                $mockJqPlotWriter->getLibrary()
+        );
+        
+        $styleOptions = array( 'width' => '100px', 'height' => '200px' );
+        $this->assertEquals(
+                \Altamira\ChartRenderer::render( $jqplotChart, $styleOptions ),
+                $jqplotChart->getDiv( 100, 200 )
+        );
 
         //@todo complete series creation and management stuff here
         //@todo rendering

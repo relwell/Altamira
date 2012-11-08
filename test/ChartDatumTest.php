@@ -8,10 +8,26 @@ class ChartDatumTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\ChartDatum\ChartDatumAbstract::setLabel
      * @covers \Altamira\ChartDatum\ChartDatumAbstract::setJsWriter
      * @covers \Altamira\ChartDatum\ChartDatumAbstract::getLabel
+     * @covers \Altamira\ChartDatum\ChartDatumAbstract::setSeries
+     * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetExists
+     * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetSet
+     * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetGet
+     * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetUnset
      */
     public function testTwoDimensionalPointAndAbstract()
     {
         $label = 'foo';
+        
+        $dimensions = array( 'x' => 0 );
+        $exception = null;
+        try {
+            new \Altamira\ChartDatum\TwoDimensionalPoint( $dimensions, $label );
+        } catch ( Exception $exception ) {}
+        $this->assertInstanceOf(
+                'Exception',
+                $exception
+        );
+        
         $dimensions = array( 'x' => 1, 'y' => 0 );
         $point = new \Altamira\ChartDatum\TwoDimensionalPoint( $dimensions, $label );
         
@@ -20,6 +36,11 @@ class ChartDatumTest extends PHPUnit_Framework_TestCase
                 $point['x'],
                 'The dimension array should pass its x value to the point class during construction'
         );
+        
+        $this->assertTrue(
+                isset( $point['x'] )
+        );
+        
         $this->assertEquals(
                 $dimensions['y'],
                 $point['y'],
@@ -86,6 +107,12 @@ class ChartDatumTest extends PHPUnit_Framework_TestCase
                 $point->getRenderData( true ),
                 '\Altamira\TwoDimensionalPoint::getRenderData should return array(x, y, label) when passed true as its first parameter'
         );
+        
+        unset( $point['x'] );
+        $this->assertEmpty(
+                $point['x']
+        );
+        
     }
     
     /**

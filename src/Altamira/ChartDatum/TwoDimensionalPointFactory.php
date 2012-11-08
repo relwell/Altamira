@@ -21,7 +21,7 @@ class TwoDimensionalPointFactory
         }
         return $result;
     }
-    
+
     /**
      * Transforms a one-dimensional array to x,y points. Adds one to each Y value as array index. X value is array value.
      * Passing an array will append the results to an existing array.
