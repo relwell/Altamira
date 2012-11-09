@@ -89,7 +89,7 @@ abstract class JsWriterAbstract
      */
     public function makeJSArray( $array )
     {
-        $optionString = preg_replace('/"#([^#":]*)#"/U', '$1', json_encode($array) );
+        $optionString = preg_replace('/"#([^#":]*)#"/U', '$1', json_encode( $array ) );
         
         foreach ( $this->callbacks as $placeHolder => $callback ) {
             $optionString = str_replace("\"{$placeHolder}\"", $callback, $optionString);
@@ -182,7 +182,7 @@ abstract class JsWriterAbstract
      */
     public function setSeriesOption( $series, $name, $value )
     {
-        $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), $name, $value );
+        $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), $name, $value );
         return $this;
     }
     
@@ -212,12 +212,12 @@ abstract class JsWriterAbstract
     
     /**
      * Initializes the storage location using the series title as a key
-     * @param \Altamira\Series $series
+     * @param \Altamira\Series|string $series
      * @return \Altamira\JsWriter\JsWriterAbstract
      */
-    public function initializeSeries( \Altamira\Series $series )
+    public function initializeSeries( $series )
     {
-        $this->options['seriesStorage'][$series->getTitle()] = array();
+        $this->options['seriesStorage'][$this->getSeriesTitle( $series )] = array();
         return $this;
     }
     
@@ -290,13 +290,13 @@ abstract class JsWriterAbstract
      * @param $_ ... 
      * @return \Altamira\JsWriter\JsWriterAbstract
      */
-    protected function setRecursiveOptVal( array &$options )
+    protected function setNestedOptVal( array &$options )
     {
         //@codeCoverageIgnoreStart
         $args = func_get_args();
         
         if ( count( $args ) < 3 ) {
-            throw new \BadMethodCallException( '\Altamira\JsWriterAbstract::setRecursiveOptVal requires at least three arguments' );
+            throw new \BadMethodCallException( '\Altamira\JsWriterAbstract::setNestedOptVal requires at least three arguments' );
         }
         
         // ditch the first one
@@ -318,8 +318,16 @@ abstract class JsWriterAbstract
         //@codeCoverageIgnoreEnd
     }
     
-    
-    abstract protected function getSeriesOptions(array $options);
-    abstract protected function getTypeOptions(array $options);
+    /**
+     * Intended to transform data structures for storing info before encoding to json
+     * These transformations differe from library to library
+     * @param array $options
+     */
+    abstract protected function getSeriesOptions( array $options );
+    /**
+     * Post-processing for options based on any registered types... this data goes to different places in different libraries
+     * @param array $options
+     */
+    abstract protected function getTypeOptions( array $options );
     abstract protected function generateScript();
 }

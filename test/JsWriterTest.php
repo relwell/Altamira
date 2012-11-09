@@ -249,6 +249,12 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::setSeriesLabelSetting
      * @covers \Altamira\JsWriter\JqPlot::useSeriesLabels
      * @covers \Altamira\JsWriter\JqPlot::setSeriesOption
+     * @covers \Altamira\JsWriter\JqPlot::setSeriesLabelSetting
+     * @covers \Altamira\JsWriter\JqPlot::getOptionsJS
+     * @covers \Altamira\JsWriter\JqPlot::getSeriesOptions
+     * @covers \Altamira\JsWriter\JqPlot::getTypeOptions
+     * @covers \Altamira\JsWriter\JqPlot::useDates
+     * @covers \Altamira\JsWriter\JqPlot::setAxisOptions
      */
     public function testJqPlot() 
     {
@@ -305,14 +311,28 @@ JSON;
         );
         $this->assertEquals(
                 $jsWriter,
+                $jsWriter->setSeriesLabelSetting( $seriesTitle, 'notavalidlabelsetting', '10' )
+        );
+        $this->assertEquals(
+                $jsWriter,
                 $jsWriter->useSeriesLabels( $seriesTitle, $labels )
         );
         $this->assertEquals(
                 $jsWriter,
                 $jsWriter->setSeriesOption( $seriesTitle, 'foo', 'bar' )
         );
-        
-        
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->useDates( 'y' )
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setAxisOptions( 'x', 'numberTicks', 20 )
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setAxisOptions( 'x', 'formatString', '%d' )
+        );
         
         $optionAttr = new ReflectionProperty( '\Altamira\JsWriter\JqPlot', 'options' );
         $optionAttr->setAccessible( true );
@@ -360,10 +380,73 @@ JSON;
                 3,
                 $options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance']
         );
+        $this->assertArrayNotHasKey(
+                'notavalidlabelsetting',
+                $options['seriesStorage'][$seriesTitle]['pointLabels']
+        );
         $this->assertEquals(
                 'bar',
                 $options['seriesStorage'][$seriesTitle]['foo']
         );
+        $this->assertArrayHasKey(
+                'formatString',
+                $options['axes']['xaxis']['tickOptions']
+        );
+        $this->assertArrayHasKey(
+                'numberTicks',
+                $options['axes']['xaxis']
+        );
+        
+        $jsWriter->setType( 'Bar' );
+        $jsWriter->setType( 'Bar', $seriesTitle );
+        
+        $this->assertContains(
+                'jqplot.dateAxisRenderer.min.js',
+                $jsWriter->getFiles(),
+                '\Altamira\JsWriter\JqPlot::useDates should add the date axis renderer to the files array'
+        );
+        $this->assertEquals(
+                '#$.jqplot.DateAxisRenderer#',
+                $options['axes']['yaxis']['renderer']
+        );
+        
+        $optionsJs = $jsWriter->getOptionsJS();
+        
+        $modelOptions = $options;
+        $modelOptions['series'] = $modelOptions['seriesStorage'];
+        unset( $modelOptions['seriesStorage'] );
+        
+        $this->assertEquals(
+                preg_replace('/"#([^#":]*)#"/U', '$1', json_encode( $modelOptions ) ),
+                $optionsJs
+        );
+        
+        $getSeriesOptions = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'getSeriesOptions' );
+        $getSeriesOptions->setAccessible( true );
+        
+        $optionsResult = $getSeriesOptions->invoke( $jsWriter, $options );
+        $this->assertArrayHasKey(
+                'seriesDefaults',
+                $optionsResult
+        );
+        $this->assertArrayHasKey(
+                'renderer',
+                $optionsResult['seriesDefaults']
+        );
+        $this->assertArrayHasKey(
+                'renderer',
+                $optionsResult['seriesStorage'][0]
+        );
+        $this->assertArrayHasKey(
+                'label',
+                $optionsResult['seriesStorage'][0],
+                '\Altamira\JsWriter\JqPlot::getSeriesOptions should transform series title to label'
+        );
+        
+        $typeOptions = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'getTypeOptions' );
+        $typeOptions->setAccessible( true );
+        
+        $typeOptionsResult = $typeOptions->invoke( $jsWriter, $optionsResult );
         
         
     }

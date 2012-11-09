@@ -88,15 +88,18 @@ class JqPlot
         return $this;
     }
     
-    public function useDates($axis = 'x')
+    /**
+     * formats a given axis for dates
+     * @param string $axis
+     * @return \Altamira\JsWriter\JqPlot
+     */
+    public function useDates( $axis = 'x' )
     {
-        $this->files = array_merge_recursive(array('jqplot.dateAxisRenderer.min.js'), $this->files);
-        if(strtolower($axis) === 'x') {
-            $this->options['axes']['xaxis']['renderer'] = '#$.jqplot.DateAxisRenderer#';
-        } elseif(strtolower($axis) === 'y') {
-            $this->options['axes']['yaxis']['renderer'] = '#$.jqplot.DateAxisRenderer#';
+        if ( in_array( $axis, array( 'x', 'y', 'z' ) ) ) {
+            $this->files = array_merge_recursive( array( 'jqplot.dateAxisRenderer.min.js' ), $this->files );
+            $this->setNestedOptVal( $this->options, 'axes', $axis.'axis', 'renderer', '#$.jqplot.DateAxisRenderer#' );
         }
-    
+            
         return $this;
     }
     
@@ -191,74 +194,92 @@ class JqPlot
             } else {
                 $legend['location'] = $location;
             }
-            if($x != 0)
+            if($x != 0) {
                 $legend['xoffset'] = $x;
-            if($y != 0)
+            }
+            if($y != 0) {
                 $legend['yoffset'] = $y;
+            }
             $this->options['legend'] = $legend;
         }
     
         return $this;
     }
     
+    /**
+     * Used to format the axis of the registered chart
+     * @param string $axis
+     * @param string $name
+     * @param mixed $value
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setAxisOptions($axis, $name, $value)
     {
         if(strtolower($axis) === 'x' || strtolower($axis) === 'y') {
             $axis = strtolower($axis) . 'axis';
-        
-            if (in_array($name, array('min', 'max', 'numberTicks', 'tickInterval', 'numberTicks'))) {
-                $this->options['axes'][$axis][$name] = $value;
-            } elseif(in_array($name, array('showGridline', 'formatString'))) {
-                $this->options['axes'][$axis]['tickOptions'][$name] = $value;
+
+            if ( in_array( $name, array( 'min', 'max', 'numberTicks', 'tickInterval', 'numberTicks' ) ) ) {
+                
+                $this->setNestedOptVal( $this->options, 'axes', $axis, $name, $value );
+                
+            } elseif( in_array( $name, array( 'showGridline', 'formatString' ) ) ) {
+                
+                $this->setNestedOptVal( $this->options, 'axes', $axis, 'tickOptions', $name, $value );
+                
             }
         }
         
         return $this;
     }
     
-    protected function getTypeOptions(array $options)
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\JsWriterAbstract::getTypeOptions()
+     */
+    protected function getTypeOptions( array $options )
     {
         if(isset($this->types['default'])) {
-            $options = array_merge_recursive($options, $this->types['default']->getOptions());
-        }
-        
-        if(isset($options['axes'])) {
-            foreach($options['axes'] as $axis => $contents) {
-                if(isset($options['axes'][$axis]['renderer']) && is_array($options['axes'][$axis]['renderer'])) {
-                    $options['axes'][$axis]['renderer'] = $options['axes'][$axis]['renderer'][0];
-                }
-            }
+            $options = array_merge_recursive( $options, $this->types['default']->getOptions() );
         }
         
         return $options;
     }
     
-    protected function getSeriesOptions(array $options)
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\JsWriterAbstract::getSeriesOptions()
+     */
+    protected function getSeriesOptions( array $options )
     {
         $types = $this->types;
-        $defaults = array(  'highlighter' => array('show' => false),
-			                'cursor'      => array('showTooltip' => false, 'show' => false),
-                            'pointLabels' => array('show' => false)
-                             );
-        if(isset($types['default'])) {
+        
+        $defaults = array(  'highlighter' => array( 'show' => false ),
+			                'cursor'      => array( 'showTooltip' => false, 'show' => false ),
+                            'pointLabels' => array( 'show' => false )
+                         );
+
+        if( isset( $types['default'] ) ) {
             $renderer = $types['default']->getRenderer();
-            if(isset($renderer)) {
+            
+            if (isset( $renderer ) ) {
                 $defaults['renderer'] = $renderer;
             }
+            
             $defaults['rendererOptions'] = $types['default']->getRendererOptions();
-            if(count($defaults['rendererOptions']) == 0) {
-                unset($defaults['rendererOptions']);
+            if( count( $defaults['rendererOptions'] ) == 0 ) {
+                unset( $defaults['rendererOptions'] );
             }
+            
             $options['seriesDefaults'] = $defaults;
         }
         
         $seriesOptions = array();
-        if (isset($this->options['seriesStorage'])) {
+        if ( isset( $this->options['seriesStorage'] ) ) {
             foreach($this->options['seriesStorage'] as $title => $opts) {
-                if(isset($types[$title])) {
+                if( isset( $types[$title] ) ) {
                     $type = $types[$title];
                     $opts['renderer'] = $type->getRenderer();
-                    array_merge_recursive($opts, $type->getSeriesOptions());
+                    array_merge_recursive( $opts, $type->getSeriesOptions() );
                 }
                 $opts['label'] = $title;
                 
@@ -293,9 +314,9 @@ class JqPlot
         }
         $seriesTitle = $this->getSeriesTitle( $series );
         $this->seriesLabels[$seriesTitle] = $labels;
-        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'show', true )
-                    ->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'labels', $labels )
-                    ->setRecursiveOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'edgeTolerance', 3 );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'show', true )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'labels', $labels )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'edgeTolerance', 3 );
     }
     
     /**
@@ -309,7 +330,7 @@ class JqPlot
     {
         if (  ( $name === 'location' && in_array( $value, array( 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw' ) ) ) 
             ||( in_array( $name, array( 'xpadding', 'ypadding', 'edgeTolerance', 'stackValue' ) ) ) ) {
-            return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'pointLabels', $name, $value );
+            return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'pointLabels', $name, $value );
         }
         return $this;
     }
@@ -322,7 +343,7 @@ class JqPlot
      */
     public function setSeriesLineWidth( $series, $value )
     {
-        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'lineWidth', $value );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'lineWidth', $value );
     }
     
     /**
@@ -333,7 +354,7 @@ class JqPlot
      */
     public function setSeriesShowLine( $series, $bool )
     {
-        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'showLine', $bool );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'showLine', $bool );
     }
     
     /**
@@ -344,7 +365,7 @@ class JqPlot
      */
     public function setSeriesShowMarker( $series, $bool )
     {
-        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'showMarker', $bool );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'showMarker', $bool );
     }
     
     /**
@@ -355,7 +376,7 @@ class JqPlot
      */
     public function setSeriesMarkerStyle( $series, $value )
     {
-        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'markerOptions', 'style', $value );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'markerOptions', 'style', $value );
     }
     
     /**
@@ -366,7 +387,7 @@ class JqPlot
      */
     public function setSeriesMarkerSize( $series, $value )
     {
-        return $this->setRecursiveOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'markerOptions', 'size', $value );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'markerOptions', 'size', $value );
     }
     
     /**
@@ -377,7 +398,7 @@ class JqPlot
      */
     public function setAxisTicks( $axis, array $ticks )
     {
-        return $this->setRecursiveOptVal( $this->options, 'axes', $axis.'axis', 'ticks', $ticks );
+        return $this->setNestedOptVal( $this->options, 'axes', $axis.'axis', 'ticks', $ticks );
     }
     
 }

@@ -68,7 +68,7 @@ class Series
 		}
 
 		$this->jsWriter = $jsWriter;
-		$this->jsWriter->initializeSeries( $this );
+		$this->jsWriter->initializeSeries( $this->title );
 	}
 
 	/**
