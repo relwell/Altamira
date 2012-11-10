@@ -13,6 +13,7 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\JsWriter\JsWriterAbstract::getLibrary
      * @covers \Altamira\JsWriter\JsWriterAbstract::setType
      * @covers \Altamira\JsWriter\JsWriterAbstract::getType
+     * @covers \Altamira\JsWriter\JsWriterAbstract::getFiles
      * @covers \Altamira\JsWriter\JsWriterAbstract::setTypeOption
      * @covers \Altamira\JsWriter\JsWriterAbstract::getCallbackPlaceholder
      * @covers \Altamira\JsWriter\JsWriterAbstract::makeJSArray
@@ -262,6 +263,7 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::useCursor
      * @covers \Altamira\JsWriter\JqPlot::useZooming
      * @covers \Altamira\JsWriter\JqPlot::useHighlighting
+     * @covers \Altamira\JsWriter\JqPlot::generateScript
      */
     public function testJqPlot() 
     {
@@ -269,12 +271,22 @@ JSON;
         $jsWriter = $chart->getJsWriter();
         
         $seriesTitle = 'testTitle';
-        $mockSeries = $this->getMock( '\Altamira\Series', array( 'getTitle' ), array( array(), $seriesTitle, $jsWriter ) );
+        
+        $mockSeries = $this->getMock( '\Altamira\Series', array( 'getTitle', 'getData' ), array( array(), $seriesTitle, $jsWriter ) );
+        
+        $chart->addSeries( $mockSeries );
+        
+        $mockDatum = $this->getMock( '\Altamira\ChartDatum\TwoDimensionalPoint', array(), array( array( 'x' => 1, 'y' => 2 ) ) );
         
         $mockSeries
             ->expects( $this->any() )
             ->method ( 'getTitle' )
             ->will   ( $this->returnValue( $seriesTitle ) )
+        ;
+        $mockSeries
+            ->expects( $this->any() )
+            ->method ( 'getData' )
+            ->will   ( $this->returnValue( array( $mockDatum ) ) )
         ;
         $this->assertEquals(
                 $jsWriter,
@@ -581,6 +593,29 @@ JSON;
                 'legend',
                 $options
         );
+        
+        $seriesLabelsProperty = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'seriesLabels' );
+        $seriesLabelsProperty->setAccessible( true );
+        $seriesLabels = $seriesLabelsProperty->getValue( $jsWriter );
+        
+        $mockDatum
+            ->expects( $this->once() )
+            ->method ( 'setLabel' )
+            ->with   ( $seriesLabels[$seriesTitle][0] )
+        ;
+        $output = $jsWriter->generateScript();
+        
+        
+        $this->assertContains(
+                'plot = $.jqplot(',
+                $output
+        );
+        
+        $this->assertContains(
+                'plot_'.$chart->getName().'_1',
+                $output
+        );
+        
     }
     
 }

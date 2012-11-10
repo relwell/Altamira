@@ -20,6 +20,10 @@ class JqPlot
     
     protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\JsWriterAbstract::generateScript()
+     */
     public function generateScript()
     {
         $output  = '$(document).ready(function(){';
@@ -35,26 +39,21 @@ class JqPlot
             $title       = $series->getTitle();
             $labelCopy   = null;
             
-            if (isset($this->seriesLabels[$title]) 
-                && !empty($this->seriesLabels[$title])) {
-                $labelCopy = $this->seriesLabels[$title];
-            }
-            
-            foreach ($data as &$datum) {
-                if ( $labelCopy !== null ) {
-                    $datum->setLabel( array_shift( $labelCopy ) );
+            foreach  ($data as &$datum ) {
+                if ( array_key_exists( $title, $this->seriesLabels ) && is_array( $this->seriesLabels[$title] ) ) {
+                    $datum->setLabel( $this->seriesLabels[$title][$num-1] );
                 }
                 $dataPrepped[] = $datum->getRenderData();
             }
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
-            $output .= $varname . ' = ' . $this->makeJSArray($dataPrepped) . ';';
+            $output .= sprintf( '%s=%s;', $varname, $this->makeJSArray( $dataPrepped ) );
         }
-        $output .= 'plot = $.jqplot("' . $this->chart->getName() . '", ';
-        $output .= $this->makeJSArray($vars);
-        $output .= ', ';
-        $output .= $this->getOptionsJS();
-        $output .= ');';
+        $output .= sprintf( 'plot = $.jqplot("%s", %s, %s);', 
+                            $this->chart->getName(), 
+                            $this->makeJSArray( $vars ),
+                            $this->getOptionsJS()
+                          );
         $output .= '});';
         
         return $output;

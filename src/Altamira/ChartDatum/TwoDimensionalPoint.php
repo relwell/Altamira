@@ -23,7 +23,7 @@ class TwoDimensionalPoint extends ChartDatumAbstract
         }
         
         if (! ( isset( $dimensions['x'] ) && isset( $dimensions['y'] ) ) ) {
-            throw new \InvalidArgumentException( 'Altamira\ChartDatum\BubbleDatum requires array keys for x and y values in argument 1.' );
+            throw new \InvalidArgumentException( 'Altamira\ChartDatum\TwoDimensionalPoint requires array keys for x and y values in argument 1.' );
         }
         
         $this['x'] = $dimensions['x'];
