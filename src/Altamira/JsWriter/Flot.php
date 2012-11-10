@@ -18,6 +18,8 @@ class Flot
                Ability\Labelable,
                Ability\Lineable
 {
+    const LIBRARY = 'flot';
+    
     protected $library = 'flot';
     protected $typeNamespace = '\\Altamira\\Type\\Flot\\';
     
@@ -385,6 +387,10 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Cursorable::useCursor()
+     */
     public function useCursor()
     {
         $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
@@ -392,6 +398,10 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Datable::useDates()
+     */
     public function useDates($axis = 'x')
     {
         $this->dateAxes[$axis] = true;
@@ -430,6 +440,10 @@ ENDJS;
         
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Legendable::setLegend()
+     */
     public function setLegend(array $opts = array('on' => 'true', 
                                                   'location' => 'ne', 
                                                   'x' => 0, 
@@ -457,18 +471,22 @@ ENDJS;
         return $this;
     }
     
-    public function setFill($series, $opts = array('use' => true,
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Fillable::setFill()
+     */
+    public function setFill($series, $opts = array('use'    => true,
                                                    'stroke' => false,
-                                                   'color' => null,
-                                                   'alpha' => null
+                                                   'color'  => null,
+                                                   'alpha'  => null
                                                   ))
     {
         
         // @todo add a method of telling flot whether the series is a line, bar, point
-        if (isset($opts['use']) && $opts['use'] == true) {
-            $this->options['seriesStorage'][$series]['line']['fill'] = true;
+        if ( isset( $opts['use'] ) && $opts['use'] == true ) {
+            $this->options['seriesStorage'][$this->getSeriesTitle( $series )]['line']['fill'] = true;
             
-            if (isset($opts['color'])) {
+            if ( isset( $opts['color'] ) ) {
                 $this->options['seriesStorage'][$series]['line']['fillColor'] = $opts['color'];
             }
         }
@@ -476,64 +494,69 @@ ENDJS;
         return $this;
     }
     
-    public function setShadow($series, $opts = array('use'=>true,
-                                                     'angle'=>45,
-                                                     'offset'=>1.25,
-                                                     'depth'=>3,
-                                                     'alpha'=>0.1))
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Shadowable::setShadow()
+     */
+    public function setShadow($series, $opts = array('use'    => true,
+                                                     'angle'  => 45,
+                                                     'offset' => 1.25,
+                                                     'depth'  => 3,
+                                                     'alpha'  => 0.1) )
     {
         
-        if (isset($opts['use']) && $opts['use']) {
-            $this->options['seriesStorage'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
+        if (! empty( $opts['use'] ) ) {
+            $depth = ! empty( $opts['depth'] ) ? $opts['depth'] : 3;
+            $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'shadowSize', $depth );
         }
         
         return $this;
     }
     
-    public function useSeriesLabels( \Altamira\Series $series, array $labels = array() )
+    public function useSeriesLabels( $seriesTitle, array $labels = array() )
     {
         $this->useLabels = true;
-        $this->seriesLabels[$series->getTitle()] = $labels;
-        $this->options['seriesStorage'][$series->getTitle()]['pointLabels']['edgeTolerance'] = 3;
+        $this->seriesLabels[$seriesTitle] = $labels;
+        $this->options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance'] = 3;
         return $this;
     }
     
-    public function setSeriesLabelSetting( \Altamira\Series $series, $name, $value )
+    public function setSeriesLabelSetting( $seriesTitle, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
         return $this;
     }
     
-    public function setSeriesLineWidth( \Altamira\Series $series, $value )
+    public function setSeriesLineWidth( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
-                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$seriesTitle]['lines'] = ( isset($this->options['seriesStorage'][$seriesTitle]['lines'])
+                                                               ? $this->options['seriesStorage'][$seriesTitle]['lines']
                                                                : array() )
                                                                + array('lineWidth'=>$value);
         
         return $this;
     }
     
-    public function setSeriesShowLine( \Altamira\Series $series, $bool )
+    public function setSeriesShowLine( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['lines'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['lines'])
-                                                               ? $this->options['seriesStorage'][$series->getTitle()]['lines']
+        $this->options['seriesStorage'][$seriesTitle]['lines'] = ( isset($this->options['seriesStorage'][$seriesTitle]['lines'])
+                                                               ? $this->options['seriesStorage'][$seriesTitle]['lines']
                                                                : array() )
                                                                + array('show'=>$bool);
         return $this;
     }
     
-    public function setSeriesShowMarker( \Altamira\Series $series, $bool )
+    public function setSeriesShowMarker( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
-                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
+                                                                ? $this->options['seriesStorage'][$seriesTitle]['points']
                                                                 : array() )
                                                                 + array('show'=>$bool);
         return $this;
     }
     
-    public function setSeriesMarkerStyle( \Altamira\Series $series, $value )
+    public function setSeriesMarkerStyle( $seriesTitle, $value )
     {
         // jqplot compatibility preprocessing
         $value = str_replace('filled', '', $value);
@@ -543,18 +566,18 @@ ENDJS;
             $this->files[] = 'jquery.flot.symbol.js';
         }
         
-        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
-                                                                ? $this->options['seriesStorage'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
+                                                                ? $this->options['seriesStorage'][$seriesTitle]['points']
                                                                 : array() )
                                                                 + array('symbol'=>$value);
         
         return $this;    
     }
     
-    public function setSeriesMarkerSize( \Altamira\Series $series, $value )
+    public function setSeriesMarkerSize( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$series->getTitle()]['points'] = ( isset($this->options['seriesStorage'][$series->getTitle()]['points'])
-                ? $this->options['seriesStorage'][$series->getTitle()]['points']
+        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
+                ? $this->options['seriesStorage'][$seriesTitle]['points']
                 : array() )
                 + array('radius'=>(int) ($value / 2));
         

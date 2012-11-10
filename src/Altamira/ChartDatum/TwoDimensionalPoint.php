@@ -23,7 +23,7 @@ class TwoDimensionalPoint extends ChartDatumAbstract
         }
         
         if (! ( isset( $dimensions['x'] ) && isset( $dimensions['y'] ) ) ) {
-            throw new \InvalidArgumentException( 'Altamira\ChartDatum\BubbleDatum requires array keys for x and y values in argument 1.' );
+            throw new \InvalidArgumentException( 'Altamira\ChartDatum\TwoDimensionalPoint requires array keys for x and y values in argument 1.' );
         }
         
         $this['x'] = $dimensions['x'];
@@ -36,16 +36,15 @@ class TwoDimensionalPoint extends ChartDatumAbstract
      */
     public function getRenderData( $useLabel = false )
     {
-        $typeName = '';
-        if ( $type = $this->jsWriter->getType( $this->series->getTitle() ) ) {
-            $typeName = preg_replace('/.*\\\(.*)$/', '$1', get_class($type));
-        }
-        
-        if ( $typeName == 'Donut' && $this->jsWriter instanceof \Altamira\JsWriter\Flot ) {
-            return array( 1, $this['y'] );
+        if ( ( $this->jsWriter->getType( $this->series->getTitle() ) instanceof \Altamira\Type\Flot\Donut ) ) {
+            $value = array( 1, $this['y'] );
         } else {
-            return array($this['x'], $this['y']) + ($useLabel ? array($this->getLabel()) : array());
+            $value = array($this['x'], $this['y']);
+            if ( $useLabel ) {
+                $value[] = $this->getLabel();
+            }
         }
+        return $value;
     }
     
 }

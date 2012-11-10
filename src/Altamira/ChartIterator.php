@@ -4,12 +4,34 @@ namespace Altamira;
 
 class ChartIterator extends \ArrayIterator
 {
-    
+    /**
+     * Stores the plugins in an iterator that knows how to render them
+     * @var \Altamira\FilesRenderer
+     */
     protected $plugins;
+    /**
+     * Stores inline script calls in an iterator that knows how to render them
+     * @var \Altamira\ScriptsRenderer
+     */
     protected $scripts;
+    /**
+     * Stores global configurations as set in altamira-config.ini
+     * @var \Altamira\Config
+     */
     protected $config;
+    /**
+     * The key is the library name; the value is immaterial. This is done to ensure uniqueness.
+     * @var array
+     */
+    protected $libraries;
     
-    public function __construct( $array, $config )
+    /**
+     * Constructor method
+     * @param array $charts array of \Altamira\Chart instances
+     * @param \Altamira\Config $config
+     * @throws \Exception
+     */
+    public function __construct( array $charts, \Altamira\Config $config )
     {
         $this->config = $config;
         
@@ -17,23 +39,22 @@ class ChartIterator extends \ArrayIterator
         $plugins = array();
         $scripts = array();
         
-        foreach ($array as $item) {
-            if (! $item instanceOf Chart ) {
-                throw new \Exception("ChartIterator only supports an array of Chart instances.");
+        foreach ($charts as $chart) {
+            if (! $chart instanceof Chart ) {
+                throw new \UnexpectedValueException("ChartIterator only supports an array of Chart instances.");
             }
             
             // time saver -- if it's a chart, we can use this loop to add files, too
-            $plugins = array_merge($plugins, $item->getFiles());
-            $scripts[] = $item->getScript();
-            $this->libraries[$item->getLibrary()] = true;
+            $plugins = array_merge( $plugins, $chart->getFiles() );
+            $scripts[] = $chart->getScript();
+            $this->libraries[$chart->getLibrary()] = true;
         }
 
-        // yo dawg...
-        $this->plugins = new FilesRenderer($plugins, $config['js.pluginpath']);
-        $this->scripts = new ScriptsRenderer($scripts);
+        $this->plugins = new FilesRenderer( $plugins, $config['js.pluginpath'] );
+        $this->scripts = new ScriptsRenderer( $scripts );
         
         
-        parent::__construct($array);        
+        parent::__construct( $charts );        
     }
     
     
@@ -42,7 +63,10 @@ class ChartIterator extends \ArrayIterator
      * We don't handle chart HTML this way since placement and context is a front-end concern.  
      */
     
-    
+    /**
+     * Echoes out script tags referencing JS files
+     * @return \Altamira\ChartIterator provides fluent interface
+     */
     public function renderPlugins()
     {
         
@@ -57,6 +81,10 @@ class ChartIterator extends \ArrayIterator
         
     }
     
+    /**
+     * Echoes out inline javascript. Note that we group it all together in a single script tag.
+     * @return \Altamira\ChartIterator provides fluent interface
+     */
     public function renderScripts()
     {
         echo "<script type='text/javascript'>\n";
@@ -72,11 +100,15 @@ class ChartIterator extends \ArrayIterator
         
     }
     
+    /**
+     * Provides libraries paths based on config values
+     * @return array
+     */
     public function getLibraries()
     {
         $libraryToPath = array(
-                'flot'    =>    $this->config['js.flotpath'],
-                'jqPlot'  =>    $this->config['js.jqplotpath']
+                \Altamira\JsWriter\Flot::LIBRARY    =>    $this->config['js.flotpath'],
+                \Altamira\JsWriter\JqPlot::LIBRARY  =>    $this->config['js.jqplotpath']
                 );
         $libraryKeys = array_unique( array_keys( $this->libraries ) );
         $libraryPaths = array();
@@ -88,29 +120,37 @@ class ChartIterator extends \ArrayIterator
         return $libraryPaths;
     }
     
+    /**
+     * Echoes library plugins for invoking in the DOM head
+     * @return \Altamira\ChartIterator provides fluent interface
+     */
     public function renderLibraries()
     {
-        foreach ($this->getLibraries() as $libraryPath) {
+        foreach ( $this->getLibraries() as $libraryPath ) {
             echo "<script type='text/javascript' src='$libraryPath'></script>";
         }
         
         return $this;
     }
     
+    /**
+     * Echoes any CSS that is needed for the libraries to render correctly
+     * @return \Altamira\ChartIterator provides fluent interface
+     */
     public function renderCss()
     {
-        foreach ($this->libraries as $library=>$junk) {
-            switch($library) {
-                case 'flot':
+        foreach ( $this->libraries as $library => $junk ) {
+            switch( $library ) {
+                case \Altamira\JsWriter\Flot::LIBRARY:
                     break;
-                case 'jqPlot':
+                case \Altamira\JsWriter\JqPlot::LIBRARY:
                 default:
                     $cssPath = $this->config['css.jqplotpath'];
             }
         
         }
         
-        if (isset($cssPath)) {
+        if ( isset( $cssPath ) ) {
             echo "<link rel='stylesheet' type='text/css' href='{$cssPath}'></link>";
         }
         

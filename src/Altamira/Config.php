@@ -2,6 +2,9 @@
 
 namespace Altamira;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Config implements \ArrayAccess
 {
     /**

@@ -61,11 +61,6 @@ abstract class TypeAbstract
 		return $opts;
 	}
 
-	public function getUseTags()
-	{
-		return false;
-	}
-
 	public function setOption($name, $value)
 	{
 		$this->options[$name] = $value;
