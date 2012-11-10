@@ -255,6 +255,8 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::getTypeOptions
      * @covers \Altamira\JsWriter\JqPlot::useDates
      * @covers \Altamira\JsWriter\JqPlot::setAxisOptions
+     * @covers \Altamira\JsWriter\JqPlot::setLegend
+     * @covers \Altamira\JsWriter\JqPlot::setFill
      */
     public function testJqPlot() 
     {
@@ -333,6 +335,14 @@ JSON;
                 $jsWriter,
                 $jsWriter->setAxisOptions( 'x', 'formatString', '%d' )
         );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setLegend()
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setFill( $seriesTitle, array( 'use' => true, 'color' => '#333', 'stroke' => true, 'alpha' => '0.6' ) )
+        );
         
         $optionAttr = new ReflectionProperty( '\Altamira\JsWriter\JqPlot', 'options' );
         $optionAttr->setAccessible( true );
@@ -395,6 +405,30 @@ JSON;
         $this->assertArrayHasKey(
                 'numberTicks',
                 $options['axes']['xaxis']
+        );
+        $this->assertArrayHasKey(
+                'legend',
+                $options
+        );
+        $this->assertArrayHasKey(
+                'location',
+                $options['legend']
+        );
+        $this->assertArrayHasKey(
+                'fill',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'fillAndStroke',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'fillColor',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'fillAlpha',
+                $options['seriesStorage'][$seriesTitle]
         );
         
         $jsWriter->setType( 'Bar' );

@@ -387,6 +387,10 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Cursorable::useCursor()
+     */
     public function useCursor()
     {
         $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
@@ -394,6 +398,10 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Datable::useDates()
+     */
     public function useDates($axis = 'x')
     {
         $this->dateAxes[$axis] = true;
@@ -432,6 +440,10 @@ ENDJS;
         
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Legendable::setLegend()
+     */
     public function setLegend(array $opts = array('on' => 'true', 
                                                   'location' => 'ne', 
                                                   'x' => 0, 
@@ -459,18 +471,22 @@ ENDJS;
         return $this;
     }
     
-    public function setFill($series, $opts = array('use' => true,
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Fillable::setFill()
+     */
+    public function setFill($series, $opts = array('use'    => true,
                                                    'stroke' => false,
-                                                   'color' => null,
-                                                   'alpha' => null
+                                                   'color'  => null,
+                                                   'alpha'  => null
                                                   ))
     {
         
         // @todo add a method of telling flot whether the series is a line, bar, point
-        if (isset($opts['use']) && $opts['use'] == true) {
-            $this->options['seriesStorage'][$series]['line']['fill'] = true;
+        if ( isset( $opts['use'] ) && $opts['use'] == true ) {
+            $this->options['seriesStorage'][$this->getSeriesTitle( $series )]['line']['fill'] = true;
             
-            if (isset($opts['color'])) {
+            if ( isset( $opts['color'] ) ) {
                 $this->options['seriesStorage'][$series]['line']['fillColor'] = $opts['color'];
             }
         }
@@ -478,15 +494,20 @@ ENDJS;
         return $this;
     }
     
-    public function setShadow($series, $opts = array('use'=>true,
-                                                     'angle'=>45,
-                                                     'offset'=>1.25,
-                                                     'depth'=>3,
-                                                     'alpha'=>0.1))
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Shadowable::setShadow()
+     */
+    public function setShadow($series, $opts = array('use'    => true,
+                                                     'angle'  => 45,
+                                                     'offset' => 1.25,
+                                                     'depth'  => 3,
+                                                     'alpha'  => 0.1) )
     {
         
-        if (isset($opts['use']) && $opts['use']) {
-            $this->options['seriesStorage'][$series]['shadowSize'] = isset($opts['depth']) ? $opts['depth'] : 3;
+        if (! empty( $opts['use'] ) ) {
+            $depth = ! empty( $opts['depth'] ) ? $opts['depth'] : 3;
+            $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'shadowSize', $depth );
         }
         
         return $this;

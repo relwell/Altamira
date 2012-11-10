@@ -126,28 +126,38 @@ class JqPlot
 		return $this;
     }
     
-    public function setFill($series, $opts = array('use' => true, 
+    /**
+     * 
+     * @param \Altamira\Chart|series $series
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
+    public function setFill($series, $opts = array('use'    => true, 
                                                    'stroke' => false, 
-                                                   'color' => null, 
-                                                   'alpha' => null
+                                                   'color'  => null, 
+                                                   'alpha'  => null
                                                   )
                             ) 
     {
         extract($opts);
         
-        $use = isset($use) ? $use : true;
-        $stroke = isset($stroke) ? $stroke : false;
-        $color = isset($color) ? $color : null;
-        $alpha = isset($alpha) ? $alpha : null;
+        $use    = isset( $use)     ? $use    : true;
+        $stroke = isset( $stroke ) ? $stroke : false;
+        $color  = isset( $color )  ? $color  : null;
+        $alpha  = isset( $alpha )  ? $alpha  : null;
+        
+        $series = $this->getSeriesTitle( $series );
+        $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'fill', $use );
+        $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'fillAndStroke', $stroke);
         
         $this->options['seriesStorage'][$series]['fill'] = $use;
         $this->options['seriesStorage'][$series]['fillAndStroke'] = $stroke;
         
-        if($color !== null) {
-            $this->options['seriesStorage'][$series]['fillColor'] = $color;
+        if (! empty( $color ) ) {
+            $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'fillColor', $color );
         }
-        if($alpha !== null) {
-            $this->options['seriesStorage'][$series]['fillAlpha'] = $alpha;
+        if (! empty( $alpha ) ) {
+            $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'fillAlpha', $alpha );
         }
         
         return $this;
@@ -171,10 +181,10 @@ class JqPlot
         return $this;
     }
     
-    public function setLegend(array $opts = array('on' => 'true', 
-                                                  'location' => 'ne', 
-                                                  'x' => 0, 
-                                                  'y' => 0))
+    public function setLegend( array $opts = array('on'       => 'true', 
+                                                   'location' => 'ne', 
+                                                   'x'        => 0, 
+                                                   'y'        => 0 ) )
     {
         extract($opts);
         
@@ -184,20 +194,20 @@ class JqPlot
         $y = isset($y) ? $y : 0;
         
         
-        if(!$on) {
+        if (! $on ) {
             unset($this->options['legend']);
         } else {
             $legend = array();
             $legend['show'] = true;
-            if($location == 'outside' || $location == 'outsideGrid') {
+            if ( $location == 'outside' || $location == 'outsideGrid' ) {
                 $legend['placement'] = $location;
             } else {
                 $legend['location'] = $location;
             }
-            if($x != 0) {
+            if ( $x != 0 ) {
                 $legend['xoffset'] = $x;
             }
-            if($y != 0) {
+            if ( $y != 0 ) {
                 $legend['yoffset'] = $y;
             }
             $this->options['legend'] = $legend;
