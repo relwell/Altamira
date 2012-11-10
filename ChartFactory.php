@@ -34,7 +34,9 @@ class ChartFactory {
 
 
     public function getChartIterator(array $charts) {
-        return new ChartIterator($charts);
+        //@todo: this supports config file, find a sensible place for it and symfonify it
+        $config = new \Altamira\Config();
+        return new ChartIterator($charts, $config);
     }
 }
 ?>
