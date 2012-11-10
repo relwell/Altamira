@@ -61,29 +61,40 @@ class JqPlot
         
     }
     
-    public function useHighlighting(array $opts = array('size'=>7.5))
+    public function useHighlighting( array $opts = array( 'size' => 7.5 ) )
     {
-        extract($opts);
-        $size = isset($size) ? $size : 7.5;
+        extract( $opts );
+        $size = isset( $size ) ? $size : 7.5;
         
-        $this->files = array_merge_recursive(array('jqplot.highlighter.min.js'), $this->files);
-        $this->options['highlighter'] = array('sizeAdjust' => $size);
+        $this->files = array_merge_recursive( array( 'jqplot.highlighter.min.js' ), $this->files );
+        $this->options['highlighter'] = array( 'sizeAdjust' => $size );
 
         return $this;
     }
     
-    public function useZooming(array $options = array('mode'=>'xy'))
+    /**
+     * 
+     * @param array $options
+     * @return \Altamira\JsWriter\JqPlot
+     */
+    public function useZooming( array $options = array( 'mode'=>'xy' ) )
     {
-        $this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
-        $this->options['cursor'] = array('zoom' => true, 'show' => true);
+        $this->files = array_merge_recursive( array( 'jqplot.cursor.min.js' ), $this->files );
+        $this->setNestedOptVal( $this->options, 'cursor', 'show', true );
+        $this->setNestedOptVal( $this->options, 'cursor', 'zoom', true );
     
         return $this;
     }
     
+    /**
+     * 
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function useCursor()
     {
-        $this->files = array_merge_recursive(array('jqplot.cursor.min.js'), $this->files);
-        $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
+        $this->files = array_merge_recursive( array( 'jqplot.cursor.min.js' ), $this->files );
+        $this->setNestedOptVal( $this->options, 'cursor', 'show', true );
+        $this->setNestedOptVal( $this->options, 'cursor', 'showTooltip', true );
         
         return $this;
     }
@@ -103,19 +114,27 @@ class JqPlot
         return $this;
     }
     
-    public function setShadow($series, $opts = array('use'=>true, 
-                                                     'angle'=>45, 
-                                                     'offset'=>1.25, 
-                                                     'depth'=>3, 
-                                                     'alpha'=>0.1))
+    /**
+     * 
+     * @param \Altamira\Series|string $series
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
+    public function setShadow($series, $opts = array('use'    => true, 
+                                                     'angle'  => 45, 
+                                                     'offset' => 1.25, 
+                                                     'depth'  => 3, 
+                                                     'alpha'  => 0.1 ) )
     {
         extract($opts);
         
-        $use = isset($use) ? $use : true;
-        $angle = isset($angle) ? $angle : 45;
-        $offset = isset($offset) ? $offset : 1.25; 
-        $depth = isset($depth) ? $depth : 3; 
-        $alpha = isset($alpha) ? $alpha : 0.1;
+        $series = $this->getSeriesTitle( $series );
+        
+        $use    = isset( $use )    ? $use    : true;
+        $angle  = isset( $angle )  ? $angle  : 45;
+        $offset = isset( $offset ) ? $offset : 1.25; 
+        $depth  = isset( $depth )  ? $depth  : 3; 
+        $alpha  = isset( $alpha )  ? $alpha  : 0.1;
         
         $this->options['seriesStorage'][$series]['shadow'] = $use;
 		$this->options['seriesStorage'][$series]['shadowAngle'] = $angle;
@@ -163,19 +182,25 @@ class JqPlot
         return $this;
     }
     
-    public function setGrid(array $opts)
+    /**
+     * 
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
+    public function setGrid( array $opts )
     {
-        extract($opts);
-        $on = isset($on) ? $on : true; 
-        $color = isset($color) ? $color : null;
-        $background = isset($background) ? $background : null;
+        extract( $opts );
+        $on         = isset( $on )         ? $on         : true; 
+        $color      = isset( $color )      ? $color      : null;
+        $background = isset( $background ) ? $background : null;
         
+        $this->setNestedOptVal( $this->options, 'grid', 'drawGridLines', $on );
         $this->options['grid']['drawGridLines'] = $on;
-        if($color !== null) {
-            $this->options['grid']['gridLineColor'] = $color;
+        if(! empty( $color ) ) {
+            $this->setNestedOptVal( $this->options, 'grid', 'gridLineColor', $color );
         }
-        if($background !== null) {
-            $this->options['grid']['background'] = $background;
+        if(! empty( $background ) ) {
+            $this->setNestedOptVal( $this->options, 'grid', 'background', $background );
         }
     
         return $this;
@@ -186,16 +211,16 @@ class JqPlot
                                                    'x'        => 0, 
                                                    'y'        => 0 ) )
     {
-        extract($opts);
+        extract( $opts );
         
-        $on = isset($on) ? $on : 'true';
-        $location = isset($location) ? $location : 'ne';
-        $x = isset($x) ? $x : 0;
-        $y = isset($y) ? $y : 0;
+        $on       = isset( $on )       ? $on       : true;
+        $location = isset( $location ) ? $location : 'ne';
+        $x        = isset( $x )        ? $x        : 0;
+        $y        = isset( $y )        ? $y        : 0;
         
         
         if (! $on ) {
-            unset($this->options['legend']);
+            unset( $this->options['legend'] );
         } else {
             $legend = array();
             $legend['show'] = true;

@@ -257,6 +257,11 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::setAxisOptions
      * @covers \Altamira\JsWriter\JqPlot::setLegend
      * @covers \Altamira\JsWriter\JqPlot::setFill
+     * @covers \Altamira\JsWriter\JqPlot::setGrid
+     * @covers \Altamira\JsWriter\JqPlot::setShadow
+     * @covers \Altamira\JsWriter\JqPlot::useCursor
+     * @covers \Altamira\JsWriter\JqPlot::useZooming
+     * @covers \Altamira\JsWriter\JqPlot::useHighlighting
      */
     public function testJqPlot() 
     {
@@ -337,11 +342,34 @@ JSON;
         );
         $this->assertEquals(
                 $jsWriter,
-                $jsWriter->setLegend()
+                $jsWriter->setLegend( array('on'       => 'true', 
+                                           'location' => 'ne', 
+                                           'x'        => 5, 
+                                           'y'        => 10 ) )
         );
         $this->assertEquals(
                 $jsWriter,
                 $jsWriter->setFill( $seriesTitle, array( 'use' => true, 'color' => '#333', 'stroke' => true, 'alpha' => '0.6' ) )
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setGrid( array( 'on' => true, 'color' => '#333', 'background' => '#fff' ) )
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->setShadow( $seriesTitle )
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->useCursor()
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->useZooming()
+        );
+        $this->assertEquals(
+                $jsWriter,
+                $jsWriter->useHighlighting( array( 'size' => 10 ) )
         );
         
         $optionAttr = new ReflectionProperty( '\Altamira\JsWriter\JqPlot', 'options' );
@@ -411,6 +439,23 @@ JSON;
                 $options
         );
         $this->assertArrayHasKey(
+                'cursor',
+                $options
+        );
+        $this->assertArrayHasKey(
+                'show',
+                $options['cursor']
+        );
+        $this->assertArrayHasKey(
+                'zoom',
+                $options['cursor']
+        );
+        
+        $this->assertArrayHasKey(
+                'location',
+                $options['legend']
+        );
+        $this->assertArrayHasKey(
                 'location',
                 $options['legend']
         );
@@ -430,6 +475,47 @@ JSON;
                 'fillAlpha',
                 $options['seriesStorage'][$seriesTitle]
         );
+        $this->assertArrayHasKey(
+                'shadow',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'shadowAngle',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'shadowOffset',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'shadowDepth',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'shadowAlpha',
+                $options['seriesStorage'][$seriesTitle]
+        );
+        $this->assertArrayHasKey(
+                'drawGridLines',
+                $options['grid']
+        );
+        $this->assertArrayHasKey(
+                'gridLineColor',
+                $options['grid']
+        );
+        $this->assertArrayHasKey(
+                'background',
+                $options['grid']
+        );
+        $this->assertArrayHasKey(
+                'highlighter',
+                $options
+        );
+        $this->assertArrayHasKey(
+                'sizeAdjust',
+                $options['highlighter']
+        );
+        
         
         $jsWriter->setType( 'Bar' );
         $jsWriter->setType( 'Bar', $seriesTitle );
@@ -482,7 +568,19 @@ JSON;
         
         $typeOptionsResult = $typeOptions->invoke( $jsWriter, $optionsResult );
         
+        $jsWriter->setLegend( array( 'on' => true, 'location' => 'outside' ) );
+        $options = $optionAttr->getValue( $jsWriter );
+        $this->assertArrayHasKey(
+                'placement',
+                $options['legend']
+        );
         
+        $jsWriter->setLegend( array( 'on' => false ) );
+        $options = $optionAttr->getValue( $jsWriter );
+        $this->assertArrayNotHasKey(
+                'legend',
+                $options
+        );
     }
     
 }
