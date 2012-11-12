@@ -192,7 +192,7 @@ class ExampleController extends Controller
         $altamiraJSLibraries=$chartIterator->getLibraries();
         $altamiraCSS=$chartIterator->getCSSPath();
         $altamiraJSScript=$chartIterator->getScripts();
-
+        $altamiraPlugins=$chartIterator->getPlugins();
 
         while ($chartIterator->valid() ) {
             $altamiraCharts[]=$chartIterator->current()->getDiv();
@@ -201,6 +201,6 @@ class ExampleController extends Controller
 
 
         //print_r($charts);
-        return $this->render('MalwarebytesAltamiraBundle:Default:example.html.twig', array('altamiraJSLibraries'=> $altamiraJSLibraries, 'altamiraCSS'=> $altamiraCSS, 'altamiraScripts' =>  $altamiraJSScript, 'altamiraCharts' => $altamiraCharts));
+        return $this->render('MalwarebytesAltamiraBundle:Default:example.html.twig', array('altamiraJSLibraries'=> $altamiraJSLibraries, 'altamiraCSS'=> $altamiraCSS, 'altamiraScripts' =>  $altamiraJSScript, 'altamiraCharts' => $altamiraCharts, 'altamiraJSPlugins' => $altamiraPlugins));
     }
 }

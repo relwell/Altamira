@@ -1,7 +1,12 @@
-
+<script type='text/javascript' src='{{asset('bundles/malwarebytesaltamira/js/' ~ 'jquery.js')}}'></script>
 {% for jsPath in altamiraJSLibraries %}
 <script type='text/javascript' src='{{asset('bundles/malwarebytesaltamira/' ~ jsPath)}}'></script>
 {% endfor %}
+
+{% for jsPluginPath in altamiraJSPlugins %}
+<script type='text/javascript' src='{{asset('bundles/malwarebytesaltamira/js/plugins/' ~ jsPluginPath)}}'></script>
+{% endfor %}
+
 
 {% if altamiraCSS is not null %}
 <link rel='stylesheet' type='text/css' href='{{asset('bundles/malwarebytesaltamira/' ~ altamiraCSS)}}'></link>
