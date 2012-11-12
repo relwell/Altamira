@@ -132,8 +132,8 @@ class ExampleController extends Controller
             
             $charts[]=$chartsFactory->createChart('chart'.$i);
             
-            $charts[9]
-                ->addSeries( $charts[9]->createManySeries($chart6Many2, $nestedFactoryMethod, 'External' ) )
+            $charts[8]
+                ->addSeries( $charts[8]->createManySeries($chart6Many2, $nestedFactoryMethod, 'External' ) )
                 ->setTitle('Donut Chart With Custom Colors And Labels')
                 ->setSeriesColors(array('#dd3333', '#d465f1', '#aa2211', '#3377aa', '#6699bb', '#9933aa'))
                 ->setType('Donut')
@@ -149,21 +149,21 @@ class ExampleController extends Controller
         $bubbleFactoryMethod = array( 'Altamira\ChartDatum\BubbleFactory', 'getBubbleDatumFromTupleSet' );
         
         $charts[6]->addSeries($charts[6]->createManySeries(
-            array(  array(4, 7, 5, 'Screws'),
-                array(5, 3, 6, 'Nails'),
-                array(4, 5, 7, 'Bolts'),
-                array(3.5, 4, 6, 'Nuts'),
-                array(3, 2, 5, 'Washers'),
-                array(4, 1, 5, 'Pliers'),
-                array(4.5, 6, 6, 'Hammers')), $bubbleFactoryMethod, 'Bubble'))->
-            setTitle('Bubble Chart')->
-            setType('Bubble')->
-            setTypeOption('bubbleAlpha', .5)->
-            setTypeOption('highlightAlpha', .7)
-            ->setAxisOptions( 'x', 'min', 2)
-            ->setAxisOptions( 'x', 'max', 6)
-            ->setAxisOptions( 'y', 'min', -2)
-            ->setAxisOptions( 'y', 'max', 10);
+                array(  array('Screws', 4, 7, 5),
+            array('Nails', 5, 3, 6),
+            array('Bolts', 4, 5, 7),
+            array('Nuts', 3.5, 4, 6),
+            array('Washers', 3, 2, 5),
+            array('Pliers', 4, 1, 5),
+            array('Hammers', 4.5, 6, 6)), $bubbleFactoryMethod, 'Bubble'))->
+        setTitle('Bubble Chart')->
+        setType('Bubble')->
+        setTypeOption('bubbleAlpha', .5)->
+        setTypeOption('highlightAlpha', .7)
+        ->setAxisOptions( 'x', 'min', 2)
+        ->setAxisOptions( 'x', 'max', 6)
+        ->setAxisOptions( 'y', 'min', -2)
+        ->setAxisOptions( 'y', 'max', 10);
         
             
             
