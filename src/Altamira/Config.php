@@ -11,11 +11,13 @@ class Config implements \ArrayAccess
      * 
      * @var array
      */
-    private $config;
+    private $config = array();
     
-    public function __construct( $file )
+    public function __construct( $file = null )
     {
-        $this->config = parse_ini_file( $file, true );
+        if ( $file !== null ) {
+            $this->config = parse_ini_file( $file, true );
+        }
     }
 	/* (non-PHPdoc)
      * @see ArrayAccess::offsetExists()

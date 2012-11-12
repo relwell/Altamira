@@ -82,6 +82,15 @@ class ChartIterator extends \ArrayIterator
     }
     
     /**
+     * Returns an array of plugins, if we don't want to echo
+     * @return array
+     */
+    public function getPlugins()
+    {
+        return (array) $this->plugins;
+    }
+    
+    /**
      * Echoes out inline javascript. Note that we group it all together in a single script tag.
      * @return \Altamira\ChartIterator provides fluent interface
      */
@@ -98,6 +107,21 @@ class ChartIterator extends \ArrayIterator
         
         return $this;
         
+    }
+    
+    /**
+     * Returns inline js, in case you don't want to immediately render.
+     * @return string
+     */
+    public function getScripts()
+    {
+        $retVal = '';
+        while ( $this->scripts->valid() ) {
+            $retVal .= "<script type='text/javascript'>\n{$this->scripts->get()}\n</script>\n";
+            $this->scripts->next();
+        }
+        
+        return $retVal;
     }
     
     /**
@@ -156,6 +180,23 @@ class ChartIterator extends \ArrayIterator
         
         return $this;
         
+    }
+    
+    public function getCSSPath()
+    {
+        $cssPath = '';
+        
+        foreach ( $this->libraries as $library => $junk ) {
+            switch( $library ) {
+                case \Altamira\JsWriter\Flot::LIBRARY:
+                    break;
+                case \Altamira\JsWriter\JqPlot::LIBRARY:
+                default:
+                    $cssPath = $this->config['css.jqplotpath'];
+            }
+        }
+        
+        return $cssPath;
     }
     
 }

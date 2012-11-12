@@ -14,18 +14,32 @@ class ScriptsRenderer extends \ArrayIterator
      */
     public function render( $withScript = false )
     {
-        
-        if ( $withScript ) {
-            echo "<script type='text/javascript'>\n";
-        }
-        
-        echo $this->current();
-        
-        if ( $withScript ) {
-            echo "\n</script>\n";
-        }
+       echo $this->get( $withScript );
         
         return $this;
+        
+    }
+    
+    /**
+     * Returns the current script value.
+     * @param boolean $withScript
+     * @return Ambigous <string, mixed>
+     */
+    public function get( $withScript = false )
+    {
+        $retVal = '';
+        
+        if ( $withScript ) {
+            $retVal .= "<script type='text/javascript'>\n";
+        }
+        
+        $retVal .= $this->current();
+        
+        if ( $withScript ) {
+            $retVal .= "\n</script>\n";
+        }
+        
+        return $retVal;
         
     }
     
