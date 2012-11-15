@@ -4,14 +4,14 @@ namespace Altamira\JsWriter;
 
 use \Altamira\JsWriter\Ability;
 
-class JqPlot 
+class JqPlot
     extends \Altamira\JsWriter\JsWriterAbstract
-    implements Ability\Cursorable, 
-               Ability\Datable, 
-               Ability\Fillable, 
-               Ability\Griddable, 
-               Ability\Highlightable, 
-               Ability\Legendable, 
+    implements Ability\Cursorable,
+               Ability\Datable,
+               Ability\Fillable,
+               Ability\Griddable,
+               Ability\Highlightable,
+               Ability\Legendable,
                Ability\Shadowable,
                Ability\Labelable,
                Ability\Lineable
@@ -28,7 +28,7 @@ class JqPlot
     {
         $output  = '$(document).ready(function(){';
         $output .= '$.jqplot.config.enablePlugins = true;';
-        
+
         $num = 0;
         $vars = array();        
         
@@ -55,9 +55,9 @@ class JqPlot
                             $this->getOptionsJS()
                           );
         $output .= '});';
-        
+
         return $output;
-        
+
     }
     
     public function useHighlighting( array $opts = array( 'size' => 7.5 ) )
@@ -140,7 +140,7 @@ class JqPlot
 		$this->options['seriesStorage'][$series]['shadowOffset'] = $offset;
 		$this->options['seriesStorage'][$series]['shadowDepth'] = $depth;
 		$this->options['seriesStorage'][$series]['shadowAlpha'] = $alpha;
-		
+
 		return $this;
     }
     
@@ -155,7 +155,7 @@ class JqPlot
                                                    'color'  => null, 
                                                    'alpha'  => null
                                                   )
-                            ) 
+                            )
     {
         extract($opts);
         
@@ -177,7 +177,7 @@ class JqPlot
         if (! empty( $alpha ) ) {
             $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'fillAlpha', $alpha );
         }
-        
+
         return $this;
     }
     
@@ -201,7 +201,7 @@ class JqPlot
         if(! empty( $background ) ) {
             $this->setNestedOptVal( $this->options, 'grid', 'background', $background );
         }
-    
+
         return $this;
     }
     
@@ -236,7 +236,7 @@ class JqPlot
             }
             $this->options['legend'] = $legend;
         }
-    
+
         return $this;
     }
     
@@ -262,7 +262,7 @@ class JqPlot
                 
             }
         }
-        
+
         return $this;
     }
     
@@ -275,7 +275,7 @@ class JqPlot
         if(isset($this->types['default'])) {
             $options = array_merge_recursive( $options, $this->types['default']->getOptions() );
         }
-        
+
         return $options;
     }
     
@@ -306,7 +306,7 @@ class JqPlot
             
             $options['seriesDefaults'] = $defaults;
         }
-        
+
         $seriesOptions = array();
         if ( isset( $this->options['seriesStorage'] ) ) {
             foreach($this->options['seriesStorage'] as $title => $opts) {
@@ -326,7 +326,7 @@ class JqPlot
         
         return $options;
     }
-    
+
     public function getOptionsJS()
     {
         $opts = $this->options;
@@ -434,5 +434,5 @@ class JqPlot
     {
         return $this->setNestedOptVal( $this->options, 'axes', $axis.'axis', 'ticks', $ticks );
     }
-    
+
 }

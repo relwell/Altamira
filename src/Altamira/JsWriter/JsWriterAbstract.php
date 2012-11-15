@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Altamira\JsWriter;
 
@@ -94,7 +94,7 @@ abstract class JsWriterAbstract
         foreach ( $this->callbacks as $placeHolder => $callback ) {
             $optionString = str_replace("\"{$placeHolder}\"", $callback, $optionString);
         }
-        
+
         return $optionString;
     }
     
@@ -107,12 +107,11 @@ abstract class JsWriterAbstract
     {
         $index = count( $this->callbacks );
         $uid = spl_object_hash( $this );
-        
         $key = sprintf( '%s_%s', $uid, $index );
-        
+
         $this->callbacks[$key] = $callback;
-        
-        return $key; 
+
+        return $key;
     }
     
     /**
@@ -124,11 +123,11 @@ abstract class JsWriterAbstract
     public function getFiles()
     {
         $files = $this->files;
-        
+
         foreach ($this->types as $type) {
             $files = array_merge($files, $type->getFiles());
         }
-        
+
         return $files;
     }
     
@@ -246,7 +245,7 @@ abstract class JsWriterAbstract
         if( class_exists( $className ) ) {
             $this->types[$title] = new $className( $this );
         }
-        
+
         return $this;
     }
     
@@ -279,7 +278,7 @@ abstract class JsWriterAbstract
         if( isset( $this->types[$title] ) ) {
             $this->types[$title]->setOption( $name, $option );
         }
-        
+
         return $this;
     }
     

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Altamira;
 use Altamira\ChartRenderer\RendererInterface;
@@ -51,8 +51,8 @@ class ChartRenderer
     {
         if ( empty( self::$rendererChain ) ) {
             self::pushRenderer( '\Altamira\ChartRenderer\DefaultRenderer' );
-        } 
-            
+        }
+
         $outputString = '';
 
         for ( $i = count( self::$rendererChain ) - 1; $i >= 0; $i-- ) 
@@ -66,7 +66,7 @@ class ChartRenderer
             $renderer = self::$rendererChain[$i];
             $outputString .= call_user_func_array( array( $renderer, 'postRender' ), array( $chart, $styleOptions ) );
         }
-        
+
         return $outputString;
     }
     
@@ -81,7 +81,7 @@ class ChartRenderer
         if (! in_array( 'Altamira\ChartRenderer\RendererInterface', class_implements( $renderer ) ) ) {
             throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
         }
-        
+
         array_push( self::$rendererChain, $renderer );
         
         return self::getInstance();
@@ -98,7 +98,7 @@ class ChartRenderer
         if (! in_array( 'Altamira\ChartRenderer\RendererInterface', class_implements( $renderer ) ) ) {
             throw new \UnexpectedValueException( "Renderer must be instance of or string name of a class implementing RendererInterface" );
         }
-        
+
         array_unshift( self::$rendererChain, $renderer );
         
         return self::getInstance();
@@ -114,5 +114,4 @@ class ChartRenderer
         
         return self::getInstance();
     }
-    
 }

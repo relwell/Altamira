@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 namespace Altamira\JsWriter;
 
 use Altamira\JsWriter\Ability;
 use Altamira\ChartDatum;
 
-class Flot 
+class Flot
     extends JsWriterAbstract
     implements Ability\Cursorable,
                Ability\Datable,
@@ -22,30 +22,30 @@ class Flot
     
     protected $library = 'flot';
     protected $typeNamespace = '\\Altamira\\Type\\Flot\\';
-    
+
     protected $dateAxes = array('x'=>false, 'y'=>false);
     protected $zooming = false;
     protected $highlighting = false;
     protected $pointLabels = array();
     protected $labelSettings = array('location'=>'w','xpadding'=>'0','ypadding'=>'0');
-    
+
     protected function generateScript()
     {
         $name = $this->chart->getName();
         $dataArrayJs = '[';
-        
+
         $counter = 0;
         foreach ($this->chart->getSeries() as $title=>$series) {
-            
+
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
-            
+
             $dataArrayJs .= '{';
-            
+
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
 
             $oneDimensional = array_keys($data) == range(0, count($data)-1, 1);
-            
+
             if (! empty($this->seriesLabels[$title]) ) {
                 $labelCopy = $this->seriesLabels[$title];
             }
@@ -88,38 +88,38 @@ class Flot
             }
 
             $this->prepOpts( $this->options['seriesStorage'][$title] );
-            
+
             $opts = substr(json_encode($this->options['seriesStorage'][$title]), 1, -1);
-            
+
             if (strlen($opts) > 2) {
                 $dataArrayJs .= ',' . $opts;
             }
-            
+
             $dataArrayJs .= '}';
         }
-        
-        
+
+
         $dataArrayJs .= ']';
-        
+
         $optionsJs = ($js = $this->getOptionsJs()) ? ", {$js}" : ', {}';
-        
+
         $extraFunctionCallString = implode("\n", $this->getExtraFunctionCalls($dataArrayJs, $optionsJs));
-        
+
         return <<<ENDSCRIPT
 jQuery(document).ready(function() {
     var placeholder = jQuery('#{$name}');
     var plot = jQuery.plot(placeholder, {$dataArrayJs}{$optionsJs});
     {$extraFunctionCallString}
 });
-        
+
 ENDSCRIPT;
-        
+
     }
-    
+
     public function getExtraFunctionCalls($dataArrayJs, $optionsJs)
     {
         $extraFunctionCalls = array();
-        
+
         if ($this->zooming) {
             $extraFunctionCalls[] = <<<ENDJS
 placeholder.bind("plotselected", function (event, ranges) {
@@ -131,16 +131,16 @@ placeholder.bind("plotselected", function (event, ranges) {
 });
 placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, {$dataArrayJs}{$optionsJs}); });
 ENDJS;
-        
+
         }
-        
+
         if ($this->useLabels) {
             $seriesLabels = json_encode($this->pointLabels);
-            
+
             $top = '';
             $left = '';
             $pixelCount = '15';
-            
+
             for ( $i = 0; $i < strlen($this->labelSettings['location']); $i++ ) {
                 switch ( $this->labelSettings['location'][$i] ) {
                     case 'n':
@@ -148,7 +148,7 @@ ENDJS;
                         break;
                     case 'e':
                         $left = '+'.$pixelCount;
-                        break; 
+                        break;
                     case 's':
                         $top = '+'.$pixelCount;
                         break;
@@ -156,13 +156,13 @@ ENDJS;
                         $left = '-'.$pixelCount;
                 }
             }
-            
+
             $paddingx = '-'.(isset($this->labelSettings['xpadding']) ? $this->labelSettings['xpadding'] : '0');
             $paddingy = '-'.(isset($this->labelSettings['ypadding']) ? $this->labelSettings['ypadding'] : '0');
-            
+
             $extraFunctionCalls[] = <<<ENDJS
 var pointLabels = {$seriesLabels};
-            
+
 $.each(plot.getData()[0].data, function(i, el){
     var o = plot.pointOffset({
         x: el[0], y: el[1]});
@@ -177,22 +177,22 @@ $.each(plot.getData()[0].data, function(i, el){
 ENDJS;
 
         }
-        
+
         if ($this->highlighting) {
-            
+
             $labelPaddingX = 5;
             $labelPaddingY = 5;
-            
+
             $formatPoints = "x + ',' + y";
-            
-            foreach ($this->dateAxes as $axis=>$flag) { 
+
+            foreach ($this->dateAxes as $axis=>$flag) {
                 if ($flag) {
                     $formatPoints = str_replace($axis, "(new Date(parseInt({$axis}))).toLocaleDateString()",$formatPoints);
                 }
             }
 
             $extraFunctionCalls[] =  <<<ENDJS
-            
+
 function showTooltip(x, y, contents) {
     $('<div id="flottooltip">' + contents + '</div>').css( {
         position: 'absolute',
@@ -212,33 +212,33 @@ placeholder.bind("plothover", function (event, pos, item) {
     if (item) {
         if (previousPoint != item.dataIndex) {
             previousPoint = item.dataIndex;
-            
+
             $("#flottooltip").remove();
             var x = item.datapoint[0].toFixed(2),
                 y = item.datapoint[1].toFixed(2);
-            
+
             showTooltip(item.pageX, item.pageY,
                         {$formatPoints});
         }
     }
     else {
         $("#flottooltip").remove();
-        previousPoint = null;            
+        previousPoint = null;
     }
 });
 ENDJS;
-            
+
         }
-        
+
         return $extraFunctionCalls;
-        
+
     }
-    
+
     public function setAxisOptions($axis, $name, $value)
     {
         if(strtolower($axis) === 'x' || strtolower($axis) === 'y') {
             $axis = strtolower($axis) . 'axis';
-    
+
             if (isset($this->nativeOpts[$axis][$name])) {
                 $this->options[$axis][$name] = $value;
             } else {
@@ -247,11 +247,11 @@ ENDJS;
                 if (isset($this->optsMapper[$key])) {
                     $this->setOpt($this->options, $this->optsMapper[$key], $value);
                 }
-                
+
                 if ($name == 'formatString') {
                     $this->options[$axis]['tickFormatter'] = $this->getCallbackPlaceholder('function(val, axis){return "'.$value.'".replace(/%d/, val);}');
                 }
-                
+
             }
         }
 
@@ -261,11 +261,11 @@ ENDJS;
     protected function getTypeOptions(array $options)
     {
         $types = $this->types;
-    
+
         if(isset($types['default'])) {
             $options = array_merge_recursive($options, $types['default']->getOptions());
         }
-    
+
         if(isset($options['axes'])) {
             foreach($options['axes'] as $axis => $contents) {
                 if(isset($options['axes'][$axis]['renderer']) && is_array($options['axes'][$axis]['renderer'])) {
@@ -273,18 +273,18 @@ ENDJS;
                 }
             }
         }
-        
+
         return $options;
     }
-    
+
     protected function getSeriesOptions(array $options)
     {
         $types = $this->types;
-    
+
         if(isset($types['default'])) {
             array_merge_recursive($options['seriesStorage'], $types['default']->getOptions());
         }
-    
+
         $seriesOptions = array();
         if ( isset( $this->options['seriesStorage'] ) ) { 
             foreach($this->options['seriesStorage'] as $title => $opts) {
@@ -297,10 +297,10 @@ ENDJS;
             }
         }
         $options['seriesStorage'] = $seriesOptions;
-        
+
         return $options;
     }
-    
+
     public function getOptionsJS()
     {
         foreach ($this->optsMapper as $opt => $mapped)
@@ -310,9 +310,9 @@ ENDJS;
                 $this->unsetOpt($this->options, $opt);
             }
         }
-        
+
         $opts = $this->options;
-        
+
         // stupid pie plugin
         if (!isset($opts['seriesStorage']['pie']['show'])) {
             $opts = array_merge_recursive($opts, array('seriesStorage'=>array('pie'=>array('show'=>false))));
@@ -320,10 +320,10 @@ ENDJS;
 
         unset($opts['seriesStorage']);
         unset($opts['seriesDefaults']);
-        
+
         return $this->makeJSArray($opts);
     }
-    
+
     // these are helper functions to transform jqplot options to flot
     private function getOptVal(array $opts, $option)
     {
@@ -343,7 +343,7 @@ ENDJS;
         }
         return $arr;
     }
-    
+
     private function setOpt(array &$opts, $mapperString, $val)
     {
         $ploded = explode('.', $mapperString);
@@ -361,7 +361,7 @@ ENDJS;
             }
         }
     }
-    
+
     private function unsetOpt(array &$opts, $mapperString)
     {
         $ploded = explode('.', $mapperString);
@@ -376,14 +376,14 @@ ENDJS;
             }
         }
     }
-    
+
     public function useHighlighting(array $opts = array('size'=>7.5))
     {
         $this->highlighting = true;
-        
+
         $this->options['grid']['hoverable'] = true;
         $this->options['grid']['autoHighlight'] = true;
-    
+
         return $this;
     }
     
@@ -394,7 +394,7 @@ ENDJS;
     public function useCursor()
     {
         $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
-    
+
         return $this;
     }
     
@@ -405,29 +405,29 @@ ENDJS;
     public function useDates($axis = 'x')
     {
         $this->dateAxes[$axis] = true;
-        
+
         $this->options[$axis.'axis']['mode'] = 'time';
         $this->options[$axis.'axis']['timeformat'] = '%d-%b-%y';
-        
+
         array_push($this->files, 'jquery.flot.time.js');
-    
+
         return $this;
     }
-    
+
     public function useZooming( array $options = array('mode'=>'xy') )
     {
         $this->zooming = true;
         $this->options['selection'] = array('mode' => $options['mode'] );
         $this->files[] = 'jquery.flot.selection.js';
     }
-    
+
     public function setGrid(array $opts)
     {
-        
-        $gridMapping = array('on'=>'show', 
+
+        $gridMapping = array('on'=>'show',
                              'background'=>'backgroundColor'
                             );
-        
+
         foreach ($opts as $key=>$value) {
             if ( in_array($key, $this->nativeOpts['grid']) ) {
                 $this->options['grid'][$key] = $value;
@@ -435,9 +435,9 @@ ENDJS;
                 $this->options['grid'][$gridMapping[$key]] = $value;
             }
         }
-        
+
         return $this;
-        
+
     }
     
     /**
@@ -448,26 +448,26 @@ ENDJS;
                                                   'location' => 'ne', 
                                                   'x' => 0, 
                                                   'y' => 0))
-    {        
+    {
         $opts['on'] = isset($opts['on']) ? $opts['on'] : true;
         $opts['location'] = isset($opts['location']) ? $opts['location'] : 'ne';
 
         $legendMapper = array('on' => 'show',
                               'location' => 'position');
-        
+
         foreach ($opts as $key=>$val) {
             if ( in_array($key, $this->nativeOpts['legend']) ) {
                 $this->options['legend'][$key] = $val;
-            } else if ( in_array($key, array_keys($legendMapper)) ) { 
+            } else if ( in_array($key, array_keys($legendMapper)) ) {
                 $this->options['legend'][$legendMapper[$key]] = $val;
             }
         }
-        
+
         $margin = array(isset($opts['x']) ? $opts['x'] : 0, isset($opts['y']) ? $opts['y'] : 0);
-        
+
         $this->options['legend']['margin'] = $margin;
-        
-        
+
+
         return $this;
     }
     
@@ -481,7 +481,7 @@ ENDJS;
                                                    'alpha'  => null
                                                   ))
     {
-        
+
         // @todo add a method of telling flot whether the series is a line, bar, point
         if ( isset( $opts['use'] ) && $opts['use'] == true ) {
             $this->options['seriesStorage'][$this->getSeriesTitle( $series )]['line']['fill'] = true;
@@ -490,7 +490,7 @@ ENDJS;
                 $this->options['seriesStorage'][$series]['line']['fillColor'] = $opts['color'];
             }
         }
-        
+
         return $this;
     }
     
@@ -509,7 +509,7 @@ ENDJS;
             $depth = ! empty( $opts['depth'] ) ? $opts['depth'] : 3;
             $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'shadowSize', $depth );
         }
-        
+
         return $this;
     }
     
@@ -534,7 +534,7 @@ ENDJS;
                                                                ? $this->options['seriesStorage'][$seriesTitle]['lines']
                                                                : array() )
                                                                + array('lineWidth'=>$value);
-        
+
         return $this;
     }
     
@@ -561,7 +561,7 @@ ENDJS;
         // jqplot compatibility preprocessing
         $value = str_replace('filled', '', $value);
         $value = strtolower($value);
-        
+
         if (! in_array('jquery.flot.symbol.js', $this->files)) {
             $this->files[] = 'jquery.flot.symbol.js';
         }
@@ -570,8 +570,8 @@ ENDJS;
                                                                 ? $this->options['seriesStorage'][$seriesTitle]['points']
                                                                 : array() )
                                                                 + array('symbol'=>$value);
-        
-        return $this;    
+
+        return $this;
     }
     
     public function setSeriesMarkerSize( $seriesTitle, $value )
@@ -580,31 +580,31 @@ ENDJS;
                 ? $this->options['seriesStorage'][$seriesTitle]['points']
                 : array() )
                 + array('radius'=>(int) ($value / 2));
-        
+
         return $this;
     }
-    
+
     public function setAxisTicks($axis, $ticks)
     {
         if ( in_array($axis, array('x', 'y') ) ) {
-            
+
             $isString = false;
             $alternateTicks = array();
             $cnt = 1;
-            
+
             foreach ($ticks as $tick) {
                 if (!(ctype_digit($tick) || is_int($tick))) {
-                    $isString = true; 
+                    $isString = true;
                 }
                 $alternateTicks[] = array($cnt++, $tick);
             }
-            
+
             $this->options[$axis.'axis']['ticks'] = $isString ? $alternateTicks : $ticks;
         }
-        
+
         return $this;
     }
-    
+
     public function prepOpts( &$opts = array() )
     {
         if (   (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble))
@@ -630,19 +630,19 @@ ENDJS;
                                 'axes.xaxis.max'          => 'xaxis.max',
                                 'axes.xaxis.mode'         => 'xaxis.mode',
                                 'axes.xaxis.ticks'        => 'xaxis.ticks',
-            
+
                                 'axes.yaxis.tickInterval' => 'yaxis.tickSize',
                                 'axes.yaxis.min'          => 'yaxis.min',
                                 'axes.yaxis.max'          => 'yaxis.max',
                                 'axes.yaxis.mode'         => 'yaxis.mode',
                                 'axes.yaxis.ticks'        => 'yaxis.ticks',
-                                
+
                                 'legend.show'             => 'legend.show',
                                 'legend.location'         => 'legend.position',
                                 'seriesColors'            => 'colors',
                                 );
-    
-    
+
+
     // api-native functionality
     private $nativeOpts = array('legend' => array(  'show'=>null,
                                                     'labelFormatter'=>null,
@@ -675,7 +675,7 @@ ENDJS;
                                                     'tickLength'=>null,
                                                     'alignTicksWithAxis'=>null,
                                                 ),
-                                                
+
                                 'yaxis' => array(   'show'=>null,
                                                     'position'=>null,
                                                     'mode'=>null,
@@ -697,7 +697,7 @@ ENDJS;
                                                     'tickLength'=>null,
                                                     'alignTicksWithAxis'=>null,
                                                 ),
-                                                
+
                                  'xaxes' => null,
                                  'yaxes' => null,
 
@@ -706,17 +706,17 @@ ENDJS;
                                                     'points'=> array('show'=>null, 'lineWidth'=>null, 'fill'=>null, 'fillColor'=>null),
                                                     'bars' => array('show'=>null, 'lineWidth'=>null, 'fill'=>null, 'fillColor'=>null),
                                                   ),
-                                                  
+
                                  'points' => array('radius'=>null, 'symbol'=>null),
-                                 
+
                                  'bars' => array('barWidth'=>null, 'align'=>null, 'horizontal'=>null),
-                                 
+
                                  'lines' => array('steps'=>null),
-                                
-                                 'shadowSize' => null,                                
-                                
+
+                                 'shadowSize' => null,
+
                                  'colors' => null,
-                                 
+
                                  'grid' =>  array(  'show'=>null,
                                                     'aboveData'=>null,
                                                     'color'=>null,
@@ -733,7 +733,7 @@ ENDJS;
                                                     'mouseActiveRadius'=>null
                                                 )
 
-                                 
+
                                 );
-    
+
 }
