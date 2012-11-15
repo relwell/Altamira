@@ -16,6 +16,9 @@ class ChartTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\ChartIterator::renderLibraries
      * @covers \Altamira\ChartIterator::renderPlugins
      * @covers \Altamira\ChartIterator::renderScripts
+     * @covers \Altamira\ChartIterator::getPlugins
+     * @covers \Altamira\ChartIterator::getScripts
+     * @covers \Altamira\ChartIterator::getCSSPath
      */
     public function testChartIterator()
     {
@@ -119,12 +122,31 @@ ENDSTRING;
                 $expectedOutputString,
                 '\Altamira\ChartIterator should render libraries, CSS, and plugins'
         );
-        
-        $chartIterator->renderCss()
-                      ->renderLibraries()
-                      ->renderPlugins()
-                      ->renderScripts();
-        
+
+        $plugins = new ReflectionProperty( '\Altamira\ChartIterator', 'plugins' );
+        $plugins->setAccessible( true );
+
+        $this->assertEquals(
+                (array) $plugins->getValue( $chartIterator ),
+                $chartIterator->getPlugins()
+        );
+
+        $this->assertEquals(
+                $chartIterator,
+                $chartIterator->renderCss()
+        );
+        $this->assertEquals(
+                $chartIterator,
+                $chartIterator->renderLibraries()
+        );
+        $this->assertEquals(
+                $chartIterator,
+                $chartIterator->renderPlugins()
+        );
+        $this->assertEquals(
+                $chartIterator,
+                $chartIterator->renderScripts()
+        );
     }
     
     /**
