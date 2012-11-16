@@ -21,7 +21,7 @@ You need a working Symfony2 framework installed and setup. From your main symfon
 
 
 ``` bash
-$ composer require malwarebytes/altamirabundle
+$ composer require malwarebytes/altamirabundle:dev-master
 ```
 
 
