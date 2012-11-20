@@ -11,15 +11,20 @@ Getting Started
 To run the example, you need the following dependencies:
 
 
-Jquery
-JQPlot or Flot
-Flot Bubbles
+Jquery - http://jquery.com
+JQPlot or Flot - http://www.jqplot.com ; http://www.flotcharts.org 
+Flot Bubbles - https://github.com/ubermajestix/flot-plugins
 
 
-1. Create a css/ and a js/ folder.
-2. Download jquery 1.7.2 and put it in the js/ folder. http://code.jquery.com/jquery-1.7.2.js
-3. Download and unpack latest jqplot and move dist/*.js files to the js/ folder. Move the dist/plugins folder to the js/ folder.
-4. Download and unpack the latest flot (https://github.com/flot/flot/zipball/v0.7). Copy excanvas.js and jquery.flot.js to the js/ folder. Move jquery.flot.*.js to js/plugins.
-5. For flot bubble support, clone the flot-plugins library from https://github.com/ubermajestix/flot-plugins. Copy jquery.flot.bubble.js to js/plugins.
+Unpack all the files into php enabled web server such as apache or nginx.
 
-Run it from your apache or your favorite php serving web server.
+Run the following commands to get the javascript dependencies.
+
+```bash
+mkdir js
+git clone git://github.com/flot/flot.git js/flot
+git clone git://github.com/jonmchan/jqplot.git js/jqplot
+git clone https://github.com/ubermajestix/flot-plugins js/flot-bubbles
+```
+
+Load example.php in your browser.
