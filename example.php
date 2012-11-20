@@ -185,7 +185,7 @@ $chartIterator = new ChartIterator( $charts );
 ?>
 <html>
 <head>
-<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 <!-- enable this if you want to display the charts on IE -->
 <!--<script type="text/javascript" src="js/excanvas.js"></script>-->
