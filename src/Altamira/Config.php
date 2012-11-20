@@ -10,7 +10,7 @@ class Config implements \ArrayAccess
     /**
      * @var array
      */
-    private $config = array();
+    protected $config = array();
     
     /**
      * Singleton
