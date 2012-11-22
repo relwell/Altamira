@@ -35,7 +35,7 @@ class ChartFactory {
 
     public function getChartIterator(array $charts) {
         //@todo: this supports config file, find a sensible place for it and symfonify it
-        $config = new \Altamira\Config();
+        $config = \Altamira\Config::getInstance();
         
         $config['js.path'] = 'js/';
         $config['js.pluginpath'] = 'js/plugins/';
