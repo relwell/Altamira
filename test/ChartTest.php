@@ -6,7 +6,7 @@ class ChartTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-        \Altamira\Config::setConfigFile( 'altamira-config.test.ini' );
+        \Altamira\Config::setConfigFile( __DIR__ .'/altamira-config.test.ini' );
     }
 
     /**
