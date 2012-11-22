@@ -32,4 +32,19 @@ ENDSCRIPT;
         
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see ArrayIterator::current()
+     */
+    public function current()
+    {
+        $current = parent::current();
+        
+        if ( Config::minifyJs() ) {
+            return preg_replace( '/.(min.)?js/', '.min.js', $current );
+        } else {
+            return preg_replace( '/.(min.)?js/', '.js', $current );
+        }
+    }
+    
 }
