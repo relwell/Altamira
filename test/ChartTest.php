@@ -41,32 +41,32 @@ class ChartTest extends PHPUnit_Framework_TestCase
         $mockChart2 = $this->getMock( '\Altamira\Chart', array( 'getFiles', 'getScript', 'getLibrary' ), array( 'Mock Chart 2' ) );
         
         $mockChart1
-            ->expects( $this->once() )
+            ->expects( $this->any() )
             ->method ( 'getFiles' )
             ->will   ( $this->returnValue( array( 'file1a.js', 'file1b.js' ) ) )
         ;
         $mockChart2
-            ->expects( $this->once() )
+            ->expects( $this->any() )
             ->method ( 'getFiles' )
             ->will   ( $this->returnValue( array( 'file2a.js', 'file2b.js' ) ) )
         ;
         $mockChart1
-            ->expects( $this->once() )
+            ->expects( $this->any() )
             ->method ( 'getScript' )
             ->will   ( $this->returnValue( '(function(alert("hey");))();' ) );
         ;
         $mockChart2
-            ->expects( $this->once() )
+            ->expects( $this->any() )
             ->method ( 'getScript' )
             ->will   ( $this->returnValue( '(function(alert("ho");))();' ) );
         ;
         $mockChart1
-            ->expects( $this->once() )
+            ->expects( $this->any() )
             ->method ( 'getLibrary' )
             ->will   ( $this->returnValue( 'flot' ) )
         ;
         $mockChart2
-            ->expects( $this->once() )
+            ->expects( $this->any() )
             ->method ( 'getLibrary' )
             ->will   ( $this->returnValue( \Altamira\JsWriter\JqPlot::LIBRARY ) )
         ;
@@ -130,6 +130,11 @@ ENDSTRING;
                 (array) $plugins->getValue( $chartIterator ),
                 $chartIterator->getPlugins()
         );
+        
+        $this->assertEquals(
+                $cssPath,
+                $chartIterator->getCSSPath()
+        );
 
         $this->assertEquals(
                 $chartIterator,
@@ -146,6 +151,12 @@ ENDSTRING;
         $this->assertEquals(
                 $chartIterator,
                 $chartIterator->renderScripts()
+        );
+        
+        $chartIterator2 =  new \Altamira\ChartIterator( $mockCharts );
+        $this->assertEquals(
+                "<script type='text/javascript'>\n(function(alert(\"hey\");))();\n</script>\n<script type='text/javascript'>\n(function(alert(\"ho\");))();\n</script>\n",
+                $chartIterator2->getScripts()
         );
     }
     
