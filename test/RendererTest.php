@@ -29,17 +29,49 @@ class RendererTest extends PHPUnit_Framework_TestCase
     
     /**
      * @covers \Altamira\FilesRenderer::__construct
+     * @covers \Altamira\FilesRenderer::current
      * @covers \Altamira\FilesRenderer::render
      */
-    public function testFilesRenderer()
+    public function testFilesRendererNoMin()
     {
-        $files = array( 'foo.js', 'bar.js' );
+        $files = array( 'foo.js', 'bar.min.js' );
         
         $expectedResult = <<<ENDSCRIPT
 <script type="text/javascript" src="foo.js"></script>
 <script type="text/javascript" src="bar.js"></script>
 
 ENDSCRIPT;
+        
+        $this->expectOutputString(
+                $expectedResult,
+                '\Altamira\FilesRenderer should implement ArrayIterator, and calling next() on it should provide the next script.'
+                . ' Providing a path should prepend that path to each file.' 
+        );
+        
+        $filesRenderer = new \Altamira\FilesRenderer( $files );
+        
+        $filesRenderer->render()
+                      ->next();
+        $filesRenderer->render();
+    }
+    
+    /**
+     * @covers \Altamira\FilesRenderer::__construct
+     * @covers \Altamira\FilesRenderer::current
+     * @covers \Altamira\FilesRenderer::render
+     */
+    public function testFilesRendererWithMin()
+    {
+        $files = array( 'foo.js', 'bar.min.js' );
+        
+        $expectedResult = <<<ENDSCRIPT
+<script type="text/javascript" src="foo.min.js"></script>
+<script type="text/javascript" src="bar.min.js"></script>
+
+ENDSCRIPT;
+        
+        $config = \Altamira\Config::getInstance();
+        $config['js.minify'] = true;
         
         $this->expectOutputString(
                 $expectedResult,
