@@ -64,6 +64,16 @@ class Config implements \ArrayAccess
     }
     
     /**
+     * Determines whether or not we should minify all JS 
+     * files in the FilesRenderer. Controlled by config value 'js.minify'.
+     */
+    public static function minifyJs()
+    {
+        $instance = self::getInstance();
+        return isset( $instance['js.minify'] ) && $instance['js.minify'];
+    }
+    
+    /**
      * Accessible path to config file
      * @param unknown_type $file
      */
