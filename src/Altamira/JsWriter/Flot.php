@@ -574,17 +574,24 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerSize()
+     */
     public function setSeriesMarkerSize( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
-                ? $this->options['seriesStorage'][$seriesTitle]['points']
-                : array() )
-                + array('radius'=>(int) ($value / 2));
+        $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $seriesTitle ), 'points', 'radius', (int) ($value / 2) );
 
         return $this;
     }
 
-    public function setAxisTicks($axis, $ticks)
+    /**
+     * Responsible for setting the tick labels on a given axis
+     * @param string $axis
+     * @param array $ticks
+     * @return \Altamira\JsWriter\Flot
+     */
+    public function setAxisTicks($axis, array $ticks = array() )
     {
         if ( in_array($axis, array('x', 'y') ) ) {
 
@@ -595,31 +602,39 @@ ENDJS;
             foreach ($ticks as $tick) {
                 if (!(ctype_digit($tick) || is_int($tick))) {
                     $isString = true;
+                    // this is O(2N) so deal with it
+                    foreach ( $ticks as $tick ) {
+                        $alternateTicks[] = array($cnt++, $tick);
+                    }
+                    break;
                 }
-                $alternateTicks[] = array($cnt++, $tick);
             }
+            
+            $this->setNestedOptVal( $this->options, $axis.'axis', 'ticks', $isString ? $alternateTicks : $ticks );
 
-            $this->options[$axis.'axis']['ticks'] = $isString ? $alternateTicks : $ticks;
         }
 
         return $this;
     }
 
+    /**
+     * Prepares default values for a series array
+     * @param array $opts
+     */
     public function prepOpts( &$opts = array() )
     {
+        $opts = is_null( $opts ) ? array() : $opts ;
         if (   (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble))
             && (!(isset($this->types['default']) && $this->types['default'] instanceOf \Altamira\Type\Flot\Bar))
                 ) {
             if ( (! isset($this->options['seriesStorage']['points'])) && (!isset($opts['points']) || !isset($opts['points']['show'])) ) {
                 // show points by default
-                $opts['points'] = (isset($opts['points']) ? $opts['points'] : array())
-                                + array('show'=>true);
+                $this->setNestedOptVal( $opts, 'points', 'show', true );
             }
             
             if ( (! isset($this->options['seriesStorage']['lines'])) && (!isset($opts['lines']) || !isset($opts['lines']['show'])) ) {
                 // show lines by default
-                $opts['lines'] = (isset($opts['lines']) ? $opts['lines'] : array())
-                + array('show'=>true);
+                $this->setNestedOptVal( $opts, 'lines', 'show', true );
             }
         }
     }

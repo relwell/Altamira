@@ -2,6 +2,13 @@
 
 class JsWriterTest extends PHPUnit_Framework_TestCase
 {
+    
+    public function setUp()
+    {
+        parent::setUp();
+        $this->flot = $this->getMockBuilder( '\Altamira\JsWriter\Flot' )->disableOriginalConstructor();
+    }
+    
     /**
      * @covers \Altamira\JsWriter\JsWriterAbstract::__construct
      * @covers \Altamira\JsWriter\JsWriterAbstract::initializeSeries
@@ -615,7 +622,62 @@ JSON;
                 'plot_'.$chart->getName().'_1',
                 $output
         );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::prepOpts
+     */
+    public function testFlotPrepOpts()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )->disableOriginalConstructor()->getMock();
+        $mockFlot = new \Altamira\JsWriter\Flot( $mockChart  );
         
+        $opts = array();
+        
+        $mockFlot->prepOpts( $opts );
+        
+        $this->assertEquals(
+                array( 'points' => array('show'=>true), 'lines' => array('show'=>true) ),
+                $opts
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setAxisTicks
+     */
+    public function testFlotSetAxisTicks()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setAxisTicks( 'x', array( 1, 2, 3, 'foo', '5' ) )
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setSeriesMarkerSize
+     */
+    public function testFlotSetSeriesMarkerSize()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'radius', 4 ) 
+        ;
+        
+        $mockFlot->setSeriesMarkerSize( 'footitle', 8 );
     }
     
 }
