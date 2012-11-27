@@ -187,6 +187,7 @@ ENDSTRING;
      * @covers \Altamira\Chart::addSingleSeries
      * @covers \Altamira\Chart::createManySeries
      * @covers \Altamira\Chart::createSeries
+     * @covers \Altamira\Chart::getDiv
      */
     public function testChart()
     {
@@ -450,9 +451,61 @@ ENDSTRING;
                 \Altamira\ChartRenderer::render( $jqplotChart, $styleOptions ),
                 $jqplotChart->getDiv( 100, 200 )
         );
-
-        //@todo complete series creation and management stuff here
-        //@todo rendering
     }
+    
+    /**
+     * @covers \Altamira\Chart::addSeries
+     */
+    public function testChartAddSeriesAsArray()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'addSingleSeries' ) )
+                           ->getMock();
+        
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        
+        $mockChart
+            ->expects   ( $this->once() )
+            ->method    ( 'addSingleSeries' )
+            ->with      ( $mockSeries ) 
+        ;
+        
+        try {
+            $mockChart->addSeries( array( $mockSeries, 'foo' ) );
+        } catch ( \UnexpectedValueException $e ) { }
+        
+        $this->assertInstanceOf(
+                '\UnexpectedValueException',
+                $e,
+                '\Altamira\Chart should throw an unexpected value exception if a non-chart has been passed to addSeries'
+        );
+    }
+
+    /**
+     * @covers \Altamira\Chart::addSeries
+     */
+    public function testChartAddSeriesAsSingleton()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'addSingleSeries' ) )
+                           ->getMock();
+        
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        
+        $mockChart
+            ->expects   ( $this->once() )
+            ->method    ( 'addSingleSeries' )
+            ->with      ( $mockSeries ) 
+        ;
+        
+        $mockChart->addSeries( $mockSeries );
+    }
+ 
     
 }
