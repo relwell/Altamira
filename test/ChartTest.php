@@ -507,5 +507,139 @@ ENDSTRING;
         $mockChart->addSeries( $mockSeries );
     }
  
+    /**
+     * @covers \Altamira\Chart::createManySeries
+     */
+    public function testCreateManySeriesDefault()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'createSeries' ) )
+                           ->getMock();
+        
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        
+        $dataset  = array( array( 1, 2 ), array( 3, 4 ) );
+        $title    = 'title';
+        $type     = 'Bar';
+        $factory  = array( '\Altamira\ChartDatum\TwoDimensionalPointFactory', 'getFromNested' );
+        
+        $expectedPoints = array();
+        \Altamira\ChartDatum\TwoDimensionalPointFactory::getFromNested( array( $dataset[0] ), $expectedPoints );
+        \Altamira\ChartDatum\TwoDimensionalPointFactory::getFromNested( array( $dataset[1] ), $expectedPoints );
+
+        $mockChart
+            ->expects    ( $this->once() )
+            ->method     ( 'createSeries' )
+            ->with       ( $expectedPoints, $title, $type )
+            ->will       ( $this->returnValue( $mockSeries ) )
+        ;
+        
+        $this->assertEquals(
+                $mockSeries,
+                $mockChart->createManySeries( $dataset, $factory, $title, $type )
+        );
+    }
     
+    /**
+     * @covers \Altamira\Chart::createManySeries
+     */
+    public function testCreateManySeriesFlot()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'createSeries' ) )
+                           ->getMock();
+        
+        $mockSeriesA = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        
+        $mockSeriesB = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        
+        $mockJsWriter = $this->getMockBuilder( '\Altamira\JsWriter\Flot' )
+                             ->disableOriginalConstructor()
+                             ->setMethods( array( 'getType' ) )
+                             ->getMock();
+        
+        $dataset  = array( array( 1, 2 ), array( 3, 4 ) );
+        $title    = 'title';
+        $type     = 'Bar';
+        $factory  = array( '\Altamira\ChartDatum\TwoDimensionalPointFactory', 'getFromNested' );
+        
+        
+        $refl = new ReflectionProperty( '\Altamira\Chart', 'jsWriter' );
+        $refl->setAccessible( true );
+        $refl->setValue( $mockChart, $mockJsWriter );
+        
+        $mockChart
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'createSeries' )
+            ->will       ( $this->returnValue( $mockSeriesA ) )
+        ;
+        $mockChart
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'createSeries' )
+            ->will       ( $this->returnValue( $mockSeriesB ) )
+        ;
+        
+        $this->assertEquals(
+                array( $mockSeriesA, $mockSeriesB ),
+                $mockChart->createManySeries( $dataset, $factory, $title, $type )
+        );
+    }
+    
+    
+    /**
+     * @covers \Altamira\Chart::createManySeries
+     */
+    public function testCreateManySeriesException()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'createSeries' ) )
+                           ->getMock();
+        
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        
+        $mockJsWriter = $this->getMockBuilder( '\Altamira\JsWriter\Flot' )
+                             ->disableOriginalConstructor()
+                             ->setMethods( array( 'getType' ) )
+                             ->getMock();
+        
+        $mockJsWriter
+            ->expects    ( $this->once() )
+            ->method     ( 'getType' )
+            ->will       ( $this->returnValue( 'Donut' ) )
+        ;
+        
+        $refl = new ReflectionProperty( '\Altamira\Chart', 'series' );
+        $refl->setAccessible( true );
+        $refl->setValue( $mockChart, array( $mockSeries ) );
+        
+        $refl = new ReflectionProperty( '\Altamira\Chart', 'jsWriter' );
+        $refl->setAccessible( true );
+        $refl->setValue( $mockChart, $mockJsWriter );
+        
+        $dataset  = array( array( 1, 2 ), array( 3, 4 ) );
+        $title    = 'title';
+        $type     = 'Bar';
+        $factory  = array( '\Altamira\ChartDatum\TwoDimensionalPointFactory', 'getFromNested' );
+        
+        try {
+            $mockChart->createManySeries( $dataset, $factory, $title, $type );
+        } catch ( Exception $e ) { }
+        
+        $this->assertInstanceOf(
+                'Exception', 
+                $e,
+                '\Altamira\Chart::createManySeries should throw an exception if we are trying to use it with a donut flot'
+        );
+    }
 }
