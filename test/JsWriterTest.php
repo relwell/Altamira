@@ -670,7 +670,6 @@ JSON;
         $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
         $optionsRefl->setAccessible( true );
         
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
@@ -678,6 +677,44 @@ JSON;
         ;
         
         $mockFlot->setSeriesMarkerSize( 'footitle', 8 );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setSeriesMarkerStyle
+     */
+    public function testFlotSetSeriesMarkerStyle()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        // "filled" should be removed
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' ) 
+        ;
+        
+        $mockFlot->setSeriesMarkerStyle( 'footitle', 'filleddiamond');
+        
+        $files = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'files' );
+        $files->setAccessible( true );
+        
+        $this->assertContains(
+                'jquery.flot.symbol.js',
+                $files->getValue( $mockFlot ),
+                'Flot::setSeriesMarkerStyle should register the symbol plugin'
+        );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' ) 
+        ;
+        
+        $mockFlot->setSeriesMarkerStyle( 'footitle', 'diamond');
+        
     }
     
 }

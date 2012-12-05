@@ -566,12 +566,7 @@ ENDJS;
             $this->files[] = 'jquery.flot.symbol.js';
         }
         
-        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
-                                                                ? $this->options['seriesStorage'][$seriesTitle]['points']
-                                                                : array() )
-                                                                + array('symbol'=>$value);
-
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'points', 'symbol', $value );
     }
     
     /**
@@ -580,9 +575,7 @@ ENDJS;
      */
     public function setSeriesMarkerSize( $seriesTitle, $value )
     {
-        $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $seriesTitle ), 'points', 'radius', (int) ($value / 2) );
-
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $seriesTitle ), 'points', 'radius', (int) ($value / 2) );
     }
 
     /**
