@@ -538,24 +538,28 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowLine()
+     */
     public function setSeriesShowLine( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$seriesTitle]['lines'] = ( isset($this->options['seriesStorage'][$seriesTitle]['lines'])
-                                                               ? $this->options['seriesStorage'][$seriesTitle]['lines']
-                                                               : array() )
-                                                               + array('show'=>$bool);
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'lines', 'show', $bool );
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowMarker()
+     */
     public function setSeriesShowMarker( $seriesTitle, $bool )
     {
-        $this->options['seriesStorage'][$seriesTitle]['points'] = ( isset($this->options['seriesStorage'][$seriesTitle]['points'])
-                                                                ? $this->options['seriesStorage'][$seriesTitle]['points']
-                                                                : array() )
-                                                                + array('show'=>$bool);
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'points', 'show', $bool );
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerStyle()
+     */
     public function setSeriesMarkerStyle( $seriesTitle, $value )
     {
         // jqplot compatibility preprocessing

@@ -673,10 +673,14 @@ JSON;
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'radius', 4 ) 
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'radius', 4 )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
-        $mockFlot->setSeriesMarkerSize( 'footitle', 8 );
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setSeriesMarkerSize( 'footitle', 8 )
+        );
     }
     
     /**
@@ -693,7 +697,8 @@ JSON;
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' ) 
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
         $mockFlot->setSeriesMarkerStyle( 'footitle', 'filleddiamond');
@@ -710,11 +715,61 @@ JSON;
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' ) 
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
-        $mockFlot->setSeriesMarkerStyle( 'footitle', 'diamond');
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setSeriesMarkerStyle( 'footitle', 'diamond')
+        );
         
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setSeriesShowMarker
+     */
+    public function testFlotSetSeriesShowMarker()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'show', true )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setSeriesShowMarker( 'footitle', true )
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setSeriesShowLine
+     */
+    public function testFlotSetSeriesShowLine()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'show', true )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setSeriesShowMarker( 'footitle', true )
+        );
     }
     
 }
