@@ -858,4 +858,46 @@ JSON;
                 $labelRefl->getValue( $mockFlot )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setShadow
+     */
+    public function testSetShadowWithoutUse() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->never() )
+            ->method     ( 'setNestedOptVal' )
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setShadow( 'foo', array() )
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setShadow
+     */
+    public function testSetShadowWithUse() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'shadowSize', 3 )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setShadow( 'foo' )
+        );
+    }
 }
