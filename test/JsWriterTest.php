@@ -762,13 +762,37 @@ JSON;
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'show', true )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'lines', 'show', true )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
         $this->assertEquals(
                 $mockFlot,
-                $mockFlot->setSeriesShowMarker( 'footitle', true )
+                $mockFlot->setSeriesShowLine( 'footitle', true )
+        );
+    }
+    
+
+    /**
+     * @covers \Altamira\JsWriter\Flot::setSeriesLineWidth
+     */
+    public function testFlotSetSeriesLineWidth()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'lines', 'linewidth', 10 )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setSeriesLineWidth( 'footitle', 10 )
         );
     }
     

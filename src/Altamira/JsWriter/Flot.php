@@ -528,14 +528,13 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesLineWidth()
+     */
     public function setSeriesLineWidth( $seriesTitle, $value )
     {
-        $this->options['seriesStorage'][$seriesTitle]['lines'] = ( isset($this->options['seriesStorage'][$seriesTitle]['lines'])
-                                                               ? $this->options['seriesStorage'][$seriesTitle]['lines']
-                                                               : array() )
-                                                               + array('lineWidth'=>$value);
-
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'lines', 'linewidth', $value );
     }
     
     /**
