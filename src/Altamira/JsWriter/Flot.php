@@ -521,6 +521,10 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Labelable::setSeriesLabelSetting()
+     */
     public function setSeriesLabelSetting( $seriesTitle, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.

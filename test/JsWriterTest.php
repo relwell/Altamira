@@ -796,4 +796,25 @@ JSON;
         );
     }
     
+    /**
+     * @covers \Altamira\JsWriter\Flot::setSeriesLabelSetting
+     */
+    public function testSetSeriesLabelSetting()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $labelsettingRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'labelSettings' );
+        $labelsettingRefl->setAccessible( true );
+        
+        $mockFlot->setSeriesLabelSetting( 'foo', 'bar', 'baz' );
+        
+        $this->assertContains(
+                'baz',
+                $labelsettingRefl->getValue( $mockFlot )
+        );
+        $this->assertArrayHasKey(
+                'bar',
+                $labelsettingRefl->getValue( $mockFlot )
+        );
+    }
 }
