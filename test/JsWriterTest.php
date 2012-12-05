@@ -948,4 +948,44 @@ JSON;
                 $mockFlot->setFill( 'foo', array( 'use' => true, 'color' => '#333333' ) )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setLegend
+     */
+    public function testSetLegend() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'show', true )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'position', 'ne' )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 2 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'backgroundColor', '#333' )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 3 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'margin', array( 0, 0 ) )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setLegend( array( 'on' => true, 'location' => 'ne', 'backgroundColor' => '#333', 'x' => 0, 'y' => 0 ) )
+        );
+    }
 }

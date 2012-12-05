@@ -449,26 +449,26 @@ ENDJS;
                                                   'x' => 0, 
                                                   'y' => 0))
     {
-        $opts['on'] = isset($opts['on']) ? $opts['on'] : true;
+        $opts['on']       = isset($opts['on']) ? $opts['on'] : true;
         $opts['location'] = isset($opts['location']) ? $opts['location'] : 'ne';
 
-        $legendMapper = array('on' => 'show',
+        $legendMapper = array('on'       => 'show',
                               'location' => 'position');
 
         foreach ($opts as $key=>$val) {
-            if ( in_array($key, $this->nativeOpts['legend']) ) {
-                $this->options['legend'][$key] = $val;
+            if ( array_key_exists($key, $this->nativeOpts['legend']) ) {
+                $this->setNestedOptVal( $this->options, 'legend', $key, $val );
             } else if ( in_array($key, array_keys($legendMapper)) ) {
-                $this->options['legend'][$legendMapper[$key]] = $val;
+                $this->setNestedOptVal( $this->options, 'legend', $legendMapper[$key], $val );
             }
         }
 
-        $margin = array(isset($opts['x']) ? $opts['x'] : 0, isset($opts['y']) ? $opts['y'] : 0);
+        $margin = array(
+                    isset($opts['x']) ? $opts['x'] : 0, 
+                    isset($opts['y']) ? $opts['y'] : 0
+                );
 
-        $this->options['legend']['margin'] = $margin;
-
-
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'legend', 'margin', $margin );
     }
     
     /**
