@@ -817,4 +817,45 @@ JSON;
                 $labelsettingRefl->getValue( $mockFlot )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::useSeriesLabels
+     */
+    public function testUseSeriesLabel() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $labelArray = array( 'this', 'is', 'my', 'label', 'array' );
+        
+        $labelRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'seriesLabels' );
+        $labelRefl->setAccessible( true );
+        
+        $uselabelRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'useLabels' );
+        $uselabelRefl->setAccessible( true );
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->once() )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'pointLabels', 'edgeTolerance', 3 )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->useSeriesLabels( 'foo', $labelArray )
+        );
+        $this->assertTrue(
+                $uselabelRefl->getValue( $mockFlot )
+        );
+        $this->assertArrayHasKey(
+                'foo',
+                $labelRefl->getValue( $mockFlot )
+        );
+        $this->assertContains(
+                $labelArray,
+                $labelRefl->getValue( $mockFlot )
+        );
+    }
 }

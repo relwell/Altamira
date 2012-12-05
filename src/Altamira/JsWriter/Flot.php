@@ -513,12 +513,15 @@ ENDJS;
         return $this;
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Labelable::useSeriesLabels()
+     */
     public function useSeriesLabels( $seriesTitle, array $labels = array() )
     {
         $this->useLabels = true;
         $this->seriesLabels[$seriesTitle] = $labels;
-        $this->options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance'] = 3;
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'edgeTolerance', 3 );
     }
     
     /**
