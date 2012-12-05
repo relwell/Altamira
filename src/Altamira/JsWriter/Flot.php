@@ -484,10 +484,10 @@ ENDJS;
 
         // @todo add a method of telling flot whether the series is a line, bar, point
         if ( isset( $opts['use'] ) && $opts['use'] == true ) {
-            $this->options['seriesStorage'][$this->getSeriesTitle( $series )]['line']['fill'] = true;
+            $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'line', 'fill', true );
             
             if ( isset( $opts['color'] ) ) {
-                $this->options['seriesStorage'][$series]['line']['fillColor'] = $opts['color'];
+                $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'line', 'fillColor', $opts['color'] );
             }
         }
 

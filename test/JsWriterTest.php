@@ -900,4 +900,52 @@ JSON;
                 $mockFlot->setShadow( 'foo' )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setFill
+     */
+    public function testSetFillWithoutUse() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->never() )
+            ->method     ( 'setNestedOptVal' )
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setFill( 'foo', array() )
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setFill
+     */
+    public function testSetFillWithUse() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'line', 'fill', true )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'line', 'fillColor', '#333333' )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setFill( 'foo', array( 'use' => true, 'color' => '#333333' ) )
+        );
+    }
 }
