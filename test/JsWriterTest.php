@@ -1151,4 +1151,28 @@ JSON;
         
         $setOpt->invoke( $mockFlot, &$testOpts, 'foo.bar.baz', 'qux' );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getOptVal
+     */
+    public function testGetOptVal()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $getOptVal = new ReflectionMethod( 'Altamira\JsWriter\Flot', 'getOptVal' );
+        $getOptVal->setAccessible( true );
+        
+        $testOpts = array( 'foo' => array( 'bar' => array( 'baz' => 'qux' ) ) );
+        
+        $this->assertEquals(
+                'qux',
+                $getOptVal->invoke( $mockFlot, &$testOpts, 'foo.bar.baz' )
+        );
+        $this->assertNull(
+                $getOptVal->invoke( $mockFlot, &$testOpts, 'foo.bar.buzz' )
+        );
+        $this->assertNull(
+                $getOptVal->invoke( $mockFlot, &$testOpts, '' )
+        );
+    }
 }

@@ -324,8 +324,13 @@ ENDJS;
         return $this->makeJSArray($opts);
     }
 
-    // these are helper functions to transform jqplot options to flot
-    private function getOptVal(array $opts, $option)
+    /**
+     * Retrieves a nested value or null
+     * @param array $opts
+     * @param mixed $option
+     * @return Ambigous <>|NULL|multitype:
+     */
+    protected function getOptVal(array $opts, $option)
     {
         $ploded = explode('.', $option);
         $arr = $opts;
@@ -341,7 +346,6 @@ ENDJS;
                 return null;
             }
         }
-        return $arr;
     }
 
     /**
