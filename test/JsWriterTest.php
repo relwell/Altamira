@@ -1031,8 +1031,10 @@ JSON;
             ->method     ( 'setNestedOptVal' )
             ->with       ( $optionsRefl->getValue( $mockFlot ), 'selection', 'mode', 'xy' ) 
         ;
-        
-        $mockFlot->useZooming();
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->useZooming()
+        );
         
         $filesRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'files' );
         $filesRefl->setAccessible( true );
@@ -1050,7 +1052,49 @@ JSON;
                 $zoomingRefl->getValue( $mockFlot ),
                 '\Altamira\JsWriter\Flot::useZooming should set the zooming property to true'
         );
-                
+    }
+    
+    /**
+     * covers \Altamira\JsWriter\Flot::useDates
+     */
+    public function testUseDates()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'xaxis', 'mode', 'time' ) 
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'xaxis', 'timeformat', '%d-%b-%y' ) 
+        ;
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->useDates()
+        );
+        
+        $dateAxesRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'dateAxes' );
+        $dateAxesRefl->setAccessible( true );
+        $dateAxes = $dateAxesRefl->getValue( $mockFlot );
+        $this->assertTrue(
+                $dateAxes['x'],
+                '\Altamira\JsWriter\Flot::useDates should set the provided axis key to true in the dateAxes property'
+        ); 
+        
+        $filesRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'files' );
+        $filesRefl->setAccessible( true );
+        
+        $this->assertContains(
+                'jquery.flot.time.js',
+                $filesRefl->getValue( $mockFlot ),
+                '\Altamira\JsWriter\Flot::useDates should add the time plugin upon invocation'
+        );
         
     }
     

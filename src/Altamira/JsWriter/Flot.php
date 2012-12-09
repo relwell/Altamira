@@ -405,9 +405,9 @@ ENDJS;
     public function useDates($axis = 'x')
     {
         $this->dateAxes[$axis] = true;
-
-        $this->options[$axis.'axis']['mode'] = 'time';
-        $this->options[$axis.'axis']['timeformat'] = '%d-%b-%y';
+        
+        $this->setNestedOptVal( $this->options, $axis.'axis', 'mode', 'time' );
+        $this->setNestedOptVal( $this->options, $axis.'axis', 'timeformat', '%d-%b-%y' );
 
         array_push($this->files, 'jquery.flot.time.js');
 
@@ -423,6 +423,7 @@ ENDJS;
         $this->zooming = true;
         $this->setNestedOptVal( $this->options, 'selection', 'mode', $options['mode'] );
         $this->files[] = 'jquery.flot.selection.js';
+        return $this;
     }
 
     /**
