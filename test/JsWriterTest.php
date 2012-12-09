@@ -7,6 +7,9 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->flot = $this->getMockBuilder( '\Altamira\JsWriter\Flot' )->disableOriginalConstructor();
+        
+        $this->options = new ReflectionProperty( '\Altamira\JsWriter\JsWriterAbstract', 'options' );
+        $this->options->setAccessible( true );
     }
     
     /**
@@ -667,13 +670,10 @@ JSON;
     {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'radius', 4 )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'radius', 4 )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -690,14 +690,11 @@ JSON;
     {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
 
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         // "filled" should be removed
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -715,7 +712,7 @@ JSON;
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'symbol', 'diamond' )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -733,13 +730,10 @@ JSON;
     {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'show', true )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'points', 'show', true )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -756,13 +750,10 @@ JSON;
     {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'lines', 'show', true )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'lines', 'show', true )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -780,13 +771,10 @@ JSON;
     {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'lines', 'linewidth', 10 )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'footitle', 'lines', 'linewidth', 10 )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -832,13 +820,10 @@ JSON;
         $uselabelRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'useLabels' );
         $uselabelRefl->setAccessible( true );
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'pointLabels', 'edgeTolerance', 3 )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'foo', 'pointLabels', 'edgeTolerance', 3 )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -865,9 +850,6 @@ JSON;
     public function testSetShadowWithoutUse() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->never() )
             ->method     ( 'setNestedOptVal' )
@@ -885,13 +867,10 @@ JSON;
     public function testSetShadowWithUse() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->once() )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'shadowSize', 3 )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'foo', 'shadowSize', 3 )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -906,9 +885,6 @@ JSON;
      */
     public function testSetFillWithoutUse() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
-        
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
         
         $mockFlot
             ->expects    ( $this->never() )
@@ -927,19 +903,16 @@ JSON;
     public function testSetFillWithUse() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'line', 'fill', true )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'foo', 'line', 'fill', true )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         $mockFlot
             ->expects    ( $this->at( 1 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'seriesStorage', 'foo', 'line', 'fillColor', '#333333' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'foo', 'line', 'fillColor', '#333333' )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -955,31 +928,28 @@ JSON;
     public function testSetLegend() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'show', true )
+            ->with       ( $this->options->getValue( $mockFlot ), 'legend', 'show', true )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         $mockFlot
             ->expects    ( $this->at( 1 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'position', 'ne' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'legend', 'position', 'ne' )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         $mockFlot
             ->expects    ( $this->at( 2 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'backgroundColor', '#333' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'legend', 'backgroundColor', '#333' )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         $mockFlot
             ->expects    ( $this->at( 3 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'legend', 'margin', array( 0, 0 ) )
+            ->with       ( $this->options->getValue( $mockFlot ), 'legend', 'margin', array( 0, 0 ) )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         
@@ -995,19 +965,16 @@ JSON;
     public function testSetGrid() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'grid', 'show', true )
+            ->with       ( $this->options->getValue( $mockFlot ), 'grid', 'show', true )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
         $mockFlot
             ->expects    ( $this->at( 1 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'grid', 'backgroundColor', '#333' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'grid', 'backgroundColor', '#333' )
             ->will       ( $this->returnValue( $mockFlot ) ) 
         ;
 
@@ -1023,13 +990,10 @@ JSON;
     public function testUseZooming() {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'selection', 'mode', 'xy' ) 
+            ->with       ( $this->options->getValue( $mockFlot ), 'selection', 'mode', 'xy' ) 
         ;
         $this->assertEquals(
                 $mockFlot,
@@ -1061,18 +1025,15 @@ JSON;
     {
         $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
         
-        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
-        $optionsRefl->setAccessible( true );
-        
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'xaxis', 'mode', 'time' ) 
+            ->with       ( $this->options->getValue( $mockFlot ), 'xaxis', 'mode', 'time' ) 
         ;
         $mockFlot
             ->expects    ( $this->at( 1 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $optionsRefl->getValue( $mockFlot ), 'xaxis', 'timeformat', '%d-%b-%y' ) 
+            ->with       ( $this->options->getValue( $mockFlot ), 'xaxis', 'timeformat', '%d-%b-%y' ) 
         ;
         $this->assertEquals(
                 $mockFlot,
@@ -1095,7 +1056,7 @@ JSON;
                 $filesRefl->getValue( $mockFlot ),
                 '\Altamira\JsWriter\Flot::useDates should add the time plugin upon invocation'
         );
-        
     }
+    
     
 }
