@@ -427,12 +427,12 @@ ENDJS;
         $gridMapping = array('on'=>'show',
                              'background'=>'backgroundColor'
                             );
-
+        
         foreach ($opts as $key=>$value) {
-            if ( in_array($key, $this->nativeOpts['grid']) ) {
-                $this->options['grid'][$key] = $value;
-            } else if ( in_array($key, $gridMapping) ) {
-                $this->options['grid'][$gridMapping[$key]] = $value;
+            if ( array_key_exists( $key, $this->nativeOpts['grid'] ) ) {
+                $this->setNestedOptVal( $this->options, 'grid', $key, $value );
+            } else if ( isset( $gridMapping[$key] ) ) {
+                $this->setNestedOptVal( $this->options, 'grid', $gridMapping[$key], $value );
             }
         }
 

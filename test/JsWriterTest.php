@@ -988,4 +988,33 @@ JSON;
                 $mockFlot->setLegend( array( 'on' => true, 'location' => 'ne', 'backgroundColor' => '#333', 'x' => 0, 'y' => 0 ) )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::setGrid
+     */
+    public function testSetGrid() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'grid', 'show', true )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'grid', 'backgroundColor', '#333' )
+            ->will       ( $this->returnValue( $mockFlot ) ) 
+        ;
+
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setGrid( array( 'on' => true, 'backgroundColor' => '#333', 'not-stored' => 'wont-happen' ) )
+        );
+    }
+    
 }
