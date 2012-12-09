@@ -1058,5 +1058,23 @@ JSON;
         );
     }
     
-    
+    /**
+     * @covers \Altamira\JsWriter\Flot::useCursor
+     */
+    public function testUseCursor()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'cursor', array( 'show' => true, 'showTooltip' => true ) )
+            ->will       ( $this->returnValue( $mockFlot ) )
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->useCursor()
+        );
+    } 
 }

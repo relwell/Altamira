@@ -393,9 +393,7 @@ ENDJS;
      */
     public function useCursor()
     {
-        $this->options['cursor'] = array('show' => true, 'showTooltip' => true);
-
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'cursor', array('show' => true, 'showTooltip' => true) );
     }
     
     /**
