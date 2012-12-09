@@ -344,22 +344,19 @@ ENDJS;
         return $arr;
     }
 
-    private function setOpt(array &$opts, $mapperString, $val)
+    /**
+     * Sets a value in a nested array based on a dot-concatenated string
+     * Used primarily for mapping
+     * @param array $opts
+     * @param string $mapperString
+     * @param mixed $val
+     */
+    protected function setOpt(array &$opts, $mapperString, $val)
     {
-        $ploded = explode('.', $mapperString);
-        $arr = &$opts;
-        while ($curr = array_shift($ploded)) {
-            if (isset($arr[$curr])) {
-                if (is_array($arr[$curr])) {
-                    $arr = &$arr[$curr];
-                } else {
-                    $arr[$curr] = $val;
-                }
-            } else {
-                $arr[$curr] = empty($ploded) ? $val : array();
-                $arr = &$arr[$curr];
-            }
-        }
+        $args = explode( '.', $mapperString );
+        array_unshift( $args, &$opts );
+        array_push( $args, $val );
+        call_user_func_array( array( $this, 'setNestedOptVal' ), $args );
     }
 
     /**

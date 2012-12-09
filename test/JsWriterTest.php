@@ -1130,4 +1130,25 @@ JSON;
                 array_key_exists( 'qux', $testOpts['foo']['bar']['baz'] )
         );
     }
+
+    /**
+     * @covers \Altamira\JsWriter\Flot::setOpt
+     */
+    public function testSetOpt()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $setOpt = new ReflectionMethod( 'Altamira\JsWriter\Flot', 'setOpt' );
+        $setOpt->setAccessible( true );
+        
+        $testOpts = array();
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $testOpts, 'foo', 'bar', 'baz', 'qux' )
+        ;
+        
+        $setOpt->invoke( $mockFlot, &$testOpts, 'foo.bar.baz', 'qux' );
+    }
 }
