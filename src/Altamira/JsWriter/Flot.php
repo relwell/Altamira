@@ -414,13 +414,21 @@ ENDJS;
         return $this;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Zoomable::useZooming()
+     */
     public function useZooming( array $options = array('mode'=>'xy') )
     {
         $this->zooming = true;
-        $this->options['selection'] = array('mode' => $options['mode'] );
+        $this->setNestedOptVal( $this->options, 'selection', 'mode', $options['mode'] );
         $this->files[] = 'jquery.flot.selection.js';
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Griddable::setGrid()
+     */
     public function setGrid(array $opts)
     {
 

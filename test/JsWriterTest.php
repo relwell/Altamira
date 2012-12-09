@@ -1017,4 +1017,41 @@ JSON;
         );
     }
     
+    /**
+     * @covers \Altamira\JsWriter\Flot::useZooming
+     */
+    public function testUseZooming() {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsRefl->getValue( $mockFlot ), 'selection', 'mode', 'xy' ) 
+        ;
+        
+        $mockFlot->useZooming();
+        
+        $filesRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'files' );
+        $filesRefl->setAccessible( true );
+        
+        $this->assertContains(
+                'jquery.flot.selection.js',
+                $filesRefl->getValue( $mockFlot ),
+                '\Altamira\JsWriter\Flot::useZooming should add the selection plugin upon invocation'
+        );
+        
+        $zoomingRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'zooming' );
+        $zoomingRefl->setAccessible( true );
+        
+        $this->assertTrue(
+                $zoomingRefl->getValue( $mockFlot ),
+                '\Altamira\JsWriter\Flot::useZooming should set the zooming property to true'
+        );
+                
+        
+    }
+    
 }
