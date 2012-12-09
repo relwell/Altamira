@@ -1076,5 +1076,39 @@ JSON;
                 $mockFlot,
                 $mockFlot->useCursor()
         );
-    } 
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::useHighlighting
+     */    
+    public function testUseHighlighting()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'grid', 'hoverable', true )
+            ->will       ( $this->returnValue( $mockFlot ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'grid', 'autoHighlight', true )
+            ->will       ( $this->returnValue( $mockFlot ) )
+        ;
+        
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->useHighlighting()
+        );
+        
+        $highlightingRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'highlighting' );
+        $highlightingRefl->setAccessible( true );
+        
+        $this->assertTrue(
+                $highlightingRefl->getValue( $mockFlot ),
+                '\Altamira\JsWriter\Flot::useHighlighting should set the highlighting property to true'
+        );
+    }
 }

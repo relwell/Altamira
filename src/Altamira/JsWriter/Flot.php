@@ -377,14 +377,16 @@ ENDJS;
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\Ability\Highlightable::useHighlighting()
+     */
     public function useHighlighting(array $opts = array('size'=>7.5))
     {
         $this->highlighting = true;
 
-        $this->options['grid']['hoverable'] = true;
-        $this->options['grid']['autoHighlight'] = true;
-
-        return $this;
+        return $this->setNestedOptVal( $this->options, 'grid', 'hoverable', true )
+                    ->setNestedOptVal( $this->options, 'grid', 'autoHighlight', true );
     }
     
     /**
