@@ -301,25 +301,29 @@ ENDJS;
         return $options;
     }
 
+    /**
+     * Mutates the option array to the format required for flot
+     * @return Ambigous <string, mixed>
+     */
     public function getOptionsJS()
     {
         foreach ($this->optsMapper as $opt => $mapped)
         {
             if (($currOpt = $this->getOptVal($this->options, $opt)) && ($currOpt !== null)) {
-                $this->setOpt($this->options, $mapped, $currOpt);
-                $this->unsetOpt($this->options, $opt);
+                $this->setOpt(&$this->options, $mapped, $currOpt);
+                $this->unsetOpt(&$this->options, $opt);
             }
         }
 
         $opts = $this->options;
 
         // stupid pie plugin
-        if (!isset($opts['seriesStorage']['pie']['show'])) {
-            $opts = array_merge_recursive($opts, array('seriesStorage'=>array('pie'=>array('show'=>false))));
+        if ( $this->getOptVal( $opts, 'seriesStorage', 'pie', 'show' ) === null ) {
+            $this->setNestedOptVal( $opts, 'seriesStorage', 'pie', 'show', false );
         }
-
-        unset($opts['seriesStorage']);
-        unset($opts['seriesDefaults']);
+        
+        $this->unsetOpt( &$opts, 'seriesStorage' );
+        $this->unsetOpt( &$opts, 'seriesDefault' );
 
         return $this->makeJSArray($opts);
     }

@@ -1175,4 +1175,80 @@ JSON;
                 $getOptVal->invoke( $mockFlot, &$testOpts, '' )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getOptionsJs
+     */
+    public function testGetOptionsJs()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal', 'setOpt' ,'unsetOpt', 'makeJSArray', 'getOptVal' ) )->getMock();
+        
+        
+        $options = array( 'seriesColors' => array( '#333', '#ccc' ) );
+        
+        $this->options->setValue( $mockFlot, $options );
+        
+        $incr = 0;
+        
+        $mapperRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'optsMapper' );
+        $mapperRefl->setAccessible( true );
+        foreach ( $mapperRefl->getValue( $mockFlot ) as $key => $val )
+        {
+            if ( $key == 'seriesColors' ) {
+                continue;
+            }
+            
+            $mockFlot
+                ->expects    ( $this->at( $incr++ ) )
+                ->method     ( 'getOptVal' )
+                ->with       ( $this->options->getValue( $mockFlot ), $key )
+                ->will       ( $this->returnValue( null ) )
+            ;
+        }
+        
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'getOptVal' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesColors' )
+            ->will       ( $this->returnValue( array( '#333', '#ccc' ) ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'setOpt' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'colors', array( '#333', '#ccc' ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'unsetOpt' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesColors' )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'getOptVal' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'pie', 'show' )
+            ->will       ( $this->returnValue( null ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage', 'pie', 'show', false )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'unsetOpt' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesStorage' )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'unsetOpt' )
+            ->with       ( $this->options->getValue( $mockFlot ), 'seriesDefault' )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( $incr++ ) )
+            ->method     ( 'makeJSArray' )
+            ->with       ( $this->options->getValue( $mockFlot ) )
+        ;
+        
+        $mockFlot->getOptionsJs();
+    }
 }
