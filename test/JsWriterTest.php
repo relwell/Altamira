@@ -1111,4 +1111,23 @@ JSON;
                 '\Altamira\JsWriter\Flot::useHighlighting should set the highlighting property to true'
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::unsetOpt
+     */
+    public function testUnsetOpt()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $unsetOpt = new ReflectionMethod( 'Altamira\JsWriter\Flot', 'unsetOpt' );
+        $unsetOpt->setAccessible( true );
+        
+        $testOpts = array( 'foo' => array( 'bar' => array( 'baz' => array( 'qux' => true ) ) ) );
+        
+        $unsetOpt->invoke( $mockFlot, &$testOpts, 'foo.bar.baz.qux' );
+        
+        $this->assertFalse(
+                array_key_exists( 'qux', $testOpts['foo']['bar']['baz'] )
+        );
+    }
 }

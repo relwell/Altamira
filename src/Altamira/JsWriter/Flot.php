@@ -362,7 +362,12 @@ ENDJS;
         }
     }
 
-    private function unsetOpt(array &$opts, $mapperString)
+    /**
+     * Handles nested mappings 
+     * @param array $opts
+     * @param string $mapperString
+     */
+    protected function unsetOpt(array &$opts, $mapperString)
     {
         $ploded = explode('.', $mapperString);
         $arr = &$opts;
