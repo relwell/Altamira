@@ -75,7 +75,7 @@ abstract class JsWriterAbstract
      */
     public function getScript()
     {
-        $this->options = $this->getTypeOptions( $this->getSeriesOptions( $this->options ) );
+        $this->options = $this->getTypeOptions( $this->options );
         
         return $this->generateScript();
     }
@@ -235,7 +235,7 @@ abstract class JsWriterAbstract
     
     /**
      * Sets a type for a series or for default rendering
-     * @param string $type
+     * @param \Altamira\Type\TypeAbstract|string $type
      * @param \Altamira\Series|string $series
      * @return \Altamira\JsWriter\JsWriterAbstract
      */
@@ -245,11 +245,21 @@ abstract class JsWriterAbstract
         
         $title = $series ?: 'default';
     
-        $className =  $this->typeNamespace . ucwords( $type );
-        if( class_exists( $className ) ) {
-            $this->types[$title] = new $className( $this );
+        if ( is_string( $type ) ) {
+            $className =  $this->typeNamespace . ucwords( $type );
+            if( class_exists( $className ) ) {
+                $type = new $className( $this );
+            }
         }
-
+        $this->types[$title] = $type;
+        if ( $series) {
+            $this->options['seriesStorage'][$series] = array_merge_recursive( $this->options['seriesStorage'][$series], $type->getSeriesOptions() );
+            if ( $renderer = $type->getRenderer() ) {
+                $this->options['seriesStorage'][$series]['renderer'] = $renderer;
+            }
+        } else {
+            $this->options = array_merge_recursive( $this->options, $type->getOptions() );
+        }
         return $this;
     }
     
@@ -320,13 +330,7 @@ abstract class JsWriterAbstract
         return $this;
         //@codeCoverageIgnoreEnd
     }
-    
-    /**
-     * Intended to transform data structures for storing info before encoding to json
-     * These transformations differe from library to library
-     * @param array $options
-     */
-    abstract protected function getSeriesOptions( array $options );
+
     /**
      * Post-processing for options based on any registered types... this data goes to different places in different libraries
      * @param array $options

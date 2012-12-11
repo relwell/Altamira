@@ -21,6 +21,17 @@ class JqPlot
     protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';
     
     /**
+     * Global and chart-specific options. Stored here to make it easier to json-encode.
+     * @var array
+     */
+    protected $options = array( 'seriesStorage' => array(), 
+                                'seriesDefaults' => array(  'highlighter' => array( 'show' => false ),
+                                			                'cursor'      => array( 'showTooltip' => false, 'show' => false ),
+                                                            'pointLabels' => array( 'show' => false )
+                                                         ) 
+                              );
+    
+    /**
      * (non-PHPdoc)
      * @see \Altamira\JsWriter\JsWriterAbstract::generateScript()
      */
@@ -281,50 +292,21 @@ class JqPlot
     
     /**
      * (non-PHPdoc)
-     * @see \Altamira\JsWriter\JsWriterAbstract::getSeriesOptions()
+     * @see \Altamira\JsWriter\JsWriterAbstract::setType()
      */
-    protected function getSeriesOptions( array $options )
+    public function setType( $type, $series = null )
     {
-        $types = $this->types;
-        
-        $defaults = array(  'highlighter' => array( 'show' => false ),
-			                'cursor'      => array( 'showTooltip' => false, 'show' => false ),
-                            'pointLabels' => array( 'show' => false )
-                         );
-
-        if( isset( $types['default'] ) ) {
-            $renderer = $types['default']->getRenderer();
-            
-            if (isset( $renderer ) ) {
-                $defaults['renderer'] = $renderer;
+        parent::setType( $type, $series );
+        if ( $series === null ) {
+            $rendererOptions = $this->types['default']->getRendererOptions();
+            if ( $renderer = $this->types['default']->getRenderer() ) {
+                $this->options['seriesDefaults']['renderer'] = $renderer;
             }
-            
-            $defaults['rendererOptions'] = $types['default']->getRendererOptions();
-            if( count( $defaults['rendererOptions'] ) == 0 ) {
-                unset( $defaults['rendererOptions'] );
-            }
-            
-            $options['seriesDefaults'] = $defaults;
-        }
-
-        $seriesOptions = array();
-        if ( isset( $this->options['seriesStorage'] ) ) {
-            foreach($this->options['seriesStorage'] as $title => $opts) {
-                if( isset( $types[$title] ) ) {
-                    $type = $types[$title];
-                    $opts['renderer'] = $type->getRenderer();
-                    array_merge_recursive( $opts, $type->getSeriesOptions() );
-                }
-                $opts['label'] = $title;
-                
-                $seriesOptions[] = $opts;
+            if (! empty( $rendererOptions ) ) {
+                $this->options['seriesDefaults']['rendererOptions'] = $rendererOptions;
             }
         }
-        
-        $options['seriesStorage'] = $seriesOptions;
-        $options['seriesDefaults'] = $defaults;
-        
-        return $options;
+        return $this;
     }
 
     public function getOptionsJS()

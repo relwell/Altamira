@@ -277,28 +277,16 @@ ENDJS;
         return $options;
     }
 
-    protected function getSeriesOptions(array $options)
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\JsWriterAbstract::initializeSeries()
+     */
+    public function initializeSeries( $series )
     {
-        $types = $this->types;
-
-        if(isset($types['default'])) {
-            array_merge_recursive($options['seriesStorage'], $types['default']->getOptions());
-        }
-
-        $seriesOptions = array();
-        if ( isset( $this->options['seriesStorage'] ) ) { 
-            foreach($this->options['seriesStorage'] as $title => $opts) {
-                if(isset($types[$title])) {
-                    $type = $types[$title];
-                    array_merge_recursive($opts, $type->getSeriesOptions());
-                }
-                $opts['label'] = $title;
-                $seriesOptions[$title] = $opts;
-            }
-        }
-        $options['seriesStorage'] = $seriesOptions;
-
-        return $options;
+        parent::initializeSeries($series);
+        $title = $this->getSeriesTitle($series);
+        $this->options['seriesStorage'][$title]['label'] = $title; 
+        return $this;
     }
 
     /**
