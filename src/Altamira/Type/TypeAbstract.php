@@ -48,7 +48,7 @@ abstract class TypeAbstract
 
 	public function getSeriesOptions()
 	{
-		return $this->options['series'];
+		return isset($this->options['series']) ? $this->options['series'] : array();
 	}
 
 	public function getRendererOptions()
