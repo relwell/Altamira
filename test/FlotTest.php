@@ -635,4 +635,38 @@ class FlotTest extends PHPUnit_Framework_TestCase
         
         $mockFlot->getOptionsJs();
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::initializeSeries
+     */
+    public function testInitializeSeries()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'getSeriesTitle' ) )->getMock();
+        
+        $mockFlot
+            ->expects    ( $this->any() )
+            ->method     ( 'getSeriesTitle' )
+            ->with       ( 'foo' )
+            ->will       ( $this->returnValue( 'foo' ) )
+        ;
+        $optionsrefl = new ReflectionProperty( 'Altamira\JsWriter\Flot', 'options' );
+        $optionsrefl->setAccessible( true );
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->initializeSeries( 'foo' )
+        );
+        $options = $optionsrefl->getValue( $mockFlot );
+        $this->assertArrayHasKey(
+                'foo',
+                $options['seriesStorage']
+        );
+        $this->assertArrayHasKey(
+                'label',
+                $options['seriesStorage']['foo']
+        );
+        $this->assertEquals(
+                'foo',
+                $options['seriesStorage']['foo']['label']
+        );
+    }
 }
