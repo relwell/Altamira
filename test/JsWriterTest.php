@@ -260,7 +260,6 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::setSeriesLabelSetting
      * @covers \Altamira\JsWriter\JqPlot::getOptionsJS
      * @covers \Altamira\JsWriter\JqPlot::setType
-     * @covers \Altamira\JsWriter\JqPlot::getTypeOptions
      * @covers \Altamira\JsWriter\JqPlot::useDates
      * @covers \Altamira\JsWriter\JqPlot::setAxisOptions
      * @covers \Altamira\JsWriter\JqPlot::setLegend
@@ -270,7 +269,7 @@ JSON;
      * @covers \Altamira\JsWriter\JqPlot::useCursor
      * @covers \Altamira\JsWriter\JqPlot::useZooming
      * @covers \Altamira\JsWriter\JqPlot::useHighlighting
-     * @covers \Altamira\JsWriter\JqPlot::generateScript
+     * @covers \Altamira\JsWriter\JqPlot::getScript
      */
     public function testJqPlot() 
     {
@@ -556,11 +555,6 @@ JSON;
         $options->setAccessible( true );
         $optionsResult = $options->getValue( $jsWriter );
         
-        $typeOptions = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'getTypeOptions' );
-        $typeOptions->setAccessible( true );
-        
-        $typeOptionsResult = $typeOptions->invoke( $jsWriter, $optionsResult );
-        
         $jsWriter->setLegend( array( 'on' => true, 'location' => 'outside' ) );
         $options = $optionAttr->getValue( $jsWriter );
         $this->assertArrayHasKey(
@@ -584,7 +578,7 @@ JSON;
             ->method ( 'setLabel' )
             ->with   ( $seriesLabels[$seriesTitle][0] )
         ;
-        $output = $jsWriter->generateScript();
+        $output = $jsWriter->getScript();
         
         
         $this->assertContains(
@@ -605,8 +599,5 @@ JSON;
                 $jsWriter,
                 $jsWriter->setType( $bar )
         );
-        $getTypeOptions = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'getTypeOptions' );
-        $getTypeOptions->setAccessible( true );
-        $resp = $getTypeOptions->invoke( $jsWriter, array() );
     }
 }
