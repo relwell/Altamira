@@ -669,4 +669,75 @@ class FlotTest extends PHPUnit_Framework_TestCase
                 $options['seriesStorage']['foo']['label']
         );
     }
+    
+    /**
+     * @covers Altamira\JsWriter\Flot::setAxisOptions
+     */
+    public function testSetAxisOptionsNative()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setNestedOptVal' ) )->getMock();
+        
+        $optionsrefl = new ReflectionProperty( 'Altamira\JsWriter\Flot', 'options' );
+        $optionsrefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setNestedOptVal' )
+            ->with       ( $optionsrefl->getValue( $mockFlot ), 'xaxis', 'min', 10 )
+        ;
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setAxisOptions( 'x', 'min', 10 )
+        );
+    }
+    
+    /**
+     * @covers Altamira\JsWriter\Flot::setAxisOptions
+     */
+    public function testSetAxisOptionsMapped()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'setOpt' ) )->getMock();
+        
+        $optionsrefl = new ReflectionProperty( 'Altamira\JsWriter\Flot', 'options' );
+        $optionsrefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'setOpt' )
+            ->with       ( $optionsrefl->getValue( $mockFlot ), 'xaxis.tickSize', 10 )
+        ;
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setAxisOptions( 'x', 'tickInterval', 10 )
+        );
+    }
+    
+    /**
+     * @covers Altamira\JsWriter\Flot::setAxisOptions
+     */
+    public function testSetAxisOptionsFormat()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'getCallbackPlaceholder' ) )->getMock();
+        
+        $optionsrefl = new ReflectionProperty( 'Altamira\JsWriter\Flot', 'options' );
+        $optionsrefl->setAccessible( true );
+        
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'getCallbackPlaceholder' )
+            ->with       ( 'function(val, axis){return "foo".replace(/%d/, val);}' )
+            ->will       ( $this->returnValue( '#foo#' ) )
+        ;
+        $this->assertEquals(
+                $mockFlot,
+                $mockFlot->setAxisOptions( 'x', 'formatString', 'foo' )
+        );
+        
+        $options = $optionsrefl->getValue( $mockFlot );
+        
+        $this->assertContains(
+                '#foo#',
+                $options['xaxis']['tickFormatter']
+        );
+    }
 }

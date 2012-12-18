@@ -238,21 +238,28 @@ ENDJS;
 
     }
 
+    /**
+     * Sets an option for a given axis
+     * @param string $axis
+     * @param string $name
+     * @param mixed $value
+     * @return \Altamira\JsWriter\Flot
+     */
     public function setAxisOptions($axis, $name, $value)
     {
-        if(strtolower($axis) === 'x' || strtolower($axis) === 'y') {
+        if( strtolower($axis) === 'x' || strtolower($axis) === 'y' ) {
             $axis = strtolower($axis) . 'axis';
 
-            if (isset($this->nativeOpts[$axis][$name])) {
-                $this->options[$axis][$name] = $value;
+            if ( array_key_exists( $name, $this->nativeOpts[$axis] ) ) {
+                $this->setNestedOptVal( $this->options, $axis, $name, $value );
             } else {
                 $key = 'axes.'.$axis.'.'.$name;
 
-                if (isset($this->optsMapper[$key])) {
+                if ( isset( $this->optsMapper[$key] ) ) {
                     $this->setOpt($this->options, $this->optsMapper[$key], $value);
                 }
 
-                if ($name == 'formatString') {
+                if ( $name == 'formatString' ) {
                     $this->options[$axis]['tickFormatter'] = $this->getCallbackPlaceholder('function(val, axis){return "'.$value.'".replace(/%d/, val);}');
                 }
 
