@@ -258,7 +258,8 @@ abstract class JsWriterAbstract
                 $this->options['seriesStorage'][$series]['renderer'] = $renderer;
             }
         } else {
-            $this->options = array_merge_recursive( $this->options, $type->getOptions() );
+            $options = $type->getOptions();
+            $this->options = array_merge_recursive( $this->options, isset($options['series'])?$options['series']:$options );
         }
         return $this;
     }
