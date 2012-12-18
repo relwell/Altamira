@@ -33,9 +33,9 @@ class JqPlot
     
     /**
      * (non-PHPdoc)
-     * @see \Altamira\JsWriter\JsWriterAbstract::generateScript()
+     * @see \Altamira\JsWriter\JsWriterAbstract::getScript()
      */
-    public function generateScript()
+    public function getScript()
     {
         $output  = '$(document).ready(function(){';
         $output .= '$.jqplot.config.enablePlugins = true;';
@@ -276,20 +276,7 @@ class JqPlot
 
         return $this;
     }
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Altamira\JsWriter\JsWriterAbstract::getTypeOptions()
-     */
-    protected function getTypeOptions( array $options )
-    {
-        if(isset($this->types['default'])) {
-            $options = array_merge_recursive( $options, $this->types['default']->getOptions() );
-        }
 
-        return $options;
-    }
-    
     /**
      * (non-PHPdoc)
      * @see \Altamira\JsWriter\JsWriterAbstract::setType()

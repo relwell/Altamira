@@ -70,17 +70,6 @@ abstract class JsWriterAbstract
     }
     
     /**
-     * Combines all options as a preparation step and then calls the concrete generateScript method
-     * @return string
-     */
-    public function getScript()
-    {
-        $this->options = $this->getTypeOptions( $this->options );
-        
-        return $this->generateScript();
-    }
-    
-    /**
      * JSON-encoding with some additional treatments
      * -- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
      * -- callbacks are introduced where they are stored after json-encoding, so that they are evaluated
@@ -258,8 +247,7 @@ abstract class JsWriterAbstract
                 $this->options['seriesStorage'][$series]['renderer'] = $renderer;
             }
         } else {
-            $options = $type->getOptions();
-            $this->options = array_merge_recursive( $this->options, isset($options['series'])?$options['series']:$options );
+            $this->options = array_merge_recursive( $this->options, $type->getOptions() );
         }
         return $this;
     }
@@ -333,9 +321,7 @@ abstract class JsWriterAbstract
     }
 
     /**
-     * Post-processing for options based on any registered types... this data goes to different places in different libraries
-     * @param array $options
+     * Responsible for generating JavaScript
      */
-    abstract protected function getTypeOptions( array $options );
-    abstract protected function generateScript();
+    abstract public function getScript();
 }

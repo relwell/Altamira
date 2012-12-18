@@ -29,7 +29,11 @@ class Flot
     protected $pointLabels = array();
     protected $labelSettings = array('location'=>'w','xpadding'=>'0','ypadding'=>'0');
 
-    protected function generateScript()
+    /**
+     * (non-PHPdoc)
+     * @see \Altamira\JsWriter\JsWriterAbstract::getScript()
+     */
+    public function getScript()
     {
         $name = $this->chart->getName();
         $dataArrayJs = '[';
@@ -256,25 +260,6 @@ ENDJS;
         }
 
         return $this;
-    }
-
-    protected function getTypeOptions(array $options)
-    {
-        $types = $this->types;
-
-        if(isset($types['default'])) {
-            $options = array_merge_recursive($options, $types['default']->getOptions());
-        }
-
-        if(isset($options['axes'])) {
-            foreach($options['axes'] as $axis => $contents) {
-                if(isset($options['axes'][$axis]['renderer']) && is_array($options['axes'][$axis]['renderer'])) {
-                    $options['axes'][$axis]['renderer'] = $options['axes'][$axis]['renderer'][0];
-                }
-            }
-        }
-
-        return $options;
     }
 
     /**
