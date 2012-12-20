@@ -281,10 +281,10 @@ class JqPlot
      * (non-PHPdoc)
      * @see \Altamira\JsWriter\JsWriterAbstract::setType()
      */
-    public function setType( $type, $series = null )
+    public function setType( $type, $options = array(), $series = 'default' )
     {
-        parent::setType( $type, $series );
-        if ( $series === null ) {
+        parent::setType( $type, $options, $series );
+        if ( $series == 'default' ) {
             $rendererOptions = $this->types['default']->getRendererOptions();
             if ( $renderer = $this->types['default']->getRenderer() ) {
                 $this->options['seriesDefaults']['renderer'] = $renderer;

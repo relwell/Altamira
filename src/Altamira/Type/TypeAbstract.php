@@ -67,6 +67,17 @@ abstract class TypeAbstract
 
 		return $this;
 	}
+	
+	public function setOptions( $options = array() )
+	{
+	    // while more process-intensive, allows us to do some overriding later on
+	    foreach ( $options as $key => $val )
+	    {
+	        $this->setOption( $key, $val );
+	    }
+	    
+	    return $this;
+	}
 }
 
 ?>

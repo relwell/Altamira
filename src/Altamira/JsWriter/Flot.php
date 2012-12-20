@@ -290,8 +290,8 @@ ENDJS;
         foreach ($this->optsMapper as $opt => $mapped)
         {
             if (($currOpt = $this->getOptVal($this->options, $opt)) && ($currOpt !== null)) {
-                $this->setOpt(&$this->options, $mapped, $currOpt);
-                $this->unsetOpt(&$this->options, $opt);
+                $this->setOpt($this->options, $mapped, $currOpt);
+                $this->unsetOpt($this->options, $opt);
             }
         }
 

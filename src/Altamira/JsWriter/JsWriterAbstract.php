@@ -223,38 +223,39 @@ abstract class JsWriterAbstract
     }
     
     /**
-     * Sets a type for a series or for default rendering
-     * @param \Altamira\Type\TypeAbstract|string $type
-     * @param \Altamira\Series|string $series
-     * @return \Altamira\JsWriter\JsWriterAbstract
+     * Returns an type that has not yet been registered. 
+     * @param \Altamira\Type\TypeAbstract $type
+     * @param array $options
      */
-    public function setType( $type, $series = null )
+    public function setType( $type, $options = array(), $series = 'default' )
     {
-        $series = $this->getSeriesTitle( $series );
+        $options = $options ?: array(); // i shouldn't have to do this
         
-        $title = $series ?: 'default';
-    
-        if ( is_string( $type ) ) {
-            $className =  $this->typeNamespace . ucwords( $type );
-            if( class_exists( $className ) ) {
-                $type = new $className( $this );
-            }
+        $className =  $this->typeNamespace . ucwords( $type );
+     
+        if( class_exists( $className ) ) {
+            $type = new $className( $this );
+        } else {
+            throw new \Exception( "Type {$type} does not exist" );
         }
-        $this->types[$title] = $type;
-        if ( $series) {
+        
+        $type->setOptions( $options );
+        
+        $series = $this->getSeriesTitle( $series );
+        $this->types[$series] = $type;
+        if ( isset( $this->options['seriesStorage'][$series] ) ) {
             $this->options['seriesStorage'][$series] = array_merge_recursive( $this->options['seriesStorage'][$series], $type->getSeriesOptions() );
             if ( $renderer = $type->getRenderer() ) {
                 $this->options['seriesStorage'][$series]['renderer'] = $renderer;
             }
-        } else {
-            $this->options = array_merge_recursive( $this->options, $type->getOptions() );
         }
+        $this->options = array_merge_recursive( $this->options, $type->getOptions() );
         return $this;
     }
     
     /**
      * Returns the type instance for the provided key
-     * @param unknown_type $key
+     * @param string $key
      * @return multitype:|NULL
      */
     public function getType( $series = null )
@@ -263,26 +264,6 @@ abstract class JsWriterAbstract
         $seriesTitle = $this->getSeriesTitle( $series );
         
         return isset( $this->types[$seriesTitle] ) ? $this->types[$seriesTitle] : null;
-    }
-    
-    /**
-     * Sets an option for a provided type, either by default or as a series
-     * @param string $name
-     * @param mixed $option
-     * @param \Altamira\Series|string $series
-     * @return \Altamira\JsWriter\JsWriterAbstract
-     */
-    public function setTypeOption( $name, $option, $series=null )
-    {
-        $series = $this->getSeriesTitle( $series );
-        
-        $title = $series ?: 'default';
-        
-        if( isset( $this->types[$title] ) ) {
-            $this->types[$title]->setOption( $name, $option );
-        }
-
-        return $this;
     }
     
     /**
