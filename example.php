@@ -45,7 +45,6 @@ $seriesPoints = TwoDimensionalPointFactory::getFromNested( array( array('1/4/199
                                                                   array('12/25/1995', 325) ) 
                                                                 );
 
-//@todo this chart's labels aren't showing here in jqplot
 $chart2 = new Chart('chart2', $library);
 $series = $chart2->createSeries($seriesPoints, 'Measured Readings');
 $series->useLabels(array('a', 'b', 'c', 'd', 'e'))->
@@ -142,6 +141,13 @@ $chart7->addSeries($chart7->createManySeries(
     ->setAxisOptions( 'x', 'max', 6)
     ->setAxisOptions( 'y', 'min', -2)
     ->setAxisOptions( 'y', 'max', 10);
+    
+if ( $library == \Altamira\JsWriter\JqPlot::LIBRARY ) {
+    foreach ( $chart7->getSeries() as $series )
+    {
+        $series->useLabels();
+    }
+}
 
 $array1 = array(1, 4, 8, 2, 1, 5);
 $array2 = array(3, 3, 5, 4, 2, 6);
