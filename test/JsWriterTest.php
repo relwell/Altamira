@@ -15,7 +15,6 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\JsWriter\JsWriterAbstract::setType
      * @covers \Altamira\JsWriter\JsWriterAbstract::getType
      * @covers \Altamira\JsWriter\JsWriterAbstract::getFiles
-     * @covers \Altamira\JsWriter\JsWriterAbstract::setTypeOption
      * @covers \Altamira\JsWriter\JsWriterAbstract::getCallbackPlaceholder
      * @covers \Altamira\JsWriter\JsWriterAbstract::makeJSArray
      * @covers \Altamira\JsWriter\JsWriterAbstract::getScript

@@ -740,4 +740,99 @@ class FlotTest extends PHPUnit_Framework_TestCase
                 $options['xaxis']['tickFormatter']
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getExtraFunctionCalls
+     */
+    public function testGetExtraFunctionCallsZooming()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'getCallbackPlaceholder' ) )->getMock();
+        
+        $zooming = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'zooming' );
+        $zooming->setAccessible( true );
+        $zooming->setValue( $mockFlot, true );
+        
+        $data = '{1, 2, 3, 4, 5}';
+        $options = '{option:true}';
+        
+        $result = $mockFlot->getExtraFunctionCalls( $data, $options );
+        
+        $this->assertContains(
+                sprintf( \Altamira\JsWriter\Flot::ZOOMING_FUNCTION, $data, $options, $data, $options ),
+                $result
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getExtraFunctionCalls
+     */
+    public function testGetExtraFunctionCallsLabels()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'getCallbackPlaceholder' ) )->getMock();
+        
+        $labels = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'useLabels' );
+        $labels->setAccessible( true );
+        $labels->setValue( $mockFlot, true );
+        
+        $labelList = array( 'brosef', 'stalin', 'annie', 'liebrowitz' );
+        $pointLabels = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'pointLabels' );
+        $pointLabels->setAccessible( true );
+        $pointLabels->setValue( $mockFlot, $labelList );
+        
+        $labelSetting= new ReflectionProperty( '\Altamira\JsWriter\Flot', 'labelSettings' );
+        $labelSetting->setAccessible( true );
+        $labelSetting->setValue( $mockFlot, array( 'location' => 'ne', 'xpadding' => 5, 'ypadding' => 6 ) );
+        
+        $data = '{1, 2, 3, 4, 5}';
+        $options = '{option:true}';
+        
+        $result = $mockFlot->getExtraFunctionCalls( $data, $options );
+        
+        $this->assertContains(
+                sprintf( \Altamira\JsWriter\Flot::LABELS_FUNCTION, json_encode( $labelList ), '+15', '-5', '-15', '-6' ),
+                $result
+        );
+        
+        $labelSetting->setValue( $mockFlot, array( 'location' => 'sw', 'xpadding' => 5, 'ypadding' => 6 ) );
+        
+        $result = $mockFlot->getExtraFunctionCalls( $data, $options );
+        
+        $this->assertContains(
+                sprintf( \Altamira\JsWriter\Flot::LABELS_FUNCTION, json_encode( $labelList ), '-15', '-5', '+15', '-6' ),
+                $result
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getExtraFunctionCalls
+     */
+    public function testGetExtraFunctionCallsHighlighting()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'getCallbackPlaceholder' ) )->getMock();
+        
+        $zooming = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'highlighting' );
+        $zooming->setAccessible( true );
+        $zooming->setValue( $mockFlot, true );
+        
+        $data = '{1, 2, 3, 4, 5}';
+        $options = '{option:true}';
+        
+        $result = $mockFlot->getExtraFunctionCalls( $data, $options );
+        
+        $this->assertContains(
+                sprintf( \Altamira\JsWriter\Flot::HIGHLIGHTING_FUNCTION, "x + ',' + y" ),
+                $result
+        );
+        
+        $dateAxes = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'dateAxes' );
+        $dateAxes->setAccessible( true );
+        $dateAxes->setValue( $mockFlot, array( 'x' => true ) );
+        
+        $result = $mockFlot->getExtraFunctionCalls( $data, $options );
+        
+        $this->assertContains(
+                sprintf( \Altamira\JsWriter\Flot::HIGHLIGHTING_FUNCTION, "(new Date(parseInt(x))).toLocaleDateString() + ',' + y"),
+                $result
+        );
+    }
 }

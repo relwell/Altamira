@@ -125,17 +125,7 @@ ENDSCRIPT;
         $extraFunctionCalls = array();
 
         if ($this->zooming) {
-            $extraFunctionCalls[] = <<<ENDJS
-placeholder.bind("plotselected", function (event, ranges) {
-    jQuery.plot(placeholder, {$dataArrayJs},
-      $.extend(true, {}{$optionsJs}, {
-      xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
-      yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
-  }));
-});
-placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, {$dataArrayJs}{$optionsJs}); });
-ENDJS;
-
+            $extraFunctionCalls[] = sprintf( self::ZOOMING_FUNCTION, $dataArrayJs, $optionsJs, $dataArrayJs, $optionsJs );
         }
 
         if ($this->useLabels) {
@@ -164,28 +154,11 @@ ENDJS;
             $paddingx = '-'.(isset($this->labelSettings['xpadding']) ? $this->labelSettings['xpadding'] : '0');
             $paddingy = '-'.(isset($this->labelSettings['ypadding']) ? $this->labelSettings['ypadding'] : '0');
 
-            $extraFunctionCalls[] = <<<ENDJS
-var pointLabels = {$seriesLabels};
-
-$.each(plot.getData()[0].data, function(i, el){
-    var o = plot.pointOffset({
-        x: el[0], y: el[1]});
-        $('<div class="data-point-label">' + pointLabels[el[0] + ',' + el[1]] + '</div>').css( {
-            position: 'absolute',
-            left: o.left{$left}{$paddingx},
-            top: o.top-5{$top}{$paddingy},
-            display: 'none',
-            'font-size': '10px'
-        }).appendTo(plot.getPlaceholder()).fadeIn('slow');
-});
-ENDJS;
+            $extraFunctionCalls[] = sprintf( self::LABELS_FUNCTION, $seriesLabels, $left, $paddingx, $top, $paddingy );
 
         }
 
         if ($this->highlighting) {
-
-            $labelPaddingX = 5;
-            $labelPaddingY = 5;
 
             $formatPoints = "x + ',' + y";
 
@@ -195,42 +168,7 @@ ENDJS;
                 }
             }
 
-            $extraFunctionCalls[] =  <<<ENDJS
-
-function showTooltip(x, y, contents) {
-    $('<div id="flottooltip">' + contents + '</div>').css( {
-        position: 'absolute',
-        display: 'none',
-        top: y + {$labelPaddingY},
-        left: x + {$labelPaddingX},
-        border: '1px solid #fdd',
-        padding: '2px',
-        'background-color': '#fee',
-        opacity: 0.80
-    }).appendTo("body").fadeIn(200);
-}
-
-var previousPoint = null;
-
-placeholder.bind("plothover", function (event, pos, item) {
-    if (item) {
-        if (previousPoint != item.dataIndex) {
-            previousPoint = item.dataIndex;
-
-            $("#flottooltip").remove();
-            var x = item.datapoint[0].toFixed(2),
-                y = item.datapoint[1].toFixed(2);
-
-            showTooltip(item.pageX, item.pageY,
-                        {$formatPoints});
-        }
-    }
-    else {
-        $("#flottooltip").remove();
-        previousPoint = null;
-    }
-});
-ENDJS;
+            $extraFunctionCalls[] =  sprintf( self::HIGHLIGHTING_FUNCTION, $formatPoints );
 
         }
 
@@ -753,4 +691,68 @@ ENDJS;
 
                                 );
 
+    const ZOOMING_FUNCTION = <<<ENDSCRIPT
+placeholder.bind("plotselected", function (event, ranges) {
+    jQuery.plot(placeholder, %s,
+      $.extend(true, {}%s, {
+      xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+      yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+  }));
+});
+placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, %s%s); });
+ENDSCRIPT;
+    
+    const LABELS_FUNCTION = <<<ENDJS
+var pointLabels = %s;
+
+$.each(plot.getData()[0].data, function(i, el){
+    var o = plot.pointOffset({
+        x: el[0], y: el[1]});
+        $('<div class="data-point-label">' + pointLabels[el[0] + ',' + el[1]] + '</div>').css( {
+            position: 'absolute',
+            left: o.left%s%s,
+            top: o.top-5%s%s,
+            display: 'none',
+            'font-size': '10px'
+        }).appendTo(plot.getPlaceholder()).fadeIn('slow');
+});
+ENDJS;
+    
+    const HIGHLIGHTING_FUNCTION = <<<ENDJS
+
+function showTooltip(x, y, contents) {
+    $('<div id="flottooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        border: '1px solid #fdd',
+        padding: '2px',
+        'background-color': '#fee',
+        opacity: 0.80
+    }).appendTo("body").fadeIn(200);
+}
+
+var previousPoint = null;
+
+placeholder.bind("plothover", function (event, pos, item) {
+    if (item) {
+        if (previousPoint != item.dataIndex) {
+            previousPoint = item.dataIndex;
+
+            $("#flottooltip").remove();
+            var x = item.datapoint[0].toFixed(2),
+                y = item.datapoint[1].toFixed(2);
+
+            showTooltip(item.pageX, item.pageY,
+                        %s);
+        }
+    }
+    else {
+        $("#flottooltip").remove();
+        previousPoint = null;
+    }
+});
+ENDJS;
+   
 }
