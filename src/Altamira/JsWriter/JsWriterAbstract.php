@@ -29,12 +29,6 @@ abstract class JsWriterAbstract
     protected $callbacks = array();
     
     /**
-     * String labels stored in order of series array. 
-     * @var array
-     */
-    protected $seriesLabels = array();
-    
-    /**
      * Registry for types that may require different rendering. 
      * A type registered as 'default' will work for all series that don't have a series registered. 
      * @var array
@@ -278,12 +272,13 @@ abstract class JsWriterAbstract
         //@codeCoverageIgnoreStart
         $args = func_get_args();
         
-        if ( count( $args ) < 3 ) {
+        if ( count( $args ) == 2 && is_array( $args[1] ) ) {
+            $args = $args[1];
+        } else if ( count( $args ) < 3 ) {
             throw new \BadMethodCallException( '\Altamira\JsWriterAbstract::setNestedOptVal requires at least three arguments' );
+        } else {
+            array_shift( $args );
         }
-        
-        // ditch the first one
-        array_shift( $args );
         
         do {
             $arg = array_shift( $args );
@@ -298,6 +293,41 @@ abstract class JsWriterAbstract
         $options[array_shift( $args )] = array_shift( $args );
         
         return $this;
+        //@codeCoverageIgnoreEnd
+    }
+    
+    /**
+     * Allows you to get the value for discretely infinite nesting without notices 
+     * by returning null without a warning if it doesn't exist
+     * @param array $options
+     * @param $_ ... 
+     * @return mixed
+     */
+    protected function getNestedOptVal( array $options )
+    {
+        //@codeCoverageIgnoreStart
+        $args = func_get_args();
+        
+        if ( count( $args ) == 2 && is_array( $args[1] ) ) {
+            $args = $args[1];
+        } else if ( count( $args ) < 3 ) {
+            throw new \BadMethodCallException( '\Altamira\JsWriterAbstract::getNestedOptVal requires at least three arguments' );
+        } else {
+            array_shift( $args );
+        }
+        
+        do {
+            $arg = array_shift( $args );
+            
+            if (! isset( $options[$arg] ) ) {
+                return null;
+            }
+            $options = &$options[$arg];
+            
+        } while ( count( $args ) > 1 );
+        
+        $finalArg = array_shift( $args );
+        return isset( $options[$finalArg] ) ? $options[$finalArg] : null;
         //@codeCoverageIgnoreEnd
     }
 

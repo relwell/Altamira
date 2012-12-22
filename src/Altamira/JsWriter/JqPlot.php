@@ -51,10 +51,13 @@ class JqPlot
             $labelCopy   = null;
             
             foreach  ($data as &$datum ) {
-                if ( array_key_exists( $title, $this->seriesLabels ) && is_array( $this->seriesLabels[$title] ) ) {
-                    $datum->setLabel( $this->seriesLabels[$title][$num-1] );
+                $renderData = $datum->getRenderData();
+                
+                if ( $this->getNestedOptVal( $this->options, 'seriesDefaults', 'pointLabels', 'show' )
+                        || $this->getNestedOptVal( $this->options, 'seriesStorage', $title, 'pointLabels', 'show' ) ) {
+                    $renderData[] = $datum->getLabel();
                 }
-                $dataPrepped[] = $datum->getRenderData();
+                $dataPrepped[] = $renderData;
             }
             $varname = 'plot_' . $this->chart->getName() . '_' . $num;
             $vars[] = '#' . $varname . '#';
@@ -310,15 +313,13 @@ class JqPlot
      * @param array $labels an array of strings for labels, in order
      * @return \Altamira\JsWriter\JqPlot
      */
-    public function useSeriesLabels( $series, array $labels = array() )
+    public function useSeriesLabels( $series )
     {
         if ( !in_array( 'jqplot.pointLabels.js', $this->files ) ) {
             $this->files[] = 'jqplot.pointLabels.js';
         }
         $seriesTitle = $this->getSeriesTitle( $series );
-        $this->seriesLabels[$seriesTitle] = $labels;
         return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'show', true )
-                    ->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'labels', $labels )
                     ->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'edgeTolerance', 3 );
     }
     

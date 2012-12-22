@@ -1,6 +1,9 @@
 <?php 
 include(__DIR__ . '/autoload.php');
 
+ini_set( 'display_errors', 'on' );
+error_reporting( E_ALL );
+
 use Altamira\Chart;
 use Altamira\ChartIterator;
 use Altamira\Series;

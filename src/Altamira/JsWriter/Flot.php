@@ -48,36 +48,21 @@ class Flot
             // associate Xs with Ys in cases where we need it
             $data = $series->getData();
 
-            $oneDimensional = array_keys($data) == range(0, count($data)-1, 1);
-
-            if (! empty($this->seriesLabels[$title]) ) {
-                $labelCopy = $this->seriesLabels[$title];
-            }
             $formattedData = array();
-            foreach ($data as $datum) { 
+            foreach ( $data as $datum ) { 
                 if (! $datum instanceof ChartDatum\ChartDatumAbstract ) {
                     throw new \UnexpectedValueException('Chart data should be an object inheriting from ChartDatumAbstract');
                 }
-                foreach ($this->dateAxes as $axis=>$flag) { 
-                    if ($flag) {
-                        //@todo we can probably accomplish this with less iterations
-                        switch ($axis) {
-                            case 'x':                                
-                                $date = \DateTime::createFromFormat('m/d/Y', $datum['x']);
-                                $datum['x'] = $date->getTimestamp() * 1000;
-                                break;
-                            case 'y':
-                                $date = \DateTime::createFromFormat('m/d/Y', $datum['y']);
-                                $datum['y'] = $date->getTimestamp() * 1000;
-                                break;
-                        }
+                foreach ( $this->dateAxes as $axis => $flag ) {
+                    if ( $flag ) {
+                        $date = \DateTime::createFromFormat( 'm/d/Y', $datum[$axis] );
+                        $datum[$axis] = $date->getTimestamp() * 1000;
                     }
                 }
                         
-                if (!empty($this->seriesLabels[$title])) {
+                if ( $this->useLabels ) {
                     $dataPoints = "{$datum['x']},{$datum['y']}";
-                    $datum->setLabel( $labelCopy );
-                    $this->pointLabels[$dataPoints] = array_shift($labelCopy);
+                    $this->pointLabels[$dataPoints] = $datum->getLabel();
                 }
                 
                 $formattedData[] = $datum->getRenderData();
@@ -109,17 +94,15 @@ class Flot
 
         $extraFunctionCallString = implode("\n", $this->getExtraFunctionCalls($dataArrayJs, $optionsJs));
 
-        return <<<ENDSCRIPT
-jQuery(document).ready(function() {
-    var placeholder = jQuery('#{$name}');
-    var plot = jQuery.plot(placeholder, {$dataArrayJs}{$optionsJs});
-    {$extraFunctionCallString}
-});
-
-ENDSCRIPT;
-
+        return sprintf( self::SCRIPT_OUTPUT, $name, $dataArrayJs, $optionsJs, $extraFunctionCallString );
     }
 
+    /**
+     * Populates script output with hacks required to give Flot featural parity with jqPlot
+     * @param unknown_type $dataArrayJs
+     * @param unknown_type $optionsJs
+     * @return multitype:string
+     */
     public function getExtraFunctionCalls($dataArrayJs, $optionsJs)
     {
         $extraFunctionCalls = array();
@@ -240,8 +223,8 @@ ENDSCRIPT;
             $this->setNestedOptVal( $opts, 'seriesStorage', 'pie', 'show', false );
         }
         
-        $this->unsetOpt( &$opts, 'seriesStorage' );
-        $this->unsetOpt( &$opts, 'seriesDefault' );
+        $this->unsetOpt( $opts, 'seriesStorage' );
+        $this->unsetOpt( $opts, 'seriesDefault' );
 
         return $this->makeJSArray($opts);
     }
@@ -280,9 +263,8 @@ ENDSCRIPT;
     protected function setOpt(array &$opts, $mapperString, $val)
     {
         $args = explode( '.', $mapperString );
-        array_unshift( $args, &$opts );
         array_push( $args, $val );
-        call_user_func_array( array( $this, 'setNestedOptVal' ), $args );
+        $this->setNestedOptVal( $this->options, $args ); 
     }
 
     /**
@@ -454,10 +436,9 @@ ENDSCRIPT;
      * (non-PHPdoc)
      * @see \Altamira\JsWriter\Ability\Labelable::useSeriesLabels()
      */
-    public function useSeriesLabels( $seriesTitle, array $labels = array() )
+    public function useSeriesLabels( $seriesTitle )
     {
         $this->useLabels = true;
-        $this->seriesLabels[$seriesTitle] = $labels;
         return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'edgeTolerance', 3 );
     }
     
@@ -754,5 +735,15 @@ placeholder.bind("plothover", function (event, pos, item) {
     }
 });
 ENDJS;
+    
+    const SCRIPT_OUTPUT = <<<ENDSCRIPT
+jQuery(document).ready(function() {
+    var placeholder = jQuery('#%s');
+    var plot = jQuery.plot(placeholder, %s%s);
+    %s
+});
+
+ENDSCRIPT;
+    
    
 }
