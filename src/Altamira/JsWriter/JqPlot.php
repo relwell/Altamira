@@ -302,7 +302,10 @@ class JqPlot
     public function getOptionsJS()
     {
         $opts = $this->options;
-        $opts['series'] = $opts['seriesStorage'];
+        foreach ( $opts['seriesStorage'] as $label => $options ) {
+            $options['label'] = $label;
+            $opts['series'][] = $options;
+        }
         unset($opts['seriesStorage']);
         return $this->makeJSArray( $opts );
     }
