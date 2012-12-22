@@ -130,12 +130,12 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
                 $jsWriter,
-                $jsWriter->setType( 'Bar', $seriesTitle ),
+                $jsWriter->setType( 'Bar', array(), $seriesTitle ),
                 '\Altamira\JsWriter\JsWriterAbstract::setType should provide fluent interface'
         );
         
         
-        $jsWriter->setType( 'Stacked', $seriesTitle );
+        $jsWriter->setType( 'Stacked', array(), $seriesTitle );
         
         $typesProperty = new ReflectionProperty( '\Altamira\JsWriter\JsWriterAbstract', 'types' );
         $typesProperty->setAccessible( true );
@@ -160,30 +160,7 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
         $this->assertNull(
                 $jsWriter->getType( 'series that does not exist' )
         );
-        $this->assertEquals(
-                $jsWriter,
-                $jsWriter->setTypeOption( 'typeoption', 'to1' )
-        );
-        $this->assertEquals(
-                $jsWriter,
-                $jsWriter->setTypeOption( 'typeoption', 'to2', $seriesTitle )
-        );
-        
-        $reflectionTypeOption = new ReflectionProperty( '\Altamira\Type\TypeAbstract', 'options' );
-        $reflectionTypeOption->setAccessible( true );
-        
-        $defaultTypeOptions = $reflectionTypeOption->getValue( $types['default'] );
-        $seriesTypeOptions = $reflectionTypeOption->getValue( $types[$seriesTitle] );
-        
-        $this->assertEquals(
-                'to1',
-                $defaultTypeOptions['typeoption']
-        );
-        $this->assertEquals(
-                'to2',
-                $seriesTypeOptions['typeoption']
-        );
-        
+
         $filesAttr = new ReflectionProperty( '\Altamira\JsWriter\JsWriterAbstract', 'files' );
         $filesAttr->setAccessible( true );
         $filesAttr->setValue( $jsWriter, array( 'examplefile' ) );
@@ -592,12 +569,9 @@ JSON;
         );
         
         
-        $bar = new \Altamira\Type\JqPlot\Bar( $jsWriter );
-        $bar->setOption( 'horizontal', true ); 
-        
         $this->assertEquals(
                 $jsWriter,
-                $jsWriter->setType( $bar )
+                $jsWriter->setType( 'Bar', array( 'horizontal' => true ) )
         );
     }
 }
