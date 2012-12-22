@@ -198,9 +198,6 @@ class FlotTest extends PHPUnit_Framework_TestCase
         
         $labelArray = array( 'this', 'is', 'my', 'label', 'array' );
         
-        $labelRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'seriesLabels' );
-        $labelRefl->setAccessible( true );
-        
         $uselabelRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'useLabels' );
         $uselabelRefl->setAccessible( true );
         
@@ -214,17 +211,6 @@ class FlotTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
                 $mockFlot,
                 $mockFlot->useSeriesLabels( 'foo', $labelArray )
-        );
-        $this->assertTrue(
-                $uselabelRefl->getValue( $mockFlot )
-        );
-        $this->assertArrayHasKey(
-                'foo',
-                $labelRefl->getValue( $mockFlot )
-        );
-        $this->assertContains(
-                $labelArray,
-                $labelRefl->getValue( $mockFlot )
         );
     }
     
@@ -530,7 +516,7 @@ class FlotTest extends PHPUnit_Framework_TestCase
         $mockFlot
             ->expects    ( $this->at( 0 ) )
             ->method     ( 'setNestedOptVal' )
-            ->with       ( $testOpts, 'foo', 'bar', 'baz', 'qux' )
+            ->with       ( $testOpts, array( 'foo', 'bar', 'baz', 'qux' ) )
         ;
         
         $setOpt->invoke( $mockFlot, &$testOpts, 'foo.bar.baz', 'qux' );

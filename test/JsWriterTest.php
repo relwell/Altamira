@@ -406,10 +406,6 @@ JSON;
                 $options['seriesStorage'][$seriesTitle]['pointLabels']['show']
         );
         $this->assertEquals(
-                $labels,
-                $options['seriesStorage'][$seriesTitle]['pointLabels']['labels']
-        );
-        $this->assertEquals(
                 3,
                 $options['seriesStorage'][$seriesTitle]['pointLabels']['edgeTolerance']
         );
@@ -545,15 +541,6 @@ JSON;
                 $options
         );
         
-        $seriesLabelsProperty = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'seriesLabels' );
-        $seriesLabelsProperty->setAccessible( true );
-        $seriesLabels = $seriesLabelsProperty->getValue( $jsWriter );
-        
-        $mockDatum
-            ->expects( $this->once() )
-            ->method ( 'setLabel' )
-            ->with   ( $seriesLabels[$seriesTitle][0] )
-        ;
         $output = $jsWriter->getScript();
         
         

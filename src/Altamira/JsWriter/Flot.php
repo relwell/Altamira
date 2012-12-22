@@ -264,7 +264,7 @@ class Flot
     {
         $args = explode( '.', $mapperString );
         array_push( $args, $val );
-        $this->setNestedOptVal( $this->options, $args ); 
+        $this->setNestedOptVal( $opts, $args ); 
     }
 
     /**
