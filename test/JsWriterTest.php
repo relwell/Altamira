@@ -133,8 +133,15 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
                 '\Altamira\JsWriter\JsWriterAbstract::setType should provide fluent interface'
         );
         
-        
         $jsWriter->setType( 'Stacked', array(), $seriesTitle );
+        
+        try {
+            $jsWriter->setType( 'asdfjakdfajf' );
+        } catch ( Exception $typeException ) { }
+        $this->assertInstanceOf(
+                'Exception',
+                $typeException
+        );
         
         $typesProperty = new ReflectionProperty( '\Altamira\JsWriter\JsWriterAbstract', 'types' );
         $typesProperty->setAccessible( true );
