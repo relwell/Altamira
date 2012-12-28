@@ -39,7 +39,7 @@ class Flot
         $dataArrayJs = '[';
 
         $counter = 0;
-        foreach ($this->chart->getSeries() as $title=>$series) {
+        foreach ( $this->chart->getSeries() as $title => $series ) {
 
             $dataArrayJs .= $counter++ > 0 ? ', ' : '';
 
@@ -70,15 +70,15 @@ class Flot
             
             $dataArrayJs .= 'data: '.$this->makeJSArray($formattedData);
             
-            if (isset($this->types['default']) && 
-               ($this->types['default'] instanceOf \Altamira\Type\Flot\Bubble
+            if ( isset( $this->types['default'] ) && 
+               ( $this->types['default'] instanceOf \Altamira\Type\Flot\Bubble
                 || $this->types['default'] instanceOf \Altamira\Type\Flot\Donut ) ) {
                 $dataArrayJs .= ', label: "' . str_replace('"', '\\"', $series->getTitle() ) . '"';
             }
 
             $this->prepOpts( $this->options['seriesStorage'][$title] );
 
-            $opts = substr(json_encode($this->options['seriesStorage'][$title]), 1, -1);
+            $opts = substr( json_encode( $this->options['seriesStorage'][$title] ), 1, -1 );
 
             if (strlen($opts) > 2) {
                 $dataArrayJs .= ',' . $opts;
@@ -86,7 +86,6 @@ class Flot
 
             $dataArrayJs .= '}';
         }
-
 
         $dataArrayJs .= ']';
 

@@ -821,4 +821,216 @@ class FlotTest extends PHPUnit_Framework_TestCase
                 $result
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getScript
+     */
+    public function testGetScriptWorks()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'makeJSArray', 'prepOpts', 'getOptionsJs', 'getExtraFunctionCalls' ) )->getMock();
+        
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                          ->disableOriginalConstructor()
+                          ->setMethods( array( 'getSeries', 'getName' ) )
+                          ->getMock();
+        
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'getData', 'getTitle' ) )
+                           ->getMock();
+        
+        $mockDatum = $this->getMockBuilder( '\Altamira\ChartDatum\Bubble' )
+                          ->disableOriginalConstructor()
+                          ->setMethods( array( 'offsetGet', 'offsetSet', 'getLabel', 'getRenderData' ) )
+                          ->getMock();
+        
+        $mockType = $this->getMockBuilder( '\Altamira\Type\Flot\Bubble' )
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        
+        $chartRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'chart' );
+        $chartRefl->setAccessible( true );
+        $chartRefl->setValue( $mockFlot, $mockChart );
+        
+        $useLabelsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'useLabels' );
+        $useLabelsRefl->setAccessible( true );
+        $useLabelsRefl->setValue( $mockFlot, true );
+        
+        $dateAxesRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'dateAxes' );
+        $dateAxesRefl->setAccessible( true );
+        $dateAxesRefl->setValue( $mockFlot, array( 'x' => true, 'y' => null ) );
+        
+        $typesRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'types' );
+        $typesRefl->setAccessible( true );
+        $typesRefl->setValue( $mockFlot, array( 'default' => $mockType ) );
+        
+        $ts = \DateTime::createFroMFormat( 'm/d/Y', '6/5/2012' );
+        $stamp = $ts->getTimestamp() * 1000;
+        $mockLabel = "my label yo";
+        $formattedDatum = array( $stamp, 10, 15 );
+        $mockSeriesTitle = 'mockSeriesTitle';
+        $mockOptions = array( 
+                'seriesStorage' => array(
+                        $mockSeriesTitle => array(
+                                'foo' => 'bar'
+                                )
+                        )
+                );
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'options' );
+        $optionsRefl->setAccessible( true );
+        $optionsRefl->setValue( $mockFlot, $mockOptions );
+        
+        $mockChart
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'getName' )
+            ->will       ( $this->returnValue( 'mychart' ) )
+        ;
+        $mockChart
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'getSeries' )
+            ->will       ( $this->returnValue( array( $mockSeriesTitle => $mockSeries ) ) )
+        ;
+        $mockSeries
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'getData' )
+            ->will       ( $this->returnValue( array( $mockDatum ) ) )
+        ;
+        $mockDatum
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'offsetGet' )
+            ->with       ( 'x' )
+            ->will       ( $this->returnValue( '6/5/2012' ) )
+        ;
+        $mockDatum
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'offsetSet' )
+            ->with       ( 'x' )
+            ->will       ( $this->returnValue( $stamp ) )
+        ;
+        $mockDatum
+            ->expects    ( $this->at( 2 ) )
+            ->method     ( 'offsetGet' )
+            ->with       ( 'x' )
+            ->will       ( $this->returnValue( $stamp ) )
+        ;
+        $mockDatum
+            ->expects    ( $this->at( 3 ) )
+            ->method     ( 'offsetGet' )
+            ->with       ( 'y' )
+            ->will       ( $this->returnValue( 10 ) )
+        ;
+        $mockDatum
+            ->expects    ( $this->at( 4 ) )
+            ->method     ( 'getLabel' )
+            ->will       ( $this->returnValue( $mockLabel ) )
+        ;
+        $mockDatum
+            ->expects    ( $this->at( 5 ) )
+            ->method     ( 'getRenderData' )
+            ->will       ( $this->returnValue( $formattedDatum ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'makeJSArray' )
+            ->with       ( array( $formattedDatum ) )
+            ->will       ( $this->returnValue( json_encode( array( $formattedDatum ) ) ) )
+        ;
+        $mockSeries
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'getTitle' )
+            ->will       ( $this->returnValue( '"this" is a title' ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'prepOpts' )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 2 ) )
+            ->method     ( 'getOptionsJs' )
+            ->will       ( $this->returnValue( null ) )
+        ;
+        $mockFlot
+            ->expects    ( $this->at( 3 ) )
+            ->method     ( 'getExtraFunctionCalls' )
+            ->will       ( $this->returnValue( array() ) )
+        ;
+        
+        $outputString = $mockFlot->getScript();
+        
+        $pointLabelsRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'pointLabels' );
+        $pointLabelsRefl->setAccessible( true );
+        $pointLabels = $pointLabelsRefl->getValue( $mockFlot );
+        
+        $this->assertArrayHasKey(
+                $stamp.',10',
+                $pointLabels
+        );
+        $this->assertEquals(
+                $pointLabels[$stamp.',10'],
+                $mockLabel
+        );
+        $this->assertEquals(
+                sprintf( \Altamira\JsWriter\Flot::SCRIPT_OUTPUT, 'mychart', '[{data: [['.$stamp.',10,15]], label: "","foo":"bar"}]', ', {}', '' ),
+                $outputString
+        );
+                
+                
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\Flot::getScript
+     */
+    public function testGetScriptBadDatum()
+    {
+        $mockFlot = $this->flot->setMethods( array( 'makeJSArray', 'prepOpts' ) )->getMock();
+        
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                          ->disableOriginalConstructor()
+                          ->setMethods( array( 'getSeries', 'getName' ) )
+                          ->getMock();
+        
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->setMethods( array( 'getData', 'getTitle' ) )
+                           ->getMock();
+        
+        $mockDatum = $this->getMockBuilder( '\Altamira\ChartDatum\Bubble' )
+                          ->disableOriginalConstructor()
+                          ->setMethods( array( 'offsetGet', 'getLabel', 'getRenderData' ) )
+                          ->getMock();
+        
+        $mockType = $this->getMockBuilder( '\Altamira\Type\Flot\Bubble' )
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        
+        $chartRefl = new ReflectionProperty( '\Altamira\JsWriter\Flot', 'chart' );
+        $chartRefl->setAccessible( true );
+        $chartRefl->setValue( $mockFlot, $mockChart );
+        
+        $mockChart
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'getName' )
+            ->will       ( $this->returnValue( 'mychart' ) )
+        ;
+        $mockChart
+            ->expects    ( $this->at( 1 ) )
+            ->method     ( 'getSeries' )
+            ->will       ( $this->returnValue( array( 'mockSeriesTitle' => $mockSeries ) ) )
+        ;
+        $mockSeries
+            ->expects    ( $this->at( 0 ) )
+            ->method     ( 'getData' )
+            ->will       ( $this->returnValue( array( array( 1, 2 ) ) ) )
+        ;
+        
+        try {
+            $outputString = $mockFlot->getScript();
+        } catch ( Exception $e ) { }
+        
+        $this->assertInstanceOf(
+                'Exception',
+                $e
+        );
+    }
 }
