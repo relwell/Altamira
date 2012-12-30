@@ -4,6 +4,7 @@ namespace Altamira\Type\JqPlot;
 
 class Bar extends \Altamira\Type\TypeAbstract
 {
+    const TYPE = 'bar';
 
 	public function getOptions()
 	{
