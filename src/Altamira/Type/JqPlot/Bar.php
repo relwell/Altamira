@@ -45,19 +45,16 @@ class Bar extends \Altamira\Type\TypeAbstract
 		return $opts;
 	}
 
-	public function getRendererOptions()
+	/**
+	 * Allows us to configure bar direction for renderer
+	 * (non-PHPdoc)
+	 * @see \Altamira\Type\TypeAbstract::setOption()
+	 */
+	public function setOption( $name, $value )
 	{
-		$opts = array();
-		if(isset($this->options['horizontal']) && $this->options['horizontal'])
-			$opts['barDirection'] = 'horizontal';
-
-		foreach($this->allowedOptions as $item) {
-			if(isset($this->options[$item]))
-				$opts[$item] = $this->options[$item];
-		}
-
-		return $opts;
+	    if ( in_array( $name, array( 'horizontal', 'vertical' ) ) ) {
+	        $this->options['barDirection'] = $name;
+	    }
+	    return parent::setOption( $name, $value );
 	}
 }
-
-?>

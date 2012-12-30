@@ -6,15 +6,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
     }
-    
-    protected function getBar( $methods = array() )
-    {
-        return $this->getMockBuilder( '\Altamira\Type\JqPlot\Bar' )
-                    ->disableOriginalConstructor()
-                    ->setMethods( $methods )
-                    ->getMock();
-    }
-    
+
     /**
      * @covers \Altamira\Type\TypeAbstract::configure
      * @covers \Altamira\Type\TypeAbstract::__construct
