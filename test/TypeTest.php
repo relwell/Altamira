@@ -148,4 +148,75 @@ class TypeTest extends PHPUnit_Framework_TestCase
         );
     }
     
+    /**
+     * @covers \Altamira\Type\JqPlot\Bar::setOption
+     */
+    public function testJqPlotBarSetOption()
+    {
+        $bar = $this->getMockBuilder( '\Altamira\Type\JqPlot\Bar' )
+                    ->disableOriginalConstructor()
+                    ->setMethods( array( 'foo' ) )
+                    ->getMock();
+        
+        $this->assertEquals(
+                $bar,
+                $bar->setOption( 'horizontal', true )
+        );
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\Type\TypeAbstract', 'options' );
+        $optionsRefl->setAccessible( true );
+        $options = $optionsRefl->getValue( $bar );
+        
+        $this->assertEquals(
+                'horizontal',
+                $options['barDirection'],
+                'A directional key should set the bar direction'
+        );
+    }
+    
+    public function testJqPlotBarGetOptions()
+    {
+        $bar = $this->getMockBuilder( '\Altamira\Type\JqPlot\Bar' )
+                    ->disableOriginalConstructor()
+                    ->setMethods( array( 'foo' ) )
+                    ->getMock();
+        
+        $ticks = array( 'one', 'two', 'three' );
+        $colors = array( '#cccccc', '#333333' );
+        $options = array(
+                'ticks' => $ticks,
+                'min' => 10,
+                'horizontal' => true,
+                'stackSeries' => true,
+                'seriesColors' => $colors
+                );
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\Type\JqPlot\Bar', 'options' );
+        $optionsRefl->setAccessible( true );
+        $optionsRefl->setValue( $bar, $options );
+        
+        $renderer = 'foo.renderer.js';
+        $axisRend = new ReflectionProperty( '\Altamira\Type\JqPlot\Bar', 'axisRenderer' );
+        $axisRend->setAccessible( true );
+        $axisRend->setValue( $bar, $renderer );
+        
+        $output = $bar->getOptions();
+        
+        $this->assertEquals(
+                array( 'min' => 10 ),
+                $output['axes']['xaxis']
+        );
+        $this->assertEquals(
+                array( 'renderer' => "#{$renderer}#", 'ticks' => $ticks ), 
+                $output['axes']['yaxis']
+        );
+        $this->assertTrue(
+                $output['stackSeries']
+        );
+        $this->assertEquals(
+                $colors,
+                $output['seriesColors']
+        );
+    }
+    
 }

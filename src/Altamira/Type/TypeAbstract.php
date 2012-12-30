@@ -144,5 +144,3 @@ abstract class TypeAbstract
 	    return $this;
 	}
 }
-
-?>
