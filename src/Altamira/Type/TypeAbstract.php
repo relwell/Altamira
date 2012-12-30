@@ -80,8 +80,6 @@ abstract class TypeAbstract
 	{
 		if( isset( $this->renderer ) ) {
 			return '#' . $this->renderer . '#';
-		} else {
-			return null;
 		}
 	}
 
