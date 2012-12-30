@@ -309,6 +309,10 @@ class Chart
 	 */
 	public function addSeries( $seriesOrArray )
 	{
+	    if (! is_array( $seriesOrArray ) ) {
+	        $seriesOrArray = array( $seriesOrArray );
+	    }
+	    
 	    if ( is_array( $seriesOrArray ) ) {
 	        foreach ( $seriesOrArray as $series ) 
 	        {
@@ -317,8 +321,6 @@ class Chart
 	            } 
 	            $this->addSingleSeries( $series );
 	        }
-	    } else {
-	        $this->addSingleSeries( $seriesOrArray );
 	    }
 	    
 	    return $this;
