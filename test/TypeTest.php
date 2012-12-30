@@ -219,4 +219,48 @@ class TypeTest extends PHPUnit_Framework_TestCase
         );
     }
     
+    public function testJqPlotBarGetOptionsFlipped()
+    {
+        $bar = $this->getMockBuilder( '\Altamira\Type\JqPlot\Bar' )
+                    ->disableOriginalConstructor()
+                    ->setMethods( array( 'foo' ) )
+                    ->getMock();
+        
+        $ticks = array( 'one', 'two', 'three' );
+        $colors = array( '#cccccc', '#333333' );
+        $options = array(
+                'ticks' => $ticks,
+                'min' => 10,
+                'stackSeries' => true,
+                'seriesColors' => $colors
+                );
+        
+        $optionsRefl = new ReflectionProperty( '\Altamira\Type\JqPlot\Bar', 'options' );
+        $optionsRefl->setAccessible( true );
+        $optionsRefl->setValue( $bar, $options );
+        
+        $renderer = 'foo.renderer.js';
+        $axisRend = new ReflectionProperty( '\Altamira\Type\JqPlot\Bar', 'axisRenderer' );
+        $axisRend->setAccessible( true );
+        $axisRend->setValue( $bar, $renderer );
+        
+        $output = $bar->getOptions();
+        
+        $this->assertEquals(
+                array( 'min' => 10 ),
+                $output['axes']['yaxis']
+        );
+        $this->assertEquals(
+                array( 'renderer' => "#{$renderer}#", 'ticks' => $ticks ), 
+                $output['axes']['xaxis']
+        );
+        $this->assertTrue(
+                $output['stackSeries']
+        );
+        $this->assertEquals(
+                $colors,
+                $output['seriesColors']
+        );
+    }
+    
 }
