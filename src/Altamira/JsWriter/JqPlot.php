@@ -306,6 +306,11 @@ class JqPlot
             $options['label'] = $label;
             $opts['series'][] = $options;
         }
+        
+        if ( $this->chart->titleHidden() ) {
+        	unset( $opts['title'] );
+        }
+        
         unset($opts['seriesStorage']);
         return $this->makeJSArray( $opts );
     }

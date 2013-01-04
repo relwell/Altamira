@@ -567,4 +567,27 @@ JSON;
                 $jsWriter->setType( 'Bar', array( 'horizontal' => true ) )
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\JqPlot::getOptionsJS
+     */
+    public function testJqPlotJsArrayHidesTitleWhenRequired()
+    {
+        $chart = new \Altamira\Chart( 'foo', \Altamira\JsWriter\JqPlot::LIBRARY );
+        $chart->setTitle( "I am a title" );
+        
+        $origJs = json_decode( $chart->getJsWriter()->getOptionsJS(), true );
+        $this->assertArrayHasKey(
+                'title',
+                $origJs,
+                '\Altamira\JsWriter\JqPlot::getOptionsJS should encode a value for the chart title by default'
+        );
+        
+        $newJs = json_decode( $chart->hideTitle()->getJsWriter()->getOptionsJS(), true );
+        $this->assertArrayNotHasKey(
+                'title',
+                $newJs,
+                '\Altamira\JsWriter\JqPlot::getOptionsJS should not encode a value for the chart title if the chart is hiding its title'
+        );
+    }
 }
