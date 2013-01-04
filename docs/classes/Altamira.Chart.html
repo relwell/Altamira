@@ -71,6 +71,9 @@
 <li class="method public "><a href="#method_getScript" title="getScript :: Returns any inline scripts stored by the jsWriter during configuration"><span class="description">Returns any inline scripts stored by the jsWriter during configuration</span><pre>getScript()</pre></a></li>
 <li class="method public "><a href="#method_getSeries" title="getSeries :: Returns an array of series instances"><span class="description">Returns an array of series instances</span><pre>getSeries()</pre></a></li>
 <li class="method public "><a href="#method_getTitle" title="getTitle :: Accessor method."><span class="description">Accessor method.</span><pre>getTitle()</pre></a></li>
+<li class="method public "><a href="#method_hideTitle" title="hideTitle :: Sets the variable responsible for hiding the title
+Note that showing the title is the default behavior"><span class="description">Sets the variable responsible for hiding the title
+Note that showing the title is the default behavior</span><pre>hideTitle()</pre></a></li>
 <li class="method public "><a href="#method_setAxisLabel" title="setAxisLabel :: Sets the label on this chart for a given axis"><span class="description">Sets the label on this chart for a given axis</span><pre>setAxisLabel()</pre></a></li>
 <li class="method public "><a href="#method_setAxisOptions" title="setAxisOptions :: Generic interface to any kind of axis option"><span class="description">Generic interface to any kind of axis option</span><pre>setAxisOptions()</pre></a></li>
 <li class="method public "><a href="#method_setAxisTicks" title="setAxisTicks :: Sets axis tick values for this chart in the jsWriter"><span class="description">Sets axis tick values for this chart in the jsWriter</span><pre>setAxisTicks()</pre></a></li>
@@ -80,6 +83,9 @@
 <li class="method public "><a href="#method_setTitle" title="setTitle :: Sets a text title for the chart, for rendering"><span class="description">Sets a text title for the chart, for rendering</span><pre>setTitle()</pre></a></li>
 <li class="method public "><a href="#method_setType" title="setType :: Sets chart's type in the JS writer for default or for a given series."><span class="description">Sets chart's type in the JS writer for default or for a given series.</span><pre>setType()</pre></a></li>
 <li class="method public "><a href="#method_setTypeOption" title="setTypeOption :: Sets an option for type-based rendering within this chart by default or for a series"><span class="description">Sets an option for type-based rendering within this chart by default or for a series</span><pre>setTypeOption()</pre></a></li>
+<li class="method public "><a href="#method_titleHidden" title="titleHidden :: Returns whether or not the chart title should be hidden
+Note that showing the title is the default behavior."><span class="description">Returns whether or not the chart title should be hidden
+Note that showing the title is the default behavior.</span><pre>titleHidden()</pre></a></li>
 <li class="method public "><a href="#method_useCursor" title="useCursor :: Interface to jsWriter option setting"><span class="description">Interface to jsWriter option setting</span><pre>useCursor()</pre></a></li>
 <li class="method public "><a href="#method_useDates" title="useDates :: Interface to jsWriter option"><span class="description">Interface to jsWriter option</span><pre>useDates()</pre></a></li>
 <li class="method public "><a href="#method_useHighlighting" title="useHighlighting :: Interface to jsWriter option setting."><span class="description">Interface to jsWriter option setting.</span><pre>useHighlighting()</pre></a></li>
@@ -97,6 +103,7 @@
 <li class="property protected "><a href="#property_name" title="$name :: Used as a unique identifier in code."><span class="description"></span><pre>$name</pre></a></li>
 <li class="property protected "><a href="#property_series" title="$series :: Contains all of the series to be plotted in this chart"><span class="description"></span><pre>$series</pre></a></li>
 <li class="property protected "><a href="#property_title" title="$title :: The plaintext title of the chart, for rendering purposes."><span class="description"></span><pre>$title</pre></a></li>
+<li class="property protected "><a href="#property_titleHidden" title="$titleHidden :: Determines whether the title is hidden"><span class="description"></span><pre>$titleHidden</pre></a></li>
 <li class="property protected "><a href="#property_types" title="$types :: These are the types set for a chart."><span class="description"></span><pre>$types</pre></a></li>
 </ul>
 </li>
@@ -311,6 +318,13 @@
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
+<a id="method_hideTitle"></a><div class="element clickable method public method_hideTitle" data-toggle="collapse" data-target=".method_hideTitle .collapse">
+<h2>Sets the variable responsible for hiding the title
+Note that showing the title is the default behavior</h2>
+<pre>hideTitle() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="method_setAxisLabel"></a><div class="element clickable method public method_setAxisLabel" data-toggle="collapse" data-target=".method_setAxisLabel .collapse">
 <h2>Sets the label on this chart for a given axis</h2>
 <pre>setAxisLabel(string $axis, string $label) : <a href="../classes/Altamira.Chart.html">\Altamira\Chart</a></pre>
@@ -481,6 +495,17 @@
 <code><a href="../classes/Altamira.Chart.html">\Altamira\Chart</a></code>provides fluent interface</div>
 </div></div>
 </div>
+<a id="method_titleHidden"></a><div class="element clickable method public method_titleHidden" data-toggle="collapse" data-target=".method_titleHidden .collapse">
+<h2>Returns whether or not the chart title should be hidden
+Note that showing the title is the default behavior.</h2>
+<pre>titleHidden() : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
 <a id="method_useCursor"></a><div class="element clickable method public method_useCursor" data-toggle="collapse" data-target=".method_useCursor .collapse">
 <h2>Interface to jsWriter option setting</h2>
 <pre>useCursor() : <a href="../classes/Altamira.Chart.html">\Altamira\Chart</a></pre>
@@ -572,6 +597,12 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"><p>Can differ from unique identifier name.</p></div></div></div>
 </div>
+<a id="property_titleHidden"> </a><div class="element clickable property protected property_titleHidden" data-toggle="collapse" data-target=".property_titleHidden .collapse">
+<h2></h2>
+<pre>$titleHidden : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="property_types"> </a><div class="element clickable property protected property_types" data-toggle="collapse" data-target=".property_types .collapse">
 <h2></h2>
 <pre>$types : array</pre>
@@ -590,7 +621,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-01-03T19:30:35-08:00.<br></footer></div>
+            generated on 2013-01-03T20:34:57-08:00.<br></footer></div>
 </div>
 </body>
 </html>
