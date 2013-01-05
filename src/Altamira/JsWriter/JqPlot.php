@@ -149,13 +149,11 @@ class JqPlot
         $depth  = isset( $depth )  ? $depth  : 3; 
         $alpha  = isset( $alpha )  ? $alpha  : 0.1;
         
-        $this->options['seriesStorage'][$series]['shadow'] = $use;
-		$this->options['seriesStorage'][$series]['shadowAngle'] = $angle;
-		$this->options['seriesStorage'][$series]['shadowOffset'] = $offset;
-		$this->options['seriesStorage'][$series]['shadowDepth'] = $depth;
-		$this->options['seriesStorage'][$series]['shadowAlpha'] = $alpha;
-
-		return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadow', $use )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowAngle', $angle )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowOffset', $offset )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowDepth', $depth )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowAlpha', $alpha ); 
     }
     
     /**
