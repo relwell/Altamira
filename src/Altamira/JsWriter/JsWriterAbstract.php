@@ -1,7 +1,18 @@
 <?php
-
+/**
+ * Class Definition for \Altamira\JsWriter\JsWriterAbstract
+ */
 namespace Altamira\JsWriter;
 
+/**
+ * This class is responsible for aggregating charting options
+ * and rendering them in JavaScript. There is a one-to-one relationship
+ * between JsWriters and charts. JsWriters are associated with different 
+ * charting libraries.
+ * @namespace \Altamira\JsWriter
+ * @package JsWriterAbstract
+ * @author relwell
+ */
 abstract class JsWriterAbstract
 {
     /**
@@ -220,6 +231,7 @@ abstract class JsWriterAbstract
      * Returns an type that has not yet been registered. 
      * @param \Altamira\Type\TypeAbstract $type
      * @param array $options
+     * @param string|\Altamira\Series $series
      */
     public function setType( $type, $options = array(), $series = 'default' )
     {
@@ -249,7 +261,7 @@ abstract class JsWriterAbstract
     
     /**
      * Returns the type instance for the provided key
-     * @param string $key
+     * @param string|\Altamira\Series $series
      * @return multitype:|NULL
      */
     public function getType( $series = null )
@@ -263,11 +275,11 @@ abstract class JsWriterAbstract
     /**
      * Allows you to set discretely infinite nesting without notices 
      * by creating an empty array for key values that don't already exist
-     * @param array $options
-     * @param $_ ... 
+     * @param array $options the option array to operate against
+     * @param mixed $arg the first any number of arguments to nest through an array, the final of which being the value to set
      * @return \Altamira\JsWriter\JsWriterAbstract
      */
-    protected function setNestedOptVal( array &$options )
+    protected function setNestedOptVal( array &$options, $arg )
     {
         //@codeCoverageIgnoreStart
         $args = func_get_args();
@@ -300,10 +312,10 @@ abstract class JsWriterAbstract
      * Allows you to get the value for discretely infinite nesting without notices 
      * by returning null without a warning if it doesn't exist
      * @param array $options
-     * @param $_ ... 
+     * @param mixed $arg the first of any number of arguments to nest through an array, the final of which being the value to return
      * @return mixed
      */
-    protected function getNestedOptVal( array $options )
+    protected function getNestedOptVal( array $options, $arg )
     {
         //@codeCoverageIgnoreStart
         $args = func_get_args();
