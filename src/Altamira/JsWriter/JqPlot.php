@@ -1,9 +1,22 @@
 <?php
-
+/**
+ * Class definition for \Altamira\JsWriter\JqPlot
+ * @author relwell
+ *
+ */
 namespace Altamira\JsWriter;
-
 use \Altamira\JsWriter\Ability;
-
+/**
+ * This is the class responsible for configuring and then 
+ * writing out data for a single chart using the JqPlot library.
+ * This is automatically registered based on the library parameter passed
+ * on any chart you instantiate. Most configurations are encapsulated by 
+ * either the chart or series registered with the charts.
+ * @namespace \Altamira\JsWriter
+ * @package JsWriter
+ * @author relwell
+ *
+ */
 class JqPlot
     extends \Altamira\JsWriter\JsWriterAbstract
     implements Ability\Cursorable,
@@ -16,8 +29,16 @@ class JqPlot
                Ability\Labelable,
                Ability\Lineable
 {
+    /**
+     * Used to identify the library correlating to this class
+     * @var string
+     */
     const LIBRARY = 'jqplot';
     
+    /**
+     * Used to identify the type namespace for this particualr JsWriter 
+     * @var string
+     */
     protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';
     
     /**
@@ -74,6 +95,11 @@ class JqPlot
 
     }
     
+    /**
+     * Implemented from \Altamira\JsWriter\Ability\Highlightable
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function useHighlighting( array $opts = array( 'size' => 7.5 ) )
     {
         extract( $opts );
@@ -86,7 +112,7 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Zoomable
      * @param array $options
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -100,7 +126,7 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Cursorable
      * @return \Altamira\JsWriter\JqPlot
      */
     public function useCursor()
@@ -128,7 +154,7 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Shadowable
      * @param \Altamira\Series|string $series
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
@@ -157,7 +183,7 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Fillable
      * @param \Altamira\Chart|series $series
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
@@ -194,7 +220,7 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Griddable
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -217,6 +243,11 @@ class JqPlot
         return $this;
     }
     
+    /**
+     * Implemented from \Altamira\JsWriter\Ability\Legendable
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setLegend( array $opts = array('on'       => 'true', 
                                                    'location' => 'ne', 
                                                    'x'        => 0, 
@@ -279,8 +310,12 @@ class JqPlot
     }
 
     /**
-     * (non-PHPdoc)
+     * Registers a type for a series or entire chart
      * @see \Altamira\JsWriter\JsWriterAbstract::setType()
+     * @param string|Altamira\Type\TypeAbstract $type
+     * @param array $options
+     * @param string $series
+     * @return \Altamira\JsWriter\JqPlot
      */
     public function setType( $type, $options = array(), $series = 'default' )
     {
@@ -320,7 +355,6 @@ class JqPlot
     /**
      * Initializes default settings for using labels
      * @param string|\Altamira\Series $series
-     * @param array $labels an array of strings for labels, in order
      * @return \Altamira\JsWriter\JqPlot
      */
     public function useSeriesLabels( $series )

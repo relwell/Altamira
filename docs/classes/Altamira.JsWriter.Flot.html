@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">126</span></a></li>
+                <span class="label label-info">111</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">2</span>
@@ -71,16 +71,10 @@ It's important to note that some methods in concrete classes will add additional
 <li class="method public inherited"><a href="#method_getLibrary" title="getLibrary :: This is used to differentiate jsWriters of different kinds using a string name"><span class="description">This is used to differentiate jsWriters of different kinds using a string name</span><pre>getLibrary()</pre></a></li>
 <li class="method public inherited"><a href="#method_getOption" title="getOption :: Returns global options stored in the JsWriter instance."><span class="description">Returns global options stored in the JsWriter instance.</span><pre>getOption()</pre></a></li>
 <li class="method public inherited"><a href="#method_getOptionsForSeries" title="getOptionsForSeries :: Returns the options for a series"><span class="description">Returns the options for a series</span><pre>getOptionsForSeries()</pre></a></li>
-<li class="method public "><a href="#method_getOptionsJS" title="getOptionsJS :: Mutates the option array to the format required for flot"><span class="description">Mutates the option array to the format required for flot</span><pre>getOptionsJS()</pre></a></li>
 <li class="method public "><a href="#method_getScript" title="getScript :: (non-PHPdoc)"><span class="description">(non-PHPdoc)</span><pre>getScript()</pre></a></li>
 <li class="method public inherited"><a href="#method_getSeriesOption" title="getSeriesOption :: Returns an option for a specific series."><span class="description">Returns an option for a specific series.</span><pre>getSeriesOption()</pre></a></li>
 <li class="method public inherited"><a href="#method_getType" title="getType :: Returns the type instance for the provided key"><span class="description">Returns the type instance for the provided key</span><pre>getType()</pre></a></li>
 <li class="method public "><a href="#method_initializeSeries" title="initializeSeries :: (non-PHPdoc)"><span class="description">(non-PHPdoc)</span><pre>initializeSeries()</pre></a></li>
-<li class="method public inherited"><a href="#method_makeJSArray" title="makeJSArray :: JSON-encoding with some additional treatments
--- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
--- callbacks are introduced where they are stored after json-encoding, so that they are evaluated"><span class="description">JSON-encoding with some additional treatments
--- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
--- callbacks are introduced where they are stored after json-encoding, so that they are evaluated</span><pre>makeJSArray()</pre></a></li>
 <li class="method public "><a href="#method_prepOpts" title="prepOpts :: Prepares default values for a series array"><span class="description">Prepares default values for a series array</span><pre>prepOpts()</pre></a></li>
 <li class="method public "><a href="#method_setAxisOptions" title="setAxisOptions :: Sets an option for a given axis"><span class="description">Sets an option for a given axis</span><pre>setAxisOptions()</pre></a></li>
 <li class="method public "><a href="#method_setAxisTicks" title="setAxisTicks :: Responsible for setting the tick labels on a given axis"><span class="description">Responsible for setting the tick labels on a given axis</span><pre>setAxisTicks()</pre></a></li>
@@ -111,7 +105,13 @@ It's important to note that some methods in concrete classes will add additional
 by returning null without a warning if it doesn't exist"><span class="description">Allows you to get the value for discretely infinite nesting without notices
 by returning null without a warning if it doesn't exist</span><pre>getNestedOptVal()</pre></a></li>
 <li class="method protected "><a href="#method_getOptVal" title="getOptVal :: Retrieves a nested value or null"><span class="description">Retrieves a nested value or null</span><pre>getOptVal()</pre></a></li>
+<li class="method protected "><a href="#method_getOptionsJS" title="getOptionsJS :: Mutates the option array to the format required for flot"><span class="description">Mutates the option array to the format required for flot</span><pre>getOptionsJS()</pre></a></li>
 <li class="method protected inherited"><a href="#method_getSeriesTitle" title="getSeriesTitle :: supports accessing series values by instance or title"><span class="description">supports accessing series values by instance or title</span><pre>getSeriesTitle()</pre></a></li>
+<li class="method protected inherited"><a href="#method_makeJSArray" title="makeJSArray :: JSON-encoding with some additional treatments
+-- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
+-- callbacks are introduced where they are stored after json-encoding, so that they are evaluated"><span class="description">JSON-encoding with some additional treatments
+-- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
+-- callbacks are introduced where they are stored after json-encoding, so that they are evaluated</span><pre>makeJSArray()</pre></a></li>
 <li class="method protected inherited"><a href="#method_setNestedOptVal" title="setNestedOptVal :: Allows you to set discretely infinite nesting without notices
 by creating an empty array for key values that don't already exist"><span class="description">Allows you to set discretely infinite nesting without notices
 by creating an empty array for key values that don't already exist</span><pre>setNestedOptVal()</pre></a></li>
@@ -305,17 +305,6 @@ It's important to note that some methods in concrete classes will add additional
 <div class="subelement response"><code>mixed</code></div>
 </div></div>
 </div>
-<a id="method_getOptionsJS"></a><div class="element clickable method public method_getOptionsJS" data-toggle="collapse" data-target=".method_getOptionsJS .collapse">
-<h2>Mutates the option array to the format required for flot</h2>
-<pre>getOptionsJS() : \Altamira\JsWriter\Ambigous</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>\Altamira\JsWriter\Ambigous</code><string, mixed></div>
-</div></div>
-</div>
 <a id="method_getScript"></a><div class="element clickable method public method_getScript" data-toggle="collapse" data-target=".method_getScript .collapse">
 <h2>(non-PHPdoc)</h2>
 <pre>getScript() </pre>
@@ -393,27 +382,6 @@ It's important to note that some methods in concrete classes will add additional
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code><a href="../classes/Altamira.JsWriter.JsWriterAbstract.html">\Altamira\JsWriter\JsWriterAbstract</a></code></div>
-</div></div>
-</div>
-<a id="method_makeJSArray"></a><div class="element clickable method public method_makeJSArray" data-toggle="collapse" data-target=".method_makeJSArray .collapse">
-<h2>JSON-encoding with some additional treatments
--- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
--- callbacks are introduced where they are stored after json-encoding, so that they are evaluated</h2>
-<pre>makeJSArray(array $array) : string</pre>
-<div class="labels"><span class="label">Inherited</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>inherited_from</th>
-<td>\Altamira\JsWriter\JsWriterAbstract::makeJSArray()</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$array</h4>
-<code>array</code>
-</div>
-<h3>Returns</h3>
-<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a id="method_prepOpts"></a><div class="element clickable method public method_prepOpts" data-toggle="collapse" data-target=".method_prepOpts .collapse">
@@ -888,6 +856,17 @@ by returning null without a warning if it doesn't exist</h2>
 <code>\Altamira\JsWriter\Ambigous</code><>|NULL|multitype:</div>
 </div></div>
 </div>
+<a id="method_getOptionsJS"></a><div class="element clickable method protected method_getOptionsJS" data-toggle="collapse" data-target=".method_getOptionsJS .collapse">
+<h2>Mutates the option array to the format required for flot</h2>
+<pre>getOptionsJS() : \Altamira\JsWriter\Ambigous</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Altamira\JsWriter\Ambigous</code><string, mixed></div>
+</div></div>
+</div>
 <a id="method_getSeriesTitle"></a><div class="element clickable method protected method_getSeriesTitle" data-toggle="collapse" data-target=".method_getSeriesTitle .collapse">
 <h2>supports accessing series values by instance or title</h2>
 <pre>getSeriesTitle(string | <a href="../classes/Altamira.Series.html">\Altamira\Series</a> $series) : string</pre>
@@ -902,6 +881,27 @@ by returning null without a warning if it doesn't exist</h2>
 <div class="subelement argument">
 <h4>$series</h4>
 <code>string</code><code><a href="../classes/Altamira.Series.html">\Altamira\Series</a></code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_makeJSArray"></a><div class="element clickable method protected method_makeJSArray" data-toggle="collapse" data-target=".method_makeJSArray .collapse">
+<h2>JSON-encoding with some additional treatments
+-- anything wrapped in hashes will be treated as bare in js (not wrapped in quotes, for example)
+-- callbacks are introduced where they are stored after json-encoding, so that they are evaluated</h2>
+<pre>makeJSArray(array $array) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Altamira\JsWriter\JsWriterAbstract::makeJSArray()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$array</h4>
+<code>array</code>
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
@@ -1135,7 +1135,7 @@ Used primarily for mapping</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-01-05T16:26:57-08:00.<br></footer></div>
+            generated on 2013-01-05T21:21:35-08:00.<br></footer></div>
 </div>
 </body>
 </html>
