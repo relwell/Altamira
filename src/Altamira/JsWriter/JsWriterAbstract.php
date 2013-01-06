@@ -81,7 +81,7 @@ abstract class JsWriterAbstract
      * @param array $array
      * @return string
      */
-    public function makeJSArray( $array )
+    protected function makeJSArray( $array )
     {
         $optionString = preg_replace('/"#([^#":]*)#"/U', '$1', json_encode( $array ) );
         
@@ -347,4 +347,9 @@ abstract class JsWriterAbstract
      * Responsible for generating JavaScript
      */
     abstract public function getScript();
+    
+    /**
+     * This wraps makeJSArray with hooks required to form the JS 
+     */
+    abstract protected function getOptionsJS();
 }

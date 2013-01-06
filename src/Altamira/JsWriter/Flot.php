@@ -205,7 +205,7 @@ class Flot
      * Mutates the option array to the format required for flot
      * @return Ambigous <string, mixed>
      */
-    public function getOptionsJS()
+    protected function getOptionsJS()
     {
         foreach ($this->optsMapper as $opt => $mapped)
         {

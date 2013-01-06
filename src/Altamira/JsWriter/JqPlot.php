@@ -297,7 +297,11 @@ class JqPlot
         return $this;
     }
 
-    public function getOptionsJS()
+    /**
+     * Prepares options and returns JSON
+     * @return string
+     */
+    protected function getOptionsJS()
     {
         $opts = $this->options;
         foreach ( $opts['seriesStorage'] as $label => $options ) {
