@@ -23,7 +23,7 @@
 <li><a href="../namespaces/Altamira.html"><i class="icon-th"></i> Altamira</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
-<li><a href="../packages/JsWriterAbstract.html"><i class="icon-folder-open"></i> JsWriterAbstract</a></li>
+<li><a href="../packages/JsWriter.html"><i class="icon-folder-open"></i> JsWriter</a></li>
 </ul>
 </li>
 <li class="dropdown" id="charts-menu">
@@ -34,10 +34,10 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">141</span></a></li>
+                <span class="label label-info">126</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
-                <span class="label label-info">1</span>
+                <span class="label label-info">2</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
                 <span class="label label-info">0</span></a></li>
@@ -183,7 +183,7 @@ charting libraries.</p></div>
 <table class="table table-bordered">
 <tr>
 <th>package</th>
-<td><a href="../packages/Default.html">JsWriterAbstract</a></td>
+<td><a href="../packages/Default.html">JsWriter</a></td>
 </tr>
 <tr>
 <th>author</th>
@@ -505,7 +505,7 @@ It's important to note that some methods in concrete classes will add additional
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$opts</h4>
-<code>array</code>
+<code>array</code><p>these include 'on', 'backgroundColor', 'color', but vary between jsWriters</p>
 </div>
 </div></div>
 </div>
@@ -551,7 +551,7 @@ It's important to note that some methods in concrete classes will add additional
 </div>
 <a id="method_setSeriesLabelSetting"></a><div class="element clickable method public method_setSeriesLabelSetting" data-toggle="collapse" data-target=".method_setSeriesLabelSetting .collapse">
 <h2>(non-PHPdoc)</h2>
-<pre>setSeriesLabelSetting($seriesTitle, $name, $value) </pre>
+<pre>setSeriesLabelSetting($seriesTitle, string $name, mixed $value) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -561,8 +561,14 @@ It's important to note that some methods in concrete classes will add additional
 </tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$seriesTitle</h4></div>
-<div class="subelement argument"><h4>$name</h4></div>
-<div class="subelement argument"><h4>$value</h4></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code>
+</div>
 </div></div>
 </div>
 <a id="method_setSeriesLineWidth"></a><div class="element clickable method public method_setSeriesLineWidth" data-toggle="collapse" data-target=".method_setSeriesLineWidth .collapse">
@@ -699,7 +705,7 @@ It's important to note that some methods in concrete classes will add additional
 </div>
 <a id="method_setShadow"></a><div class="element clickable method public method_setShadow" data-toggle="collapse" data-target=".method_setShadow .collapse">
 <h2>(non-PHPdoc)</h2>
-<pre>setShadow($series, $opts) </pre>
+<pre>setShadow(string | <a href="../classes/Altamira.Series.html">\Altamira\Series</a> $series, array $opts) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -708,8 +714,14 @@ It's important to note that some methods in concrete classes will add additional
 <td><a href="JsWriter.Ability.Shadowable.html#%5CAltamira%5CJsWriter%5CAbility%5CShadowable::setShadow()">\Altamira\JsWriter\Ability\Shadowable::setShadow()</a></td>
 </tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$series</h4></div>
-<div class="subelement argument"><h4>$opts</h4></div>
+<div class="subelement argument">
+<h4>$series</h4>
+<code>string</code><code><a href="../classes/Altamira.Series.html">\Altamira\Series</a></code>
+</div>
+<div class="subelement argument">
+<h4>$opts</h4>
+<code>array</code>
+</div>
 </div></div>
 </div>
 <a id="method_setType"></a><div class="element clickable method public method_setType" data-toggle="collapse" data-target=".method_setType .collapse">
@@ -751,7 +763,7 @@ It's important to note that some methods in concrete classes will add additional
 </div>
 <a id="method_useDates"></a><div class="element clickable method public method_useDates" data-toggle="collapse" data-target=".method_useDates .collapse">
 <h2>(non-PHPdoc)</h2>
-<pre>useDates(\Altamira\JsWriter\Ability\unknown_type $axis) </pre>
+<pre>useDates(string $axis) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -762,7 +774,7 @@ It's important to note that some methods in concrete classes will add additional
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$axis</h4>
-<code>\Altamira\JsWriter\Ability\unknown_type</code>
+<code>string</code>
 </div>
 </div></div>
 </div>
@@ -777,7 +789,10 @@ It's important to note that some methods in concrete classes will add additional
 <td><a href="JsWriter.Ability.Highlightable.html#%5CAltamira%5CJsWriter%5CAbility%5CHighlightable::useHighlighting()">\Altamira\JsWriter\Ability\Highlightable::useHighlighting()</a></td>
 </tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$opts</h4></div>
+<div class="subelement argument">
+<h4>$opts</h4>
+<code>array</code>
+</div>
 </div></div>
 </div>
 <a id="method_useSeriesLabels"></a><div class="element clickable method public method_useSeriesLabels" data-toggle="collapse" data-target=".method_useSeriesLabels .collapse">
@@ -805,7 +820,10 @@ It's important to note that some methods in concrete classes will add additional
 <td><a href="JsWriter.Ability.Zoomable.html#%5CAltamira%5CJsWriter%5CAbility%5CZoomable::useZooming()">\Altamira\JsWriter\Ability\Zoomable::useZooming()</a></td>
 </tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$options</h4></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>array</code>
+</div>
 </div></div>
 </div>
 <a id="method_getCallbackPlaceholder"></a><div class="element clickable method protected method_getCallbackPlaceholder" data-toggle="collapse" data-target=".method_getCallbackPlaceholder .collapse">
@@ -1117,7 +1135,7 @@ Used primarily for mapping</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-01-05T15:24:19-08:00.<br></footer></div>
+            generated on 2013-01-05T16:26:57-08:00.<br></footer></div>
 </div>
 </body>
 </html>

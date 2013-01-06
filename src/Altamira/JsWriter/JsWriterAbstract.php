@@ -10,7 +10,7 @@ namespace Altamira\JsWriter;
  * between JsWriters and charts. JsWriters are associated with different 
  * charting libraries.
  * @namespace \Altamira\JsWriter
- * @package JsWriterAbstract
+ * @package JsWriter
  * @author relwell
  */
 abstract class JsWriterAbstract

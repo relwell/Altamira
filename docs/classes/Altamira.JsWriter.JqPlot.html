@@ -23,7 +23,7 @@
 <li><a href="../namespaces/Altamira.html"><i class="icon-th"></i> Altamira</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
-<li><a href="../packages/JsWriterAbstract.html"><i class="icon-folder-open"></i> JsWriterAbstract</a></li>
+<li><a href="../packages/JsWriter.html"><i class="icon-folder-open"></i> JsWriter</a></li>
 </ul>
 </li>
 <li class="dropdown" id="charts-menu">
@@ -34,10 +34,10 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">141</span></a></li>
+                <span class="label label-info">126</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
-                <span class="label label-info">1</span>
+                <span class="label label-info">2</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
                 <span class="label label-info">0</span></a></li>
@@ -94,13 +94,11 @@ It's important to note that some methods in concrete classes will add additional
 <li class="method public inherited"><a href="#method_setSeriesOption" title="setSeriesOption :: Set a series-specific value for rendering JS"><span class="description">Set a series-specific value for rendering JS</span><pre>setSeriesOption()</pre></a></li>
 <li class="method public "><a href="#method_setSeriesShowLine" title="setSeriesShowLine :: Determines whether we show the line for a series"><span class="description">Determines whether we show the line for a series</span><pre>setSeriesShowLine()</pre></a></li>
 <li class="method public "><a href="#method_setSeriesShowMarker" title="setSeriesShowMarker :: Determines whether we show the marker for a series"><span class="description">Determines whether we show the marker for a series</span><pre>setSeriesShowMarker()</pre></a></li>
-<li class="method public "><a href="#method_setShadow" title="setShadow :: "><span class="description">setShadow()
-        </span><pre>setShadow()</pre></a></li>
+<li class="method public "><a href="#method_setShadow" title="setShadow :: Sets the shadowing options on how a specific series is rendered in a chart"><span class="description">Sets the shadowing options on how a specific series is rendered in a chart</span><pre>setShadow()</pre></a></li>
 <li class="method public "><a href="#method_setType" title="setType :: (non-PHPdoc)"><span class="description">(non-PHPdoc)</span><pre>setType()</pre></a></li>
 <li class="method public "><a href="#method_useCursor" title="useCursor :: Determines whether we should use cursor actions on a chart"><span class="description">Determines whether we should use cursor actions on a chart</span><pre>useCursor()</pre></a></li>
 <li class="method public "><a href="#method_useDates" title="useDates :: formats a given axis for dates"><span class="description">formats a given axis for dates</span><pre>useDates()</pre></a></li>
-<li class="method public "><a href="#method_useHighlighting" title="useHighlighting :: "><span class="description">useHighlighting()
-        </span><pre>useHighlighting()</pre></a></li>
+<li class="method public "><a href="#method_useHighlighting" title="useHighlighting :: Determines whether to allow highlighting of points, and the highlight size in its options"><span class="description">Determines whether to allow highlighting of points, and the highlight size in its options</span><pre>useHighlighting()</pre></a></li>
 <li class="method public "><a href="#method_useSeriesLabels" title="useSeriesLabels :: Initializes default settings for using labels"><span class="description">Initializes default settings for using labels</span><pre>useSeriesLabels()</pre></a></li>
 <li class="method public "><a href="#method_useZooming" title="useZooming :: "><span class="description">useZooming()
         </span><pre>useZooming()</pre></a></li>
@@ -163,7 +161,7 @@ charting libraries.</p></div>
 <table class="table table-bordered">
 <tr>
 <th>package</th>
-<td><a href="../packages/Default.html">JsWriterAbstract</a></td>
+<td><a href="../packages/Default.html">JsWriter</a></td>
 </tr>
 <tr>
 <th>author</th>
@@ -631,8 +629,7 @@ It's important to note that some methods in concrete classes will add additional
 </div></div>
 </div>
 <a id="method_setShadow"></a><div class="element clickable method public method_setShadow" data-toggle="collapse" data-target=".method_setShadow .collapse">
-<h2>setShadow()
-        </h2>
+<h2>Sets the shadowing options on how a specific series is rendered in a chart</h2>
 <pre>setShadow(<a href="../classes/Altamira.Series.html">\Altamira\Series</a> | string $series, array $opts) : <a href="../classes/Altamira.JsWriter.JqPlot.html">\Altamira\JsWriter\JqPlot</a></pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
@@ -701,14 +698,16 @@ It's important to note that some methods in concrete classes will add additional
 </div></div>
 </div>
 <a id="method_useHighlighting"></a><div class="element clickable method public method_useHighlighting" data-toggle="collapse" data-target=".method_useHighlighting .collapse">
-<h2>useHighlighting()
-        </h2>
+<h2>Determines whether to allow highlighting of points, and the highlight size in its options</h2>
 <pre>useHighlighting(array $opts) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$opts</h4></div>
+<div class="subelement argument">
+<h4>$opts</h4>
+<code>array</code>
+</div>
 </div></div>
 </div>
 <a id="method_useSeriesLabels"></a><div class="element clickable method public method_useSeriesLabels" data-toggle="collapse" data-target=".method_useSeriesLabels .collapse">
@@ -926,7 +925,7 @@ by creating an empty array for key values that don't already exist</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-01-05T15:24:19-08:00.<br></footer></div>
+            generated on 2013-01-05T16:26:57-08:00.<br></footer></div>
 </div>
 </body>
 </html>
