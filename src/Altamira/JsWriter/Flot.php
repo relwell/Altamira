@@ -1,10 +1,20 @@
 <?php
-
+/**
+ * Class definition for \Altmaira\JsWriter\Flot
+ * @author relwell
+ */
 namespace Altamira\JsWriter;
-
 use Altamira\JsWriter\Ability;
 use Altamira\ChartDatum;
-
+/**
+ * JsWriter responsible for storing options and rendering
+ * values to cause JqPlot to render a specific chart.
+ * Generally, these method calls will be encapsulated by the 
+ * chart that registers its own JsWriter upon instantiation.
+ * @namespace \Altamira\JsWriter
+ * @package JsWriter
+ * @author relwell
+ */
 class Flot
     extends JsWriterAbstract
     implements Ability\Cursorable,
@@ -18,15 +28,46 @@ class Flot
                Ability\Labelable,
                Ability\Lineable
 {
+    /**
+     * Identifies the string value of which library this jsWriter is responsible for
+     * @var string
+     */
     const LIBRARY = 'flot';
     
-    protected $library = 'flot';
+    /**
+     * Used to identify the type namespace for this particualr JsWriter 
+     * @var string
+     */
     protected $typeNamespace = '\\Altamira\\Type\\Flot\\';
 
+    /**
+     * Used to track whether dates have been registered on this chart
+     * @var array
+     */
     protected $dateAxes = array('x'=>false, 'y'=>false);
+    
+    /**
+     * Used to track whether zooming has been set
+     * @var bool
+     */
     protected $zooming = false;
+    
+    /**
+     * Used to track whether highlighting has been set
+     * @var bool
+     */
     protected $highlighting = false;
+    
+    /**
+     * Stores labels for each point
+     * @var array
+     */
     protected $pointLabels = array();
+    
+    /**
+     * Stores settings for label placement
+     * @var array
+     */
     protected $labelSettings = array('location'=>'w','xpadding'=>'0','ypadding'=>'0');
 
     /**
@@ -190,8 +231,10 @@ class Flot
     }
 
     /**
-     * (non-PHPdoc)
+     * Registers a series, performing some additional logic
      * @see \Altamira\JsWriter\JsWriterAbstract::initializeSeries()
+     * @param \Altamira\Series|string $series
+     * @return \Altamira\JsWriter\Flot
      */
     public function initializeSeries( $series )
     {
@@ -287,8 +330,10 @@ class Flot
     }
 
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Highlightable
      * @see \Altamira\JsWriter\Ability\Highlightable::useHighlighting()
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
      */
     public function useHighlighting(array $opts = array('size'=>7.5))
     {
@@ -299,8 +344,9 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Cursorable
      * @see \Altamira\JsWriter\Ability\Cursorable::useCursor()
+     * @return \Altamira\JsWriter\JqPlot
      */
     public function useCursor()
     {
@@ -308,8 +354,10 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * formats a given axis for dates
      * @see \Altamira\JsWriter\Ability\Datable::useDates()
+     * @param string $axis
+     * @return \Altamira\JsWriter\Flot
      */
     public function useDates($axis = 'x')
     {
@@ -324,8 +372,10 @@ class Flot
     }
 
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Zoomable
      * @see \Altamira\JsWriter\Ability\Zoomable::useZooming()
+     * @param array $options
+     * @return \Altamira\JsWriter\Flot
      */
     public function useZooming( array $options = array('mode'=>'xy') )
     {
@@ -336,8 +386,10 @@ class Flot
     }
 
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Griddable
      * @see \Altamira\JsWriter\Ability\Griddable::setGrid()
+     * @param array $opts
+     * @return \Altamira\JsWriter\Flot
      */
     public function setGrid(array $opts)
     {
@@ -359,8 +411,10 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Legendable
      * @see \Altamira\JsWriter\Ability\Legendable::setLegend()
+     * @param array $opts
+     * @return \Altamira\JsWriter\Flot
      */
     public function setLegend(array $opts = array('on' => 'true', 
                                                   'location' => 'ne', 
@@ -390,8 +444,11 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Fillable
      * @see \Altamira\JsWriter\Ability\Fillable::setFill()
+     * @param \Altamira\Chart|series $series
+     * @param array $opts
+     * @return \Altamira\JsWriter\Flot
      */
     public function setFill($series, $opts = array('use'    => true,
                                                    'stroke' => false,
@@ -413,8 +470,11 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * Implemented from \Altamira\JsWriter\Ability\Shadowable
      * @see \Altamira\JsWriter\Ability\Shadowable::setShadow()
+     * @param \Altamira\Series|string $series
+     * @param array $opts
+     * @return \Altamira\JsWriter\Flot
      */
     public function setShadow($series, $opts = array('use'    => true,
                                                      'angle'  => 45,
@@ -432,20 +492,28 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * Initializes default settings for using labels
      * @see \Altamira\JsWriter\Ability\Labelable::useSeriesLabels()
+     * @param string|\Altamira\Series $series
+     * @return \Altamira\JsWriter\Flot
      */
-    public function useSeriesLabels( $seriesTitle )
+    public function useSeriesLabels( $series )
     {
         $this->useLabels = true;
-        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'pointLabels', 'edgeTolerance', 3 );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'pointLabels', 'edgeTolerance', 3 );
     }
     
     /**
-     * (non-PHPdoc)
+     * Sets label setting option values
+     * NOTE: FLOT DOES NOT SUPPORT SERIES-SPECIFIC LABEL SETTINGS
+     * The options you set here are global label settings.
      * @see \Altamira\JsWriter\Ability\Labelable::setSeriesLabelSetting()
+     * @param string $series
+     * @param string $name
+     * @param mixed $value
+     * @return \Altamira\JsWriter\Flot
      */
-    public function setSeriesLabelSetting( $seriesTitle, $name, $value )
+    public function setSeriesLabelSetting( $series, $name, $value )
     {
         // jqplot supports this, but we're just going to do global settings. overwrite at your own peril.
         $this->labelSettings[$name] = $value;
@@ -453,37 +521,49 @@ class Flot
     }
     
     /**
-     * (non-PHPdoc)
+     * Determines the width of the line we will show, if we're showing it
      * @see \Altamira\JsWriter\Ability\Lineable::setSeriesLineWidth()
+     * @param string $series
+     * @param mixed $value
+     * @return \Altamira\JsWriter\Flot
      */
-    public function setSeriesLineWidth( $seriesTitle, $value )
+    public function setSeriesLineWidth( $series, $value )
     {
-        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'lines', 'linewidth', $value );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'lines', 'linewidth', $value );
     }
     
     /**
-     * (non-PHPdoc)
+     * Determines whether we show the line for a series
      * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowLine()
+     * @param string|\Altamira\Series $series
+     * @param bool $bool
+     * @return \Altamira\JsWriter\Flot
      */
-    public function setSeriesShowLine( $seriesTitle, $bool )
+    public function setSeriesShowLine( $series, $bool )
     {
-        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'lines', 'show', $bool );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'lines', 'show', $bool );
     }
     
     /**
-     * (non-PHPdoc)
+     * Determines whether we show the marker for a series
      * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowMarker()
+     * @param string|\Altamira\Series $series
+     * @param bool $bool
+     * @return \Altamira\JsWriter\Flot
      */
-    public function setSeriesShowMarker( $seriesTitle, $bool )
+    public function setSeriesShowMarker( $series, $bool )
     {
-        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'points', 'show', $bool );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'points', 'show', $bool );
     }
     
     /**
-     * (non-PHPdoc)
+     * Sets the style of the marker
      * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerStyle()
+     * @param string|\Altamira\Series $series
+     * @param string $value
+     * @return \Altamira\JsWriter\Flot
      */
-    public function setSeriesMarkerStyle( $seriesTitle, $value )
+    public function setSeriesMarkerStyle( $series, $value )
     {
         // jqplot compatibility preprocessing
         $value = str_replace('filled', '', $value);
@@ -493,16 +573,19 @@ class Flot
             $this->files[] = 'jquery.flot.symbol.js';
         }
         
-        return $this->setNestedOptVal( $this->options, 'seriesStorage', $seriesTitle, 'points', 'symbol', $value );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'points', 'symbol', $value );
     }
     
     /**
-     * (non-PHPdoc)
+     * Sets the size of the marker
      * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerSize()
+     * @param string|\Altamira\Series $series
+     * @param mixed $value
+     * @return \Altamira\JsWriter\JqPlot
      */
-    public function setSeriesMarkerSize( $seriesTitle, $value )
+    public function setSeriesMarkerSize( $series, $value )
     {
-        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $seriesTitle ), 'points', 'radius', (int) ($value / 2) );
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $this->getSeriesTitle( $series ), 'points', 'radius', (int) ($value / 2) );
     }
 
     /**
@@ -559,7 +642,10 @@ class Flot
         }
     }
 
-    // maps jqplot-originating option data structure to flot
+    /**
+     * maps jqplot-originating option data structure to flot
+     * @var array
+     */
     private $optsMapper = array('axes.xaxis.tickInterval' => 'xaxis.tickSize',
                                 'axes.xaxis.min'          => 'xaxis.min',
                                 'axes.xaxis.max'          => 'xaxis.max',
@@ -578,7 +664,10 @@ class Flot
                                 );
 
 
-    // api-native functionality
+    /**
+     * api-native functionality
+     * @var array
+     */
     private $nativeOpts = array('legend' => array(  'show'=>null,
                                                     'labelFormatter'=>null,
                                                     'labelBoxBorderColor'=>null,
@@ -671,6 +760,11 @@ class Flot
 
                                 );
 
+    /**
+     * This is the immutable string component of the zooming function 
+     * we have designed for Flot. It's intended to be passed to sprintf. 
+     * @var string
+     */
     const ZOOMING_FUNCTION = <<<ENDSCRIPT
 placeholder.bind("plotselected", function (event, ranges) {
     jQuery.plot(placeholder, %s,
@@ -682,6 +776,11 @@ placeholder.bind("plotselected", function (event, ranges) {
 placeholder.on('dblclick', function(){ plot.clearSelection(); jQuery.plot(placeholder, %s%s); });
 ENDSCRIPT;
     
+    /**
+     * This is the immutable string component of the labeling function 
+     * we have designed for Flot. It's intended to be passed to sprintf. 
+     * @var string
+     */
     const LABELS_FUNCTION = <<<ENDJS
 var pointLabels = %s;
 
@@ -698,6 +797,11 @@ $.each(plot.getData()[0].data, function(i, el){
 });
 ENDJS;
     
+    /**
+     * This is the immutable string component of the highlighting function 
+     * we have designed for Flot. It's intended to be passed to sprintf. 
+     * @var string
+     */
     const HIGHLIGHTING_FUNCTION = <<<ENDJS
 
 function showTooltip(x, y, contents) {
@@ -735,6 +839,11 @@ placeholder.bind("plothover", function (event, pos, item) {
 });
 ENDJS;
     
+    /**
+     * This is the string value of actual "plot" call to Flot,
+     * intended to be passed to sprintf
+     * @var string
+     */
     const SCRIPT_OUTPUT = <<<ENDSCRIPT
 jQuery(document).ready(function() {
     var placeholder = jQuery('#%s');

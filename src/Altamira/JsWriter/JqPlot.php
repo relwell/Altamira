@@ -97,6 +97,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Highlightable
+     * @see \Altamira\JsWriter\Ability\Highlightable::useHighlighting()
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -113,6 +114,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Zoomable
+     * @see \Altamira\JsWriter\Ability\Zoomable::useZooming()
      * @param array $options
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -127,6 +129,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Cursorable
+     * @see \Altamira\JsWriter\Ability\Cursorable::useCursor()
      * @return \Altamira\JsWriter\JqPlot
      */
     public function useCursor()
@@ -140,6 +143,7 @@ class JqPlot
     
     /**
      * formats a given axis for dates
+     * @see \Altamira\JsWriter\Ability\Datable::useDates()
      * @param string $axis
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -155,6 +159,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Shadowable
+     * @see \Altamira\JsWriter\Ability\Shadowable::setShadow()
      * @param \Altamira\Series|string $series
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
@@ -184,6 +189,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Fillable
+     * @see \Altamira\JsWriter\Ability\Fillable::setFill()
      * @param \Altamira\Chart|series $series
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
@@ -221,6 +227,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Griddable
+     * @see \Altamira\JsWriter\Ability\Griddable::setGrid()
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -245,6 +252,7 @@ class JqPlot
     
     /**
      * Implemented from \Altamira\JsWriter\Ability\Legendable
+     * @see \Altamira\JsWriter\Ability\Legendable::setLegend()
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -354,6 +362,7 @@ class JqPlot
     
     /**
      * Initializes default settings for using labels
+     * @see \Altamira\JsWriter\Ability\Labelable::useSeriesLabels()
      * @param string|\Altamira\Series $series
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -369,6 +378,7 @@ class JqPlot
     
     /**
      * Sets label setting option values
+     * @see \Altamira\JsWriter\Ability\Labelable::setSeriesLabelSetting()
      * @param string $series
      * @param string $name
      * @param mixed $value
@@ -385,6 +395,7 @@ class JqPlot
     
     /**
      * Determines the width of the line we will show, if we're showing it
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesLineWidth()
      * @param string $series
      * @param mixed $value
      * @return \Altamira\JsWriter\JqPlot
@@ -396,6 +407,7 @@ class JqPlot
     
     /**
      * Determines whether we show the line for a series
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowLine()
      * @param string|\Altamira\Series $series
      * @param bool $bool
      * @return \Altamira\JsWriter\JqPlot
@@ -407,6 +419,7 @@ class JqPlot
     
     /**
      * Determines whether we show the marker for a series
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowMarker()
      * @param string|\Altamira\Series $series
      * @param bool $bool
      * @return \Altamira\JsWriter\JqPlot
@@ -418,6 +431,7 @@ class JqPlot
     
     /**
      * Sets the style of the marker
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerStyle()
      * @param string|\Altamira\Series $series
      * @param string $value
      * @return \Altamira\JsWriter\JqPlot
@@ -429,6 +443,7 @@ class JqPlot
     
     /**
      * Sets the size of the marker
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerSize()
      * @param string|\Altamira\Series $series
      * @param mixed $value
      * @return \Altamira\JsWriter\JqPlot
