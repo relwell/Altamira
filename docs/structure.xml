@@ -2359,7 +2359,7 @@ The options you set here are global label settings.</description>
   <file path="Config.php" hash="a234f03187a7a1262140bc0b081e5f42" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\Config</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira" line="15" package="Default">
@@ -2369,14 +2369,14 @@ The options you set here are global label settings.</description>
       <full_name>\Altamira\Config</full_name>
       <docblock line="12">
         <description>Configuration class for global state and environmental dependencies</description>
-        <long-description></long-description>
+        <long-description/>
       </docblock>
       <property final="false" static="false" visibility="protected" line="21" namespace="Altamira" package="Default">
         <name>$config</name>
         <default>array()</default>
         <docblock line="17">
           <description>Contains the configuration values stored within the config</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="17" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
@@ -2384,10 +2384,10 @@ The options you set here are global label settings.</description>
       </property>
       <property final="false" static="true" visibility="protected" line="27" namespace="Altamira" package="Default">
         <name>$instance</name>
-        <default></default>
+        <default/>
         <docblock line="23">
           <description>Singleton</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="23" name="var" description="" type="\Altamira\Config">
             <type by_reference="false">\Altamira\Config</type>
           </tag>
@@ -2395,10 +2395,10 @@ The options you set here are global label settings.</description>
       </property>
       <property final="false" static="true" visibility="protected" line="33" namespace="Altamira" package="Default">
         <name>$file</name>
-        <default></default>
+        <default/>
         <docblock line="29">
           <description>Location of the config file</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="29" name="var" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
@@ -2409,7 +2409,7 @@ The options you set here are global label settings.</description>
         <full_name>__construct</full_name>
         <docblock line="35">
           <description>Used to instantiate the actual config from the ini file</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="35" name="param" description="" type="\Altamira\unknown_type" variable="$file">
             <type by_reference="false">\Altamira\unknown_type</type>
           </tag>
@@ -2425,7 +2425,7 @@ The options you set here are global label settings.</description>
         <full_name>getInstance</full_name>
         <docblock line="46">
           <description>Singleton method</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="46" name="return" description="" type="\Altamira\Config">
             <type by_reference="false">\Altamira\Config</type>
           </tag>
@@ -2436,7 +2436,7 @@ The options you set here are global label settings.</description>
         <full_name>getPluginPath</full_name>
         <docblock line="59">
           <description>Provided a library, returns a path for plugins</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="59" name="param" description="" type="string" variable="$library">
             <type by_reference="false">string</type>
           </tag>
@@ -2446,7 +2446,7 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="64">
           <name>$library</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2464,14 +2464,14 @@ files in the FilesRenderer.</description>
         <full_name>setConfigFile</full_name>
         <docblock line="84">
           <description>Accessible path to config file</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="84" name="param" description="" type="\Altamira\unknown_type" variable="$file">
             <type by_reference="false">\Altamira\unknown_type</type>
           </tag>
         </docblock>
         <argument line="88">
           <name>$file</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2480,7 +2480,7 @@ files in the FilesRenderer.</description>
         <full_name>offsetExists</full_name>
         <docblock line="93">
           <description>Determine if there is a value for this key in the config</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="93" name="see" description="\Altamira\ArrayAccess::offsetExists()" refers="\Altamira\ArrayAccess::offsetExists()"/>
           <tag line="93" name="param" description="" type="string" variable="$offset">
             <type by_reference="false">string</type>
@@ -2491,7 +2491,7 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="99">
           <name>$offset</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2500,7 +2500,7 @@ files in the FilesRenderer.</description>
         <full_name>offsetGet</full_name>
         <docblock line="104">
           <description>Retrieve the config value for the provided key</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="104" name="see" description="\Altamira\ArrayAccess::offsetGet()" refers="\Altamira\ArrayAccess::offsetGet()"/>
           <tag line="104" name="param" description="" type="string" variable="$offset">
             <type by_reference="false">string</type>
@@ -2512,7 +2512,7 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="110">
           <name>$offset</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2521,7 +2521,7 @@ files in the FilesRenderer.</description>
         <full_name>offsetSet</full_name>
         <docblock line="115">
           <description>Stores the value for the given key</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="115" name="see" description="\Altamira\ArrayAccess::offsetSet()" refers="\Altamira\ArrayAccess::offsetSet()"/>
           <tag line="115" name="param" description="" type="string" variable="$offset">
             <type by_reference="false">string</type>
@@ -2532,12 +2532,12 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="121">
           <name>$offset</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="121">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2546,7 +2546,7 @@ files in the FilesRenderer.</description>
         <full_name>offsetUnset</full_name>
         <docblock line="126">
           <description>Removes the provided key-value pair from the config array</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="126" name="see" description="\Altamira\ArrayAccess::offsetUnset()" refers="\Altamira\ArrayAccess::offsetUnset()"/>
           <tag line="126" name="param" description="" type="string" variable="$offset">
             <type by_reference="false">string</type>
@@ -2554,91 +2554,115 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="131">
           <name>$offset</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
     </class>
   </file>
-  <file path="FilesRenderer.php" hash="2fffe29cacf9156553a9465b21efaa8b" package="Default">
-    <class final="false" abstract="false" namespace="Altamira" line="8" package="Default">
+  <file path="FilesRenderer.php" hash="c747efddf551749cfa9d935e992d7231" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\FilesRenderer</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Altamira" line="12" package="Default">
       <extends>\ArrayIterator</extends>
       <name>FilesRenderer</name>
       <full_name>\Altamira\FilesRenderer</full_name>
-      <docblock line="5">
+      <docblock line="9">
         <description>Used for rendering JavaScript files</description>
-        <long-description/>
+        <long-description></long-description>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="15" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="18" package="Default">
         <name>__construct</name>
         <full_name>__construct</full_name>
-        <docblock line="10">
+        <docblock line="14">
           <description>Constructor method.</description>
           <long-description>&lt;p&gt;Providing a path prepends that path to all files.&lt;/p&gt;</long-description>
-          <tag line="10" name="param" description="" type="array" variable="$array">
+          <tag line="14" name="param" description="" type="array" variable="$array">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="10" name="param" description="" type="string" variable="$path">
-            <type by_reference="false">string</type>
-          </tag>
         </docblock>
-        <argument line="15">
+        <argument line="18">
           <name>$array</name>
-          <default/>
+          <default></default>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="29" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="32" package="Default">
         <name>render</name>
         <full_name>render</full_name>
-        <docblock line="25">
+        <docblock line="28">
           <description>Render method.</description>
           <long-description>&lt;p&gt;Sends to output buffer.&lt;/p&gt;</long-description>
-          <tag line="25" name="return" description="provides fluent interface" type="\Altamira\FilesRenderer">
+          <tag line="28" name="return" description="provides fluent interface" type="\Altamira\FilesRenderer">
             <type by_reference="false">\Altamira\FilesRenderer</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="37" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="45" package="Default">
         <name>append</name>
         <full_name>append</full_name>
-        <argument line="37">
+        <docblock line="40">
+          <description>Hooks into ArrayIterator::append() to make sure the file passed includes the .min extension if required</description>
+          <long-description></long-description>
+          <tag line="40" name="see" description="\Altamira\ArrayIterator::append()" refers="\Altamira\ArrayIterator::append()"/>
+          <tag line="40" name="param" description="" type="string" variable="$val">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="45">
           <name>$val</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="42" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="56" package="Default">
         <name>offsetSet</name>
         <full_name>offsetSet</full_name>
-        <argument line="42">
+        <docblock line="50">
+          <description>Ensures the value contains the minification extension upon set, if required</description>
+          <long-description></long-description>
+          <tag line="50" name="see" description="\Altamira\ArrayIterator::offsetSet()" refers="\Altamira\ArrayIterator::offsetSet()"/>
+          <tag line="50" name="param" description="" type="int" variable="$offset">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="50" name="param" description="" type="string" variable="$val">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="56">
           <name>$offset</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
-        <argument line="42">
+        <argument line="56">
           <name>$val</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Altamira" line="47" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Altamira" line="66" package="Default">
         <name>handleMinify</name>
         <full_name>handleMinify</full_name>
-        <argument line="47">
+        <docblock line="61">
+          <description>Determines whether to point to minified or unmified js file</description>
+          <long-description></long-description>
+          <tag line="61" name="param" description="" type="string" variable="$val">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="61" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="66">
           <name>$val</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file FilesRenderer.php</error>
-      <notice line="10" code="50013">Parameter $path could not be found in __construct()</notice>
-      <error line="37" code="50010">No DocBlock was found for method append()</error>
-      <error line="42" code="50010">No DocBlock was found for method offsetSet()</error>
-      <error line="47" code="50010">No DocBlock was found for method handleMinify()</error>
-    </parse_markers>
   </file>
   <file path="Type/Flot/Donut.php" hash="682448a83b5f55eeea35ef75f726deb7" package="Default">
     <class final="false" abstract="false" namespace="Altamira\Type\Flot" line="7" package="Default">

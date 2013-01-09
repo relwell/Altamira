@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">69</span></a></li>
+                <span class="label label-info">64</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">2</span>
@@ -62,16 +62,13 @@
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
 <li class="method public "><a href="#method___construct" title="__construct :: Constructor method."><span class="description">Constructor method.</span><pre>__construct()</pre></a></li>
-<li class="method public "><a href="#method_append" title="append :: "><span class="description">append()
-        </span><pre>append()</pre></a></li>
-<li class="method public "><a href="#method_offsetSet" title="offsetSet :: "><span class="description">offsetSet()
-        </span><pre>offsetSet()</pre></a></li>
+<li class="method public "><a href="#method_append" title="append :: Hooks into ArrayIterator::append() to make sure the file passed includes the .min extension if required"><span class="description">Hooks into ArrayIterator::append() to make sure the file passed includes the .min extension if required</span><pre>append()</pre></a></li>
+<li class="method public "><a href="#method_offsetSet" title="offsetSet :: Ensures the value contains the minification extension upon set, if required"><span class="description">Ensures the value contains the minification extension upon set, if required</span><pre>offsetSet()</pre></a></li>
 <li class="method public "><a href="#method_render" title="render :: Render method."><span class="description">Render method.</span><pre>render()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header protected">» Protected
-                    <ul><li class="method protected "><a href="#method_handleMinify" title="handleMinify :: "><span class="description">handleMinify()
-        </span><pre>handleMinify()</pre></a></li></ul>
+                    <ul><li class="method protected "><a href="#method_handleMinify" title="handleMinify :: Determines whether to point to minified or unmified js file"><span class="description">Determines whether to point to minified or unmified js file</span><pre>handleMinify()</pre></a></li></ul>
 </li>
 </ul>
 </div>
@@ -105,26 +102,41 @@
 </div></div>
 </div>
 <a id="method_append"></a><div class="element clickable method public method_append" data-toggle="collapse" data-target=".method_append .collapse">
-<h2>append()
-        </h2>
-<pre>append($val) </pre>
+<h2>Hooks into ArrayIterator::append() to make sure the file passed includes the .min extension if required</h2>
+<pre>append(string $val) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>see</th>
+<td><a href="">\Altamira\ArrayIterator::append()</a></td>
+</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$val</h4></div>
+<div class="subelement argument">
+<h4>$val</h4>
+<code>string</code>
+</div>
 </div></div>
 </div>
 <a id="method_offsetSet"></a><div class="element clickable method public method_offsetSet" data-toggle="collapse" data-target=".method_offsetSet .collapse">
-<h2>offsetSet()
-        </h2>
-<pre>offsetSet($offset, $val) </pre>
+<h2>Ensures the value contains the minification extension upon set, if required</h2>
+<pre>offsetSet(int $offset, string $val) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>see</th>
+<td><a href="">\Altamira\ArrayIterator::offsetSet()</a></td>
+</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$offset</h4></div>
-<div class="subelement argument"><h4>$val</h4></div>
+<div class="subelement argument">
+<h4>$offset</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$val</h4>
+<code>string</code>
+</div>
 </div></div>
 </div>
 <a id="method_render"></a><div class="element clickable method public method_render" data-toggle="collapse" data-target=".method_render .collapse">
@@ -139,14 +151,18 @@
 </div></div>
 </div>
 <a id="method_handleMinify"></a><div class="element clickable method protected method_handleMinify" data-toggle="collapse" data-target=".method_handleMinify .collapse">
-<h2>handleMinify()
-        </h2>
-<pre>handleMinify($val) </pre>
+<h2>Determines whether to point to minified or unmified js file</h2>
+<pre>handleMinify(string $val) : mixed</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$val</h4></div>
+<div class="subelement argument">
+<h4>$val</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
 </div></div>
 </div>
 </div>
@@ -156,7 +172,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-01-08T20:09:04-08:00.<br></footer></div>
+            generated on 2013-01-08T21:11:35-08:00.<br></footer></div>
 </div>
 </body>
 </html>
