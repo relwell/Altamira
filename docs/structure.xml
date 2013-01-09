@@ -1573,7 +1573,7 @@ either the chart or series registered with the charts.&lt;/p&gt;</long-descripti
   <file path="JsWriter/Flot.php" hash="7ffe4394175a9ba440245f8aad3a949a" package="Default">
     <docblock line="2">
       <description>Class definition for \Altmaira\JsWriter\Flot</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira\JsWriter" line="18" package="JsWriter">
@@ -1605,7 +1605,7 @@ chart that registers its own JsWriter upon instantiation.&lt;/p&gt;</long-descri
         <value>'flot'</value>
         <docblock line="31">
           <description>Identifies the string value of which library this jsWriter is responsible for</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="31" name="var" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
@@ -1614,7 +1614,7 @@ chart that registers its own JsWriter upon instantiation.&lt;/p&gt;</long-descri
       <constant namespace="Altamira\JsWriter" line="768" package="JsWriter">
         <name>ZOOMING_FUNCTION</name>
         <full_name>ZOOMING_FUNCTION</full_name>
-        <value></value>
+        <value/>
         <docblock line="763">
           <description>This is the immutable string component of the zooming function
 we have designed for Flot.</description>
@@ -1627,7 +1627,7 @@ we have designed for Flot.</description>
       <constant namespace="Altamira\JsWriter" line="784" package="JsWriter">
         <name>LABELS_FUNCTION</name>
         <full_name>LABELS_FUNCTION</full_name>
-        <value></value>
+        <value/>
         <docblock line="779">
           <description>This is the immutable string component of the labeling function
 we have designed for Flot.</description>
@@ -1640,7 +1640,7 @@ we have designed for Flot.</description>
       <constant namespace="Altamira\JsWriter" line="805" package="JsWriter">
         <name>HIGHLIGHTING_FUNCTION</name>
         <full_name>HIGHLIGHTING_FUNCTION</full_name>
-        <value></value>
+        <value/>
         <docblock line="800">
           <description>This is the immutable string component of the highlighting function
 we have designed for Flot.</description>
@@ -1653,11 +1653,11 @@ we have designed for Flot.</description>
       <constant namespace="Altamira\JsWriter" line="847" package="JsWriter">
         <name>SCRIPT_OUTPUT</name>
         <full_name>SCRIPT_OUTPUT</full_name>
-        <value></value>
+        <value/>
         <docblock line="842">
           <description>This is the string value of actual "plot" call to Flot,
 intended to be passed to sprintf</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="842" name="var" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
@@ -1668,7 +1668,7 @@ intended to be passed to sprintf</description>
         <default>'\\Altamira\\Type\\Flot\\'</default>
         <docblock line="37">
           <description>Used to identify the type namespace for this particualr JsWriter</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="37" name="var" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
@@ -1679,7 +1679,7 @@ intended to be passed to sprintf</description>
         <default>array('x' =&gt; false, 'y' =&gt; false)</default>
         <docblock line="43">
           <description>Used to track whether dates have been registered on this chart</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="43" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
@@ -1690,7 +1690,7 @@ intended to be passed to sprintf</description>
         <default>false</default>
         <docblock line="49">
           <description>Used to track whether zooming has been set</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="49" name="var" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
@@ -1701,7 +1701,7 @@ intended to be passed to sprintf</description>
         <default>false</default>
         <docblock line="55">
           <description>Used to track whether highlighting has been set</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="55" name="var" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
@@ -1712,7 +1712,7 @@ intended to be passed to sprintf</description>
         <default>array()</default>
         <docblock line="61">
           <description>Stores labels for each point</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="61" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
@@ -1723,7 +1723,7 @@ intended to be passed to sprintf</description>
         <default>array('location' =&gt; 'w', 'xpadding' =&gt; '0', 'ypadding' =&gt; '0')</default>
         <docblock line="67">
           <description>Stores settings for label placement</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="67" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
@@ -1734,7 +1734,7 @@ intended to be passed to sprintf</description>
         <default>array('axes.xaxis.tickInterval' =&gt; 'xaxis.tickSize', 'axes.xaxis.min' =&gt; 'xaxis.min', 'axes.xaxis.max' =&gt; 'xaxis.max', 'axes.xaxis.mode' =&gt; 'xaxis.mode', 'axes.xaxis.ticks' =&gt; 'xaxis.ticks', 'axes.yaxis.tickInterval' =&gt; 'yaxis.tickSize', 'axes.yaxis.min' =&gt; 'yaxis.min', 'axes.yaxis.max' =&gt; 'yaxis.max', 'axes.yaxis.mode' =&gt; 'yaxis.mode', 'axes.yaxis.ticks' =&gt; 'yaxis.ticks', 'legend.show' =&gt; 'legend.show', 'legend.location' =&gt; 'legend.position', 'seriesColors' =&gt; 'colors')</default>
         <docblock line="645">
           <description>maps jqplot-originating option data structure to flot</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="645" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
@@ -1745,7 +1745,7 @@ intended to be passed to sprintf</description>
         <default>array('legend' =&gt; array('show' =&gt; null, 'labelFormatter' =&gt; null, 'labelBoxBorderColor' =&gt; null, 'noColumns' =&gt; null, 'position' =&gt; null, 'margin' =&gt; null, 'backgroundColor' =&gt; null, 'backgroundOpacity' =&gt; null, 'container' =&gt; null), 'xaxis' =&gt; array('show' =&gt; null, 'position' =&gt; null, 'mode' =&gt; null, 'color' =&gt; null, 'tickColor' =&gt; null, 'min' =&gt; null, 'max' =&gt; null, 'autoscaleMargin' =&gt; null, 'transform' =&gt; null, 'inverseTransform' =&gt; null, 'ticks' =&gt; null, 'tickSize' =&gt; null, 'minTickSize' =&gt; null, 'tickFormatter' =&gt; null, 'tickDecimals' =&gt; null, 'labelWidth' =&gt; null, 'labelHeight' =&gt; null, 'reserveSpace' =&gt; null, 'tickLength' =&gt; null, 'alignTicksWithAxis' =&gt; null), 'yaxis' =&gt; array('show' =&gt; null, 'position' =&gt; null, 'mode' =&gt; null, 'color' =&gt; null, 'tickColor' =&gt; null, 'min' =&gt; null, 'max' =&gt; null, 'autoscaleMargin' =&gt; null, 'transform' =&gt; null, 'inverseTransform' =&gt; null, 'ticks' =&gt; null, 'tickSize' =&gt; null, 'minTickSize' =&gt; null, 'tickFormatter' =&gt; null, 'tickDecimals' =&gt; null, 'labelWidth' =&gt; null, 'labelHeight' =&gt; null, 'reserveSpace' =&gt; null, 'tickLength' =&gt; null, 'alignTicksWithAxis' =&gt; null), 'xaxes' =&gt; null, 'yaxes' =&gt; null, 'series' =&gt; array('lines' =&gt; array('show' =&gt; null, 'lineWidth' =&gt; null, 'fill' =&gt; null, 'fillColor' =&gt; null), 'points' =&gt; array('show' =&gt; null, 'lineWidth' =&gt; null, 'fill' =&gt; null, 'fillColor' =&gt; null), 'bars' =&gt; array('show' =&gt; null, 'lineWidth' =&gt; null, 'fill' =&gt; null, 'fillColor' =&gt; null)), 'points' =&gt; array('radius' =&gt; null, 'symbol' =&gt; null), 'bars' =&gt; array('barWidth' =&gt; null, 'align' =&gt; null, 'horizontal' =&gt; null), 'lines' =&gt; array('steps' =&gt; null), 'shadowSize' =&gt; null, 'colors' =&gt; null, 'grid' =&gt; array('show' =&gt; null, 'aboveData' =&gt; null, 'color' =&gt; null, 'backgroundColor' =&gt; null, 'labelMargin' =&gt; null, 'axisMargin' =&gt; null, 'markings' =&gt; null, 'borderWidth' =&gt; null, 'borderColor' =&gt; null, 'minBorderMargin' =&gt; null, 'clickable' =&gt; null, 'hoverable' =&gt; null, 'autoHighlight' =&gt; null, 'mouseActiveRadius' =&gt; null))</default>
         <docblock line="667">
           <description>api-native functionality</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="667" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
@@ -1756,7 +1756,7 @@ intended to be passed to sprintf</description>
         <full_name>getScript</full_name>
         <docblock line="73">
           <description>(non-PHPdoc)</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="73" name="see" description="\Altamira\JsWriter\JsWriterAbstract::getScript()" refers="\Altamira\JsWriter\JsWriterAbstract::getScript()"/>
         </docblock>
       </method>
@@ -1765,7 +1765,7 @@ intended to be passed to sprintf</description>
         <full_name>getExtraFunctionCalls</full_name>
         <docblock line="140">
           <description>Populates script output with hacks required to give Flot featural parity with jqPlot</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="140" name="param" description="" type="\Altamira\JsWriter\unknown_type" variable="$dataArrayJs">
             <type by_reference="false">\Altamira\JsWriter\unknown_type</type>
           </tag>
@@ -1778,12 +1778,12 @@ intended to be passed to sprintf</description>
         </docblock>
         <argument line="146">
           <name>$dataArrayJs</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="146">
           <name>$optionsJs</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -1792,7 +1792,7 @@ intended to be passed to sprintf</description>
         <full_name>setAxisOptions</full_name>
         <docblock line="202">
           <description>Sets an option for a given axis</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="202" name="param" description="" type="string" variable="$axis">
             <type by_reference="false">string</type>
           </tag>
@@ -1808,17 +1808,17 @@ intended to be passed to sprintf</description>
         </docblock>
         <argument line="209">
           <name>$axis</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="209">
           <name>$name</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="209">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -1827,7 +1827,7 @@ intended to be passed to sprintf</description>
         <full_name>initializeSeries</full_name>
         <docblock line="233">
           <description>Registers a series, performing some additional logic</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="233" name="see" description="\Altamira\JsWriter\JsWriterAbstract::initializeSeries()" refers="\Altamira\JsWriter\JsWriterAbstract::initializeSeries()"/>
           <tag line="233" name="param" description="" type="\Altamira\Series|string" variable="$series">
             <type by_reference="false">\Altamira\Series</type>
@@ -1839,7 +1839,7 @@ intended to be passed to sprintf</description>
         </docblock>
         <argument line="239">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -1848,7 +1848,7 @@ intended to be passed to sprintf</description>
         <full_name>getOptionsJS</full_name>
         <docblock line="247">
           <description>Mutates the option array to the format required for flot</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="247" name="return" description="&lt;string, mixed&gt;" type="\Altamira\JsWriter\Ambigous">
             <type by_reference="false">\Altamira\JsWriter\Ambigous</type>
           </tag>
@@ -1859,7 +1859,7 @@ intended to be passed to sprintf</description>
         <full_name>getOptVal</full_name>
         <docblock line="274">
           <description>Retrieves a nested value or null</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="274" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
           </tag>
@@ -1872,12 +1872,12 @@ intended to be passed to sprintf</description>
         </docblock>
         <argument line="280">
           <name>$opts</name>
-          <default></default>
+          <default/>
           <type>array</type>
         </argument>
         <argument line="280">
           <name>$option</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -1887,7 +1887,7 @@ intended to be passed to sprintf</description>
         <docblock line="298">
           <description>Sets a value in a nested array based on a dot-concatenated string
 Used primarily for mapping</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="298" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
           </tag>
@@ -1900,17 +1900,17 @@ Used primarily for mapping</description>
         </docblock>
         <argument line="305">
           <name>$opts</name>
-          <default></default>
+          <default/>
           <type>array</type>
         </argument>
         <argument line="305">
           <name>$mapperString</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="305">
           <name>$val</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -1919,7 +1919,7 @@ Used primarily for mapping</description>
         <full_name>unsetOpt</full_name>
         <docblock line="312">
           <description>Handles nested mappings</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="312" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
           </tag>
@@ -1929,12 +1929,12 @@ Used primarily for mapping</description>
         </docblock>
         <argument line="317">
           <name>$opts</name>
-          <default></default>
+          <default/>
           <type>array</type>
         </argument>
         <argument line="317">
           <name>$mapperString</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -1943,7 +1943,7 @@ Used primarily for mapping</description>
         <full_name>useHighlighting</full_name>
         <docblock line="332">
           <description>Implemented from \Altamira\JsWriter\Ability\Highlightable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="332" name="see" description="\Altamira\JsWriter\Ability\Highlightable::useHighlighting()" refers="\Altamira\JsWriter\Ability\Highlightable::useHighlighting()"/>
           <tag line="332" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
@@ -1963,7 +1963,7 @@ Used primarily for mapping</description>
         <full_name>useCursor</full_name>
         <docblock line="346">
           <description>Implemented from \Altamira\JsWriter\Ability\Cursorable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="346" name="see" description="\Altamira\JsWriter\Ability\Cursorable::useCursor()" refers="\Altamira\JsWriter\Ability\Cursorable::useCursor()"/>
           <tag line="346" name="return" description="" type="\Altamira\JsWriter\JqPlot">
             <type by_reference="false">\Altamira\JsWriter\JqPlot</type>
@@ -1975,7 +1975,7 @@ Used primarily for mapping</description>
         <full_name>useDates</full_name>
         <docblock line="356">
           <description>formats a given axis for dates</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="356" name="see" description="\Altamira\JsWriter\Ability\Datable::useDates()" refers="\Altamira\JsWriter\Ability\Datable::useDates()"/>
           <tag line="356" name="param" description="" type="string" variable="$axis">
             <type by_reference="false">string</type>
@@ -1995,7 +1995,7 @@ Used primarily for mapping</description>
         <full_name>useZooming</full_name>
         <docblock line="374">
           <description>Implemented from \Altamira\JsWriter\Ability\Zoomable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="374" name="see" description="\Altamira\JsWriter\Ability\Zoomable::useZooming()" refers="\Altamira\JsWriter\Ability\Zoomable::useZooming()"/>
           <tag line="374" name="param" description="" type="array" variable="$options">
             <type by_reference="false">array</type>
@@ -2015,7 +2015,7 @@ Used primarily for mapping</description>
         <full_name>setGrid</full_name>
         <docblock line="388">
           <description>Implemented from \Altamira\JsWriter\Ability\Griddable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="388" name="see" description="\Altamira\JsWriter\Ability\Griddable::setGrid()" refers="\Altamira\JsWriter\Ability\Griddable::setGrid()"/>
           <tag line="388" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
@@ -2026,7 +2026,7 @@ Used primarily for mapping</description>
         </docblock>
         <argument line="394">
           <name>$opts</name>
-          <default></default>
+          <default/>
           <type>array</type>
         </argument>
       </method>
@@ -2035,7 +2035,7 @@ Used primarily for mapping</description>
         <full_name>setLegend</full_name>
         <docblock line="413">
           <description>Implemented from \Altamira\JsWriter\Ability\Legendable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="413" name="see" description="\Altamira\JsWriter\Ability\Legendable::setLegend()" refers="\Altamira\JsWriter\Ability\Legendable::setLegend()"/>
           <tag line="413" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
@@ -2055,7 +2055,7 @@ Used primarily for mapping</description>
         <full_name>setFill</full_name>
         <docblock line="446">
           <description>Implemented from \Altamira\JsWriter\Ability\Fillable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="446" name="see" description="\Altamira\JsWriter\Ability\Fillable::setFill()" refers="\Altamira\JsWriter\Ability\Fillable::setFill()"/>
           <tag line="446" name="param" description="" type="\Altamira\Chart|\Altamira\JsWriter\series" variable="$series">
             <type by_reference="false">\Altamira\Chart</type>
@@ -2070,7 +2070,7 @@ Used primarily for mapping</description>
         </docblock>
         <argument line="453">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="453">
@@ -2084,7 +2084,7 @@ Used primarily for mapping</description>
         <full_name>setShadow</full_name>
         <docblock line="472">
           <description>Implemented from \Altamira\JsWriter\Ability\Shadowable</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="472" name="see" description="\Altamira\JsWriter\Ability\Shadowable::setShadow()" refers="\Altamira\JsWriter\Ability\Shadowable::setShadow()"/>
           <tag line="472" name="param" description="" type="\Altamira\Series|string" variable="$series">
             <type by_reference="false">\Altamira\Series</type>
@@ -2099,7 +2099,7 @@ Used primarily for mapping</description>
         </docblock>
         <argument line="479">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="479">
@@ -2113,7 +2113,7 @@ Used primarily for mapping</description>
         <full_name>useSeriesLabels</full_name>
         <docblock line="494">
           <description>Initializes default settings for using labels</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="494" name="see" description="\Altamira\JsWriter\Ability\Labelable::useSeriesLabels()" refers="\Altamira\JsWriter\Ability\Labelable::useSeriesLabels()"/>
           <tag line="494" name="param" description="" type="string|\Altamira\Series" variable="$series">
             <type by_reference="false">string</type>
@@ -2125,7 +2125,7 @@ Used primarily for mapping</description>
         </docblock>
         <argument line="500">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2136,7 +2136,7 @@ Used primarily for mapping</description>
           <description>Sets label setting option values
 NOTE: FLOT DOES NOT SUPPORT SERIES-SPECIFIC LABEL SETTINGS
 The options you set here are global label settings.</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="506" name="see" description="\Altamira\JsWriter\Ability\Labelable::setSeriesLabelSetting()" refers="\Altamira\JsWriter\Ability\Labelable::setSeriesLabelSetting()"/>
           <tag line="506" name="param" description="" type="string" variable="$series">
             <type by_reference="false">string</type>
@@ -2153,17 +2153,17 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="516">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="516">
           <name>$name</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="516">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2172,7 +2172,7 @@ The options you set here are global label settings.</description>
         <full_name>setSeriesLineWidth</full_name>
         <docblock line="523">
           <description>Determines the width of the line we will show, if we're showing it</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="523" name="see" description="\Altamira\JsWriter\Ability\Lineable::setSeriesLineWidth()" refers="\Altamira\JsWriter\Ability\Lineable::setSeriesLineWidth()"/>
           <tag line="523" name="param" description="" type="string" variable="$series">
             <type by_reference="false">string</type>
@@ -2186,12 +2186,12 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="530">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="530">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2200,7 +2200,7 @@ The options you set here are global label settings.</description>
         <full_name>setSeriesShowLine</full_name>
         <docblock line="535">
           <description>Determines whether we show the line for a series</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="535" name="see" description="\Altamira\JsWriter\Ability\Lineable::setSeriesShowLine()" refers="\Altamira\JsWriter\Ability\Lineable::setSeriesShowLine()"/>
           <tag line="535" name="param" description="" type="string|\Altamira\Series" variable="$series">
             <type by_reference="false">string</type>
@@ -2215,12 +2215,12 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="542">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="542">
           <name>$bool</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2229,7 +2229,7 @@ The options you set here are global label settings.</description>
         <full_name>setSeriesShowMarker</full_name>
         <docblock line="547">
           <description>Determines whether we show the marker for a series</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="547" name="see" description="\Altamira\JsWriter\Ability\Lineable::setSeriesShowMarker()" refers="\Altamira\JsWriter\Ability\Lineable::setSeriesShowMarker()"/>
           <tag line="547" name="param" description="" type="string|\Altamira\Series" variable="$series">
             <type by_reference="false">string</type>
@@ -2244,12 +2244,12 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="554">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="554">
           <name>$bool</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2258,7 +2258,7 @@ The options you set here are global label settings.</description>
         <full_name>setSeriesMarkerStyle</full_name>
         <docblock line="559">
           <description>Sets the style of the marker</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="559" name="see" description="\Altamira\JsWriter\Ability\Lineable::setSeriesMarkerStyle()" refers="\Altamira\JsWriter\Ability\Lineable::setSeriesMarkerStyle()"/>
           <tag line="559" name="param" description="" type="string|\Altamira\Series" variable="$series">
             <type by_reference="false">string</type>
@@ -2273,12 +2273,12 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="566">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="566">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2287,7 +2287,7 @@ The options you set here are global label settings.</description>
         <full_name>setSeriesMarkerSize</full_name>
         <docblock line="579">
           <description>Sets the size of the marker</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="579" name="see" description="\Altamira\JsWriter\Ability\Lineable::setSeriesMarkerSize()" refers="\Altamira\JsWriter\Ability\Lineable::setSeriesMarkerSize()"/>
           <tag line="579" name="param" description="" type="string|\Altamira\Series" variable="$series">
             <type by_reference="false">string</type>
@@ -2302,12 +2302,12 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="586">
           <name>$series</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="586">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2316,7 +2316,7 @@ The options you set here are global label settings.</description>
         <full_name>setAxisTicks</full_name>
         <docblock line="591">
           <description>Responsible for setting the tick labels on a given axis</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="591" name="param" description="" type="string" variable="$axis">
             <type by_reference="false">string</type>
           </tag>
@@ -2329,7 +2329,7 @@ The options you set here are global label settings.</description>
         </docblock>
         <argument line="597">
           <name>$axis</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="597">
@@ -2343,7 +2343,7 @@ The options you set here are global label settings.</description>
         <full_name>prepOpts</full_name>
         <docblock line="623">
           <description>Prepares default values for a series array</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="623" name="param" description="" type="array" variable="$opts">
             <type by_reference="false">array</type>
           </tag>
@@ -2356,172 +2356,209 @@ The options you set here are global label settings.</description>
       </method>
     </class>
   </file>
-  <file path="Config.php" hash="29e92cfe9aff91e6ffb7e6c6ab40e8dc" package="Default">
-    <class final="false" abstract="false" namespace="Altamira" line="8" package="Default">
+  <file path="Config.php" hash="a234f03187a7a1262140bc0b081e5f42" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\Config</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Altamira" line="15" package="Default">
       <extends/>
       <implements>\ArrayAccess</implements>
       <name>Config</name>
       <full_name>\Altamira\Config</full_name>
-      <docblock line="5">
-        <description/>
-        <long-description/>
-        <tag line="5" name="codeCoverageIgnore" description=""/>
+      <docblock line="12">
+        <description>Configuration class for global state and environmental dependencies</description>
+        <long-description></long-description>
       </docblock>
-      <property final="false" static="false" visibility="protected" line="13" namespace="Altamira" package="Default">
+      <property final="false" static="false" visibility="protected" line="21" namespace="Altamira" package="Default">
         <name>$config</name>
         <default>array()</default>
-        <docblock line="10">
-          <description/>
-          <long-description/>
-          <tag line="10" name="var" description="" type="array">
+        <docblock line="17">
+          <description>Contains the configuration values stored within the config</description>
+          <long-description></long-description>
+          <tag line="17" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </property>
-      <property final="false" static="true" visibility="protected" line="19" namespace="Altamira" package="Default">
+      <property final="false" static="true" visibility="protected" line="27" namespace="Altamira" package="Default">
         <name>$instance</name>
-        <default/>
-        <docblock line="15">
+        <default></default>
+        <docblock line="23">
           <description>Singleton</description>
-          <long-description/>
-          <tag line="15" name="var" description="" type="\Altamira\Config">
+          <long-description></long-description>
+          <tag line="23" name="var" description="" type="\Altamira\Config">
             <type by_reference="false">\Altamira\Config</type>
           </tag>
         </docblock>
       </property>
-      <property final="false" static="true" visibility="protected" line="25" namespace="Altamira" package="Default">
+      <property final="false" static="true" visibility="protected" line="33" namespace="Altamira" package="Default">
         <name>$file</name>
-        <default/>
-        <docblock line="21">
+        <default></default>
+        <docblock line="29">
           <description>Location of the config file</description>
-          <long-description/>
-          <tag line="21" name="var" description="" type="string">
+          <long-description></long-description>
+          <tag line="29" name="var" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Altamira" line="31" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Altamira" line="39" package="Default">
         <name>__construct</name>
         <full_name>__construct</full_name>
-        <docblock line="27">
+        <docblock line="35">
           <description>Used to instantiate the actual config from the ini file</description>
-          <long-description/>
-          <tag line="27" name="param" description="" type="\Altamira\unknown_type" variable="$file">
+          <long-description></long-description>
+          <tag line="35" name="param" description="" type="\Altamira\unknown_type" variable="$file">
             <type by_reference="false">\Altamira\unknown_type</type>
           </tag>
         </docblock>
-        <argument line="31">
+        <argument line="39">
           <name>$file</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="42" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="50" package="Default">
         <name>getInstance</name>
         <full_name>getInstance</full_name>
-        <docblock line="38">
+        <docblock line="46">
           <description>Singleton method</description>
-          <long-description/>
-          <tag line="38" name="return" description="" type="\Altamira\Config">
+          <long-description></long-description>
+          <tag line="46" name="return" description="" type="\Altamira\Config">
             <type by_reference="false">\Altamira\Config</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="56" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="64" package="Default">
         <name>getPluginPath</name>
         <full_name>getPluginPath</full_name>
-        <docblock line="51">
+        <docblock line="59">
           <description>Provided a library, returns a path for plugins</description>
-          <long-description/>
-          <tag line="51" name="param" description="" type="string" variable="$library">
+          <long-description></long-description>
+          <tag line="59" name="param" description="" type="string" variable="$library">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="51" name="return" description="" type="string">
+          <tag line="59" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="56">
+        <argument line="64">
           <name>$library</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="70" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="78" package="Default">
         <name>minifyJs</name>
         <full_name>minifyJs</full_name>
-        <docblock line="66">
+        <docblock line="74">
           <description>Determines whether or not we should minify all JS
 files in the FilesRenderer.</description>
           <long-description>&lt;p&gt;Controlled by config value 'js.minify'.&lt;/p&gt;</long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="80" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="88" package="Default">
         <name>setConfigFile</name>
         <full_name>setConfigFile</full_name>
-        <docblock line="76">
+        <docblock line="84">
           <description>Accessible path to config file</description>
-          <long-description/>
-          <tag line="76" name="param" description="" type="\Altamira\unknown_type" variable="$file">
+          <long-description></long-description>
+          <tag line="84" name="param" description="" type="\Altamira\unknown_type" variable="$file">
             <type by_reference="false">\Altamira\unknown_type</type>
           </tag>
         </docblock>
-        <argument line="80">
+        <argument line="88">
           <name>$file</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="88" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="99" package="Default">
         <name>offsetExists</name>
         <full_name>offsetExists</full_name>
-        <argument line="88">
+        <docblock line="93">
+          <description>Determine if there is a value for this key in the config</description>
+          <long-description></long-description>
+          <tag line="93" name="see" description="\Altamira\ArrayAccess::offsetExists()" refers="\Altamira\ArrayAccess::offsetExists()"/>
+          <tag line="93" name="param" description="" type="string" variable="$offset">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="93" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="99">
           <name>$offset</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="96" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="110" package="Default">
         <name>offsetGet</name>
         <full_name>offsetGet</full_name>
-        <argument line="96">
+        <docblock line="104">
+          <description>Retrieve the config value for the provided key</description>
+          <long-description></long-description>
+          <tag line="104" name="see" description="\Altamira\ArrayAccess::offsetGet()" refers="\Altamira\ArrayAccess::offsetGet()"/>
+          <tag line="104" name="param" description="" type="string" variable="$offset">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="104" name="return" description="" type="mixed|null">
+            <type by_reference="false">mixed</type>
+            <type by_reference="false">null</type>
+          </tag>
+        </docblock>
+        <argument line="110">
           <name>$offset</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="104" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="121" package="Default">
         <name>offsetSet</name>
         <full_name>offsetSet</full_name>
-        <argument line="104">
+        <docblock line="115">
+          <description>Stores the value for the given key</description>
+          <long-description></long-description>
+          <tag line="115" name="see" description="\Altamira\ArrayAccess::offsetSet()" refers="\Altamira\ArrayAccess::offsetSet()"/>
+          <tag line="115" name="param" description="" type="string" variable="$offset">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="115" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="121">
           <name>$offset</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
-        <argument line="104">
+        <argument line="121">
           <name>$value</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="112" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="131" package="Default">
         <name>offsetUnset</name>
         <full_name>offsetUnset</full_name>
-        <argument line="112">
+        <docblock line="126">
+          <description>Removes the provided key-value pair from the config array</description>
+          <long-description></long-description>
+          <tag line="126" name="see" description="\Altamira\ArrayAccess::offsetUnset()" refers="\Altamira\ArrayAccess::offsetUnset()"/>
+          <tag line="126" name="param" description="" type="string" variable="$offset">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="131">
           <name>$offset</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file Config.php</error>
-      <critical line="5" code="50005">No short description for class \Altamira\Config</critical>
-      <critical line="10" code="50019">No short description for property $config</critical>
-      <error line="88" code="50010">No DocBlock was found for method offsetExists()</error>
-      <error line="96" code="50010">No DocBlock was found for method offsetGet()</error>
-      <error line="104" code="50010">No DocBlock was found for method offsetSet()</error>
-      <error line="112" code="50010">No DocBlock was found for method offsetUnset()</error>
-    </parse_markers>
   </file>
   <file path="FilesRenderer.php" hash="2fffe29cacf9156553a9465b21efaa8b" package="Default">
     <class final="false" abstract="false" namespace="Altamira" line="8" package="Default">
