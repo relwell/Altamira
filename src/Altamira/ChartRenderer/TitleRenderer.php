@@ -1,8 +1,16 @@
 <?php 
-
+/**
+ * Class definition for \Altamira\ChartRenderer\TitleRenderer
+ * @author relwell
+ *
+ */
 namespace Altamira\ChartRenderer;
 use Altamira\ChartRenderer\RendererInterface;
-
+/**
+ * Responsible for rendering titles in HTML for libraries 
+ * that do not have their own title rendering component
+ * @author relwell
+ */
 class TitleRenderer implements RendererInterface
 {
     /**

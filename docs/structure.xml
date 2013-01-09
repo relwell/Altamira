@@ -2563,7 +2563,7 @@ files in the FilesRenderer.</description>
   <file path="FilesRenderer.php" hash="c747efddf551749cfa9d935e992d7231" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\FilesRenderer</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira" line="12" package="Default">
@@ -2572,7 +2572,7 @@ files in the FilesRenderer.</description>
       <full_name>\Altamira\FilesRenderer</full_name>
       <docblock line="9">
         <description>Used for rendering JavaScript files</description>
-        <long-description></long-description>
+        <long-description/>
       </docblock>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="18" package="Default">
         <name>__construct</name>
@@ -2586,7 +2586,7 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="18">
           <name>$array</name>
-          <default></default>
+          <default/>
           <type>array</type>
         </argument>
       </method>
@@ -2606,7 +2606,7 @@ files in the FilesRenderer.</description>
         <full_name>append</full_name>
         <docblock line="40">
           <description>Hooks into ArrayIterator::append() to make sure the file passed includes the .min extension if required</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="40" name="see" description="\Altamira\ArrayIterator::append()" refers="\Altamira\ArrayIterator::append()"/>
           <tag line="40" name="param" description="" type="string" variable="$val">
             <type by_reference="false">string</type>
@@ -2614,7 +2614,7 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="45">
           <name>$val</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2623,7 +2623,7 @@ files in the FilesRenderer.</description>
         <full_name>offsetSet</full_name>
         <docblock line="50">
           <description>Ensures the value contains the minification extension upon set, if required</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="50" name="see" description="\Altamira\ArrayIterator::offsetSet()" refers="\Altamira\ArrayIterator::offsetSet()"/>
           <tag line="50" name="param" description="" type="int" variable="$offset">
             <type by_reference="false">int</type>
@@ -2634,12 +2634,12 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="56">
           <name>$offset</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="56">
           <name>$val</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -2648,7 +2648,7 @@ files in the FilesRenderer.</description>
         <full_name>handleMinify</full_name>
         <docblock line="61">
           <description>Determines whether to point to minified or unmified js file</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="61" name="param" description="" type="string" variable="$val">
             <type by_reference="false">string</type>
           </tag>
@@ -2658,7 +2658,7 @@ files in the FilesRenderer.</description>
         </docblock>
         <argument line="66">
           <name>$val</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -3115,129 +3115,29 @@ allows us to whitelist specific options that work only for this type</descriptio
       <error line="5" code="50000">No DocBlock was found for \Altamira\Type\TypeAbstract</error>
     </parse_markers>
   </file>
-  <file path="ChartRenderer/TitleRenderer.php" hash="68bec7120d5ea1073fafbc8dc7bdf839" package="Default">
-    <class final="false" abstract="false" namespace="Altamira\ChartRenderer" line="6" package="Default">
+  <file path="ChartRenderer/TitleRenderer.php" hash="a8d702008f2481c91064e59016abd61c" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\ChartRenderer\TitleRenderer</description>
+      <long-description/>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Altamira\ChartRenderer" line="14" package="Default">
       <extends/>
       <implements>\Altamira\ChartRenderer\RendererInterface</implements>
       <name>TitleRenderer</name>
       <full_name>\Altamira\ChartRenderer\TitleRenderer</full_name>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="15" package="Default">
+      <docblock line="9">
+        <description>Responsible for rendering titles in HTML for libraries
+that do not have their own title rendering component</description>
+        <long-description/>
+        <tag line="9" name="author" description="relwell"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="23" package="Default">
         <name>preRender</name>
         <full_name>preRender</full_name>
-        <docblock line="8">
+        <docblock line="16">
           <description>Adds open wrapping div and puts title in h3 tags by default, but configurable with titleTag key in style
 If the chart has been set to hide its title, then it will not display</description>
-          <long-description/>
-          <tag line="8" name="param" description="" type="\Altamira\Chart" variable="$chart">
-            <type by_reference="false">\Altamira\Chart</type>
-          </tag>
-          <tag line="8" name="param" description="" type="array" variable="$styleOptions">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="8" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-        <argument line="15">
-          <name>$chart</name>
-          <default/>
-          <type>\Altamira\Chart</type>
-        </argument>
-        <argument line="15">
-          <name>$styleOptions</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="39" package="Default">
-        <name>postRender</name>
-        <full_name>postRender</full_name>
-        <docblock line="33">
-          <description>Closes div created on preRender</description>
-          <long-description/>
-          <tag line="33" name="param" description="" type="\Altamira\Chart" variable="$chart">
-            <type by_reference="false">\Altamira\Chart</type>
-          </tag>
-          <tag line="33" name="param" description="" type="array" variable="$styleOptions">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="33" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-        <argument line="39">
-          <name>$chart</name>
-          <default/>
-          <type>\Altamira\Chart</type>
-        </argument>
-        <argument line="39">
-          <name>$styleOptions</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="49" package="Default">
-        <name>renderStyle</name>
-        <full_name>renderStyle</full_name>
-        <docblock line="44">
-          <description>Does nothing for now, but must be implemented by RendererInterface</description>
-          <long-description/>
-          <tag line="44" name="param" description="" type="array" variable="$styleOptions">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="44" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-        <argument line="49">
-          <name>$styleOptions</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-    </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file ChartRenderer/TitleRenderer.php</error>
-      <error line="6" code="50000">No DocBlock was found for \Altamira\ChartRenderer\TitleRenderer</error>
-    </parse_markers>
-  </file>
-  <file path="ChartRenderer/RendererInterface.php" hash="3843d4c3759844d389853bfef34108af" package="Default">
-    <interface namespace="Altamira\ChartRenderer" line="8" package="Default">
-      <name>RendererInterface</name>
-      <full_name>\Altamira\ChartRenderer\RendererInterface</full_name>
-      <docblock line="5">
-        <description>Builds a standard interface about how we render HTML items</description>
-        <long-description/>
-      </docblock>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="15" package="Default">
-        <name>preRender</name>
-        <full_name>preRender</full_name>
-        <docblock line="10">
-          <description>A hook for including things like opening tags</description>
-          <long-description/>
-          <tag line="10" name="param" description="" type="\Altamira\Chart" variable="$chart">
-            <type by_reference="false">\Altamira\Chart</type>
-          </tag>
-          <tag line="10" name="param" description="" type="array" variable="$styleOptions">
-            <type by_reference="false">array</type>
-          </tag>
-        </docblock>
-        <argument line="15">
-          <name>$chart</name>
-          <default/>
-          <type>\Altamira\Chart</type>
-        </argument>
-        <argument line="15">
-          <name>$styleOptions</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="21" package="Default">
-        <name>postRender</name>
-        <full_name>postRender</full_name>
-        <docblock line="16">
-          <description>A hook for including things like closing tags</description>
           <long-description/>
           <tag line="16" name="param" description="" type="\Altamira\Chart" variable="$chart">
             <type by_reference="false">\Altamira\Chart</type>
@@ -3245,281 +3145,437 @@ If the chart has been set to hide its title, then it will not display</descripti
           <tag line="16" name="param" description="" type="array" variable="$styleOptions">
             <type by_reference="false">array</type>
           </tag>
+          <tag line="16" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
         </docblock>
-        <argument line="21">
+        <argument line="23">
           <name>$chart</name>
           <default/>
           <type>\Altamira\Chart</type>
         </argument>
-        <argument line="21">
+        <argument line="23">
+          <name>$styleOptions</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="47" package="Default">
+        <name>postRender</name>
+        <full_name>postRender</full_name>
+        <docblock line="41">
+          <description>Closes div created on preRender</description>
+          <long-description/>
+          <tag line="41" name="param" description="" type="\Altamira\Chart" variable="$chart">
+            <type by_reference="false">\Altamira\Chart</type>
+          </tag>
+          <tag line="41" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="41" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="47">
+          <name>$chart</name>
+          <default/>
+          <type>\Altamira\Chart</type>
+        </argument>
+        <argument line="47">
+          <name>$styleOptions</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="57" package="Default">
+        <name>renderStyle</name>
+        <full_name>renderStyle</full_name>
+        <docblock line="52">
+          <description>Does nothing for now, but must be implemented by RendererInterface</description>
+          <long-description/>
+          <tag line="52" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="52" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="57">
+          <name>$styleOptions</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="ChartRenderer/RendererInterface.php" hash="446922c76e7c1858d5f5376ec8b6aa40" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\ChartRenderer\RendererInterface</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <interface namespace="Altamira\ChartRenderer" line="13" package="Default">
+      <name>RendererInterface</name>
+      <full_name>\Altamira\ChartRenderer\RendererInterface</full_name>
+      <docblock line="9">
+        <description>Builds a standard interface about how we render HTML items
+This interface allows for opening and closing tags around other logic, as well as style</description>
+        <long-description></long-description>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="20" package="Default">
+        <name>preRender</name>
+        <full_name>preRender</full_name>
+        <docblock line="15">
+          <description>A hook for including things like opening tags</description>
+          <long-description></long-description>
+          <tag line="15" name="param" description="" type="\Altamira\Chart" variable="$chart">
+            <type by_reference="false">\Altamira\Chart</type>
+          </tag>
+          <tag line="15" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="20">
+          <name>$chart</name>
+          <default></default>
+          <type>\Altamira\Chart</type>
+        </argument>
+        <argument line="20">
           <name>$styleOptions</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
       <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="26" package="Default">
-        <name>renderStyle</name>
-        <full_name>renderStyle</full_name>
-        <docblock line="22">
-          <description>Used to hold metadata on style about the item rendered</description>
-          <long-description/>
-          <tag line="22" name="param" description="" type="array" variable="$styleOptions">
+        <name>postRender</name>
+        <full_name>postRender</full_name>
+        <docblock line="21">
+          <description>A hook for including things like closing tags</description>
+          <long-description></long-description>
+          <tag line="21" name="param" description="" type="\Altamira\Chart" variable="$chart">
+            <type by_reference="false">\Altamira\Chart</type>
+          </tag>
+          <tag line="21" name="param" description="" type="array" variable="$styleOptions">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
+        <argument line="26">
+          <name>$chart</name>
+          <default></default>
+          <type>\Altamira\Chart</type>
+        </argument>
         <argument line="26">
           <name>$styleOptions</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="31" package="Default">
+        <name>renderStyle</name>
+        <full_name>renderStyle</full_name>
+        <docblock line="27">
+          <description>Used to hold metadata on style about the item rendered</description>
+          <long-description></long-description>
+          <tag line="27" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="31">
+          <name>$styleOptions</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
     </interface>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file ChartRenderer/RendererInterface.php</error>
-    </parse_markers>
   </file>
-  <file path="ChartRenderer/DefaultRenderer.php" hash="db605aeaa5b6603e5a751467fa57c003" package="Default">
-    <class final="false" abstract="false" namespace="Altamira\ChartRenderer" line="6" package="Default">
+  <file path="ChartRenderer/DefaultRenderer.php" hash="b052435232aa4768eb610b55e14483af" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\ChartREnderer\DefaultRenderer</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Altamira\ChartRenderer" line="18" package="Default">
       <extends/>
       <implements>\Altamira\ChartRenderer\RendererInterface</implements>
       <name>DefaultRenderer</name>
       <full_name>\Altamira\ChartRenderer\DefaultRenderer</full_name>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="9" package="Default">
+      <docblock line="10">
+        <description>This class is responsible for creating the placeholder div that
+the chart rendering libraries fill later on.</description>
+        <long-description>&lt;p&gt;If we were to plug this into a framework, the first thing I would do is see if
+I could abstract these strings into something more class-based.
+It might be a good idea to do this with PHP's native DOM class architecture.&lt;/p&gt;</long-description>
+        <tag line="10" name="author" description="relwell"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="26" package="Default">
         <name>preRender</name>
         <full_name>preRender</full_name>
-        <argument line="9">
+        <docblock line="20">
+          <description>Responsible for generating opening tags and any content that needs to go directly inside</description>
+          <long-description></long-description>
+          <tag line="20" name="param" description="" type="\Altamira\Chart" variable="$chart">
+            <type by_reference="false">\Altamira\Chart</type>
+          </tag>
+          <tag line="20" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="20" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="26">
           <name>$chart</name>
-          <default/>
+          <default></default>
           <type>\Altamira\Chart</type>
         </argument>
-        <argument line="9">
+        <argument line="26">
           <name>$styleOptions</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="19" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="42" package="Default">
         <name>postRender</name>
         <full_name>postRender</full_name>
-        <argument line="19">
+        <docblock line="36">
+          <description>Responsible for closing any tags opened on preRender()</description>
+          <long-description></long-description>
+          <tag line="36" name="param" description="" type="\Altamira\Chart" variable="$chart">
+            <type by_reference="false">\Altamira\Chart</type>
+          </tag>
+          <tag line="36" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="36" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="42">
           <name>$chart</name>
-          <default/>
+          <default></default>
           <type>\Altamira\Chart</type>
         </argument>
-        <argument line="19">
+        <argument line="42">
           <name>$styleOptions</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="24" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartRenderer" line="52" package="Default">
         <name>renderStyle</name>
         <full_name>renderStyle</full_name>
-        <argument line="24">
+        <docblock line="47">
+          <description>Responsible for generating inline style as needed, called by preRender()</description>
+          <long-description></long-description>
+          <tag line="47" name="param" description="" type="array" variable="$styleOptions">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="47" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="52">
           <name>$styleOptions</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file ChartRenderer/DefaultRenderer.php</error>
-      <error line="6" code="50000">No DocBlock was found for \Altamira\ChartRenderer\DefaultRenderer</error>
-      <error line="9" code="50010">No DocBlock was found for method preRender()</error>
-      <error line="19" code="50010">No DocBlock was found for method postRender()</error>
-      <error line="24" code="50010">No DocBlock was found for method renderStyle()</error>
-    </parse_markers>
   </file>
-  <file path="ScriptsRenderer.php" hash="e1c87bc6803d98ee17fdd5a6f40b830d" package="Default">
-    <class final="false" abstract="false" namespace="Altamira" line="8" package="Default">
+  <file path="ScriptsRenderer.php" hash="b2ea27f649c39c83165add65ec767ef3" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\ScriptsRenderer</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Altamira" line="12" package="Default">
       <extends>\ArrayIterator</extends>
       <name>ScriptsRenderer</name>
       <full_name>\Altamira\ScriptsRenderer</full_name>
-      <docblock line="5">
+      <docblock line="9">
         <description>Used for rendering inline JavaScript</description>
-        <long-description/>
+        <long-description></long-description>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="15" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="19" package="Default">
         <name>render</name>
         <full_name>render</full_name>
-        <docblock line="10">
+        <docblock line="14">
           <description>Renders the JS stored herein.</description>
           <long-description>&lt;p&gt;Passing true to $withScript wraps it in its own &lt;script&gt; tags.&lt;/p&gt;</long-description>
-          <tag line="10" name="param" description="" type="bool" variable="$withScript">
+          <tag line="14" name="param" description="" type="bool" variable="$withScript">
             <type by_reference="false">bool</type>
           </tag>
-          <tag line="10" name="return" description="provides for fluent interface" type="\Altamira\ScriptsRenderer">
+          <tag line="14" name="return" description="provides for fluent interface" type="\Altamira\ScriptsRenderer">
             <type by_reference="false">\Altamira\ScriptsRenderer</type>
           </tag>
         </docblock>
-        <argument line="15">
+        <argument line="19">
           <name>$withScript</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="28" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira" line="32" package="Default">
         <name>get</name>
         <full_name>get</full_name>
-        <docblock line="23">
+        <docblock line="27">
           <description>Returns the current script value.</description>
-          <long-description/>
-          <tag line="23" name="param" description="" type="boolean" variable="$withScript">
+          <long-description></long-description>
+          <tag line="27" name="param" description="" type="boolean" variable="$withScript">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="23" name="return" description="&lt;string, mixed&gt;" type="\Altamira\Ambigous">
+          <tag line="27" name="return" description="&lt;string, mixed&gt;" type="\Altamira\Ambigous">
             <type by_reference="false">\Altamira\Ambigous</type>
           </tag>
         </docblock>
-        <argument line="28">
+        <argument line="32">
           <name>$withScript</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file ScriptsRenderer.php</error>
-    </parse_markers>
   </file>
-  <file path="ChartRenderer.php" hash="6bfe5757798a74ec1ad494c0bd9aaed6" package="Default">
-    <class final="false" abstract="false" namespace="Altamira" line="12" package="Default">
+  <file path="ChartRenderer.php" hash="7d43b6696f7e8a8001d5c8941568bade" package="Default">
+    <docblock line="2">
+      <description>Class definition for \Altamira\ChartRenderer</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="relwell"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Altamira" line="15" package="Default">
       <extends/>
       <name>ChartRenderer</name>
       <full_name>\Altamira\ChartRenderer</full_name>
-      <docblock line="8">
+      <docblock line="11">
         <description>Used to iterate over charts and render all of their components
 based on sub-renderers registered in a renderer chain</description>
-        <long-description/>
+        <long-description></long-description>
       </docblock>
-      <property final="false" static="true" visibility="protected" line="18" namespace="Altamira" package="Default">
+      <property final="false" static="true" visibility="protected" line="21" namespace="Altamira" package="Default">
         <name>$instance</name>
-        <default/>
-        <docblock line="14">
+        <default></default>
+        <docblock line="17">
           <description>The singleton instance</description>
-          <long-description/>
-          <tag line="14" name="var" description="" type="\Altamira\ChartRenderer">
+          <long-description></long-description>
+          <tag line="17" name="var" description="" type="\Altamira\ChartRenderer">
             <type by_reference="false">\Altamira\ChartRenderer</type>
           </tag>
         </docblock>
       </property>
-      <property final="false" static="true" visibility="protected" line="23" namespace="Altamira" package="Default">
+      <property final="false" static="true" visibility="protected" line="26" namespace="Altamira" package="Default">
         <name>$rendererChain</name>
         <default>array()</default>
-        <docblock line="19">
+        <docblock line="22">
           <description>Ordered set of renderer classes</description>
-          <long-description/>
-          <tag line="19" name="var" description="" type="array">
+          <long-description></long-description>
+          <tag line="22" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Altamira" line="29" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Altamira" line="32" package="Default">
         <name>__construct</name>
         <full_name>__construct</full_name>
-        <docblock line="25">
+        <docblock line="28">
           <description>Cannot be invoked.</description>
-          <long-description/>
-          <tag line="25" name="see" description="\Altamira\ChartRenderer::getInstance" refers="\Altamira\ChartRenderer::getInstance"/>
+          <long-description></long-description>
+          <tag line="28" name="see" description="\Altamira\ChartRenderer::getInstance" refers="\Altamira\ChartRenderer::getInstance"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="protected" namespace="Altamira" line="36" package="Default">
+      <method final="false" abstract="false" static="true" visibility="protected" namespace="Altamira" line="39" package="Default">
         <name>getInstance</name>
         <full_name>getInstance</full_name>
-        <docblock line="31">
+        <docblock line="34">
           <description>Used to enforce the singleton design pattern within class.</description>
           <long-description>&lt;p&gt;This helps provide a static fluent interface.&lt;/p&gt;</long-description>
-          <tag line="31" name="return" description="" type="\Altamira\ChartRenderer">
+          <tag line="34" name="return" description="" type="\Altamira\ChartRenderer">
             <type by_reference="false">\Altamira\ChartRenderer</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="50" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="53" package="Default">
         <name>render</name>
         <full_name>render</full_name>
-        <docblock line="44">
+        <docblock line="47">
           <description>Renders a single chart by passing it through the renderer chain</description>
-          <long-description/>
-          <tag line="44" name="param" description="" type="\Altamira\Chart" variable="$chart">
+          <long-description></long-description>
+          <tag line="47" name="param" description="" type="\Altamira\Chart" variable="$chart">
             <type by_reference="false">\Altamira\Chart</type>
           </tag>
-          <tag line="44" name="param" description="" type="array" variable="$styleOptions">
+          <tag line="47" name="param" description="" type="array" variable="$styleOptions">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="44" name="return" description="the output generated from renders" type="string">
+          <tag line="47" name="return" description="the output generated from renders" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="50">
+        <argument line="53">
           <name>$chart</name>
-          <default/>
+          <default></default>
           <type>\Altamira\Chart</type>
         </argument>
-        <argument line="50">
+        <argument line="53">
           <name>$styleOptions</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="79" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="82" package="Default">
         <name>pushRenderer</name>
         <full_name>pushRenderer</full_name>
-        <docblock line="73">
+        <docblock line="76">
           <description>Adds a renderer to the end of the renderer chain</description>
-          <long-description/>
-          <tag line="73" name="param" description="" type="string" variable="$renderer">
+          <long-description></long-description>
+          <tag line="76" name="param" description="" type="string" variable="$renderer">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="73" name="throws" description="" type="\UnexpectedValueException">
+          <tag line="76" name="throws" description="" type="\UnexpectedValueException">
             <type by_reference="false">\UnexpectedValueException</type>
           </tag>
-          <tag line="73" name="return" description="" type="\Altamira\ChartRenderer">
+          <tag line="76" name="return" description="" type="\Altamira\ChartRenderer">
             <type by_reference="false">\Altamira\ChartRenderer</type>
           </tag>
         </docblock>
-        <argument line="79">
+        <argument line="82">
           <name>$renderer</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="96" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="99" package="Default">
         <name>unshiftRenderer</name>
         <full_name>unshiftRenderer</full_name>
-        <docblock line="90">
+        <docblock line="93">
           <description>Prepends a renderer to the beginning of renderer chain</description>
-          <long-description/>
-          <tag line="90" name="param" description="" type="string" variable="$renderer">
+          <long-description></long-description>
+          <tag line="93" name="param" description="" type="string" variable="$renderer">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="90" name="throws" description="" type="\UnexpectedValueException">
+          <tag line="93" name="throws" description="" type="\UnexpectedValueException">
             <type by_reference="false">\UnexpectedValueException</type>
           </tag>
-          <tag line="90" name="return" description="" type="\Altamira\ChartRenderer">
+          <tag line="93" name="return" description="" type="\Altamira\ChartRenderer">
             <type by_reference="false">\Altamira\ChartRenderer</type>
           </tag>
         </docblock>
-        <argument line="96">
+        <argument line="99">
           <name>$renderer</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="111" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira" line="114" package="Default">
         <name>reset</name>
         <full_name>reset</full_name>
-        <docblock line="107">
+        <docblock line="110">
           <description>Clears the renderer chain</description>
-          <long-description/>
-          <tag line="107" name="return" description="" type="\Altamira\ChartRenderer">
+          <long-description></long-description>
+          <tag line="110" name="return" description="" type="\Altamira\ChartRenderer">
             <type by_reference="false">\Altamira\ChartRenderer</type>
           </tag>
         </docblock>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file ChartRenderer.php</error>
-    </parse_markers>
   </file>
   <file path="ChartDatum/TwoDimensionalPointFactory.php" hash="ac8f71d69ec01bcbb215abd012329a70" package="Default">
     <class final="false" abstract="false" namespace="Altamira\ChartDatum" line="7" package="Default">

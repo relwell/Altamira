@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">64</span></a></li>
+                <span class="label label-info">54</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">2</span>
@@ -65,7 +65,8 @@
 </li>
 <li class="nav-header">
 <i class="icon-custom icon-interface"></i> Interfaces</li>
-<li><a href="#RendererInterface" title="Builds a standard interface about how we render HTML items">RendererInterface</a></li>
+<li><a href="#RendererInterface" title="Builds a standard interface about how we render HTML items
+This interface allows for opening and closing tags around other logic, as well as style">RendererInterface</a></li>
 <li class="nav-header">
 <i class="icon-custom icon-class"></i> Classes</li>
 <li><a href="#Config" title="Configuration class for global state and environmental dependencies">Config</a></li>
@@ -80,8 +81,10 @@
 <li><a href="#Pie" title="">Pie</a></li>
 <li><a href="#Bar" title="">Bar</a></li>
 <li><a href="#TypeAbstract" title="">TypeAbstract</a></li>
-<li><a href="#TitleRenderer" title="">TitleRenderer</a></li>
-<li><a href="#DefaultRenderer" title="">DefaultRenderer</a></li>
+<li><a href="#TitleRenderer" title="Responsible for rendering titles in HTML for libraries
+that do not have their own title rendering component">TitleRenderer</a></li>
+<li><a href="#DefaultRenderer" title="This class is responsible for creating the placeholder div that
+the chart rendering libraries fill later on.">DefaultRenderer</a></li>
 <li><a href="#ScriptsRenderer" title="Used for rendering inline JavaScript">ScriptsRenderer</a></li>
 <li><a href="#ChartRenderer" title="Used to iterate over charts and render all of their components
 based on sub-renderers registered in a renderer chain">ChartRenderer</a></li>
@@ -105,7 +108,8 @@ based on sub-renderers registered in a renderer chain">ChartRenderer</a></li>
 <div id="RendererInterface" class="element ajax clickable interface">
 <h1>RendererInterface<a href="../classes/Altamira.ChartRenderer.RendererInterface.html">¶</a>
 </h1>
-<p class="short_description">Builds a standard interface about how we render HTML items</p>
+<p class="short_description">Builds a standard interface about how we render HTML items
+This interface allows for opening and closing tags around other logic, as well as style</p>
 <div class="details collapse"></div>
 <a href="../classes/Altamira.ChartRenderer.RendererInterface.html" class="more">« More »</a>
 </div>
@@ -169,14 +173,16 @@ based on sub-renderers registered in a renderer chain</p>
 <div id="DefaultRenderer" class="element ajax clickable class">
 <h1>DefaultRenderer<a href="../classes/Altamira.ChartRenderer.DefaultRenderer.html">¶</a>
 </h1>
-<p class="short_description"></p>
+<p class="short_description">This class is responsible for creating the placeholder div that
+the chart rendering libraries fill later on.</p>
 <div class="details collapse"></div>
 <a href="../classes/Altamira.ChartRenderer.DefaultRenderer.html" class="more">« More »</a>
 </div>
 <div id="TitleRenderer" class="element ajax clickable class">
 <h1>TitleRenderer<a href="../classes/Altamira.ChartRenderer.TitleRenderer.html">¶</a>
 </h1>
-<p class="short_description"></p>
+<p class="short_description">Responsible for rendering titles in HTML for libraries
+that do not have their own title rendering component</p>
 <div class="details collapse"></div>
 <a href="../classes/Altamira.ChartRenderer.TitleRenderer.html" class="more">« More »</a>
 </div>
@@ -284,7 +290,7 @@ based on sub-renderers registered in a renderer chain</p>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-01-08T21:11:34-08:00.<br></footer></div>
+            generated on 2013-01-08T21:28:53-08:00.<br></footer></div>
 </div>
 </body>
 </html>
