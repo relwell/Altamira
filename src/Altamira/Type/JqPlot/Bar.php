@@ -1,7 +1,16 @@
 <?php
-
+/**
+ * Class definition for \Altamira\Type\JqPlot\Bar
+ * @author relwell
+ *
+ */
 namespace Altamira\Type\JqPlot;
-
+/**
+ * This class registers a series or an entire chart for rendering as a bar
+ * @author relwell
+ * @package Type
+ * @subpackage Flot
+ */
 class Bar extends \Altamira\Type\TypeAbstract
 {
     const TYPE = 'bar';
@@ -12,9 +21,10 @@ class Bar extends \Altamira\Type\TypeAbstract
     protected $axisRenderer = null;
 
     /**
+     * This provides a limited set of options based on how it has been configured
      * @TODO this really looks like it should be refactored, but it's pretty opaque and legacy at this point
-     * (non-PHPdoc)
      * @see \Altamira\Type\TypeAbstract::getOptions()
+     * @return array
      */
 	public function getOptions()
 	{
@@ -58,6 +68,9 @@ class Bar extends \Altamira\Type\TypeAbstract
 	 * Allows us to configure bar direction for renderer
 	 * (non-PHPdoc)
 	 * @see \Altamira\Type\TypeAbstract::setOption()
+	 * @param string $name
+	 * @param mixed $value
+	 * @return \Altamira\JsWriter\JqPlot\Bar
 	 */
 	public function setOption( $name, $value )
 	{

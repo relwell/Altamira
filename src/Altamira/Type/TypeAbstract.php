@@ -1,7 +1,17 @@
 <?php
-
+/**
+ * Class definition for \Altamira\Type\TypeAbstract
+ * @author relwell
+ */
 namespace Altamira\Type;
-
+/**
+ * Provides a common interface for registering types with charts or series
+ * Implementations vary based on library.
+ * Types encapsulate logic required to register special rendering cases for series or charts.
+ * Registering a type with a series or a chart should cause that series or chart to render as such.
+ * @author relwell
+ * @package Type
+ */
 abstract class TypeAbstract
 {
     /**
