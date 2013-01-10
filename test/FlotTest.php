@@ -619,7 +619,9 @@ class FlotTest extends PHPUnit_Framework_TestCase
             ->with       ( $this->options->getValue( $mockFlot ) )
         ;
         
-        $mockFlot->getOptionsJs();
+        $reflGet = new ReflectionMethod( '\Altamira\JsWriter\Flot', 'getOptionsJs' );
+        $reflGet->setAccessible( true );
+        $reflGet->invoke( $mockFlot );
     }
     
     /**

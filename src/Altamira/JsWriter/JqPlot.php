@@ -1,9 +1,22 @@
 <?php
-
+/**
+ * Class definition for \Altamira\JsWriter\JqPlot
+ * @author relwell
+ *
+ */
 namespace Altamira\JsWriter;
-
 use \Altamira\JsWriter\Ability;
-
+/**
+ * This is the class responsible for configuring and then 
+ * writing out data for a single chart using the JqPlot library.
+ * This is automatically registered based on the library parameter passed
+ * on any chart you instantiate. Most configurations are encapsulated by 
+ * either the chart or series registered with the charts.
+ * @namespace \Altamira\JsWriter
+ * @package JsWriter
+ * @author relwell
+ *
+ */
 class JqPlot
     extends \Altamira\JsWriter\JsWriterAbstract
     implements Ability\Cursorable,
@@ -16,8 +29,16 @@ class JqPlot
                Ability\Labelable,
                Ability\Lineable
 {
+    /**
+     * Used to identify the library correlating to this class
+     * @var string
+     */
     const LIBRARY = 'jqplot';
     
+    /**
+     * Used to identify the type namespace for this particualr JsWriter 
+     * @var string
+     */
     protected $typeNamespace = '\\Altamira\\Type\\JqPlot\\';
     
     /**
@@ -74,6 +95,12 @@ class JqPlot
 
     }
     
+    /**
+     * Implemented from \Altamira\JsWriter\Ability\Highlightable
+     * @see \Altamira\JsWriter\Ability\Highlightable::useHighlighting()
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function useHighlighting( array $opts = array( 'size' => 7.5 ) )
     {
         extract( $opts );
@@ -86,7 +113,8 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Zoomable
+     * @see \Altamira\JsWriter\Ability\Zoomable::useZooming()
      * @param array $options
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -100,7 +128,8 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Cursorable
+     * @see \Altamira\JsWriter\Ability\Cursorable::useCursor()
      * @return \Altamira\JsWriter\JqPlot
      */
     public function useCursor()
@@ -114,6 +143,7 @@ class JqPlot
     
     /**
      * formats a given axis for dates
+     * @see \Altamira\JsWriter\Ability\Datable::useDates()
      * @param string $axis
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -128,7 +158,8 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Shadowable
+     * @see \Altamira\JsWriter\Ability\Shadowable::setShadow()
      * @param \Altamira\Series|string $series
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
@@ -149,17 +180,16 @@ class JqPlot
         $depth  = isset( $depth )  ? $depth  : 3; 
         $alpha  = isset( $alpha )  ? $alpha  : 0.1;
         
-        $this->options['seriesStorage'][$series]['shadow'] = $use;
-		$this->options['seriesStorage'][$series]['shadowAngle'] = $angle;
-		$this->options['seriesStorage'][$series]['shadowOffset'] = $offset;
-		$this->options['seriesStorage'][$series]['shadowDepth'] = $depth;
-		$this->options['seriesStorage'][$series]['shadowAlpha'] = $alpha;
-
-		return $this;
+        return $this->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadow', $use )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowAngle', $angle )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowOffset', $offset )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowDepth', $depth )
+                    ->setNestedOptVal( $this->options, 'seriesStorage', $series, 'shadowAlpha', $alpha ); 
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Fillable
+     * @see \Altamira\JsWriter\Ability\Fillable::setFill()
      * @param \Altamira\Chart|series $series
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
@@ -196,7 +226,8 @@ class JqPlot
     }
     
     /**
-     * 
+     * Implemented from \Altamira\JsWriter\Ability\Griddable
+     * @see \Altamira\JsWriter\Ability\Griddable::setGrid()
      * @param array $opts
      * @return \Altamira\JsWriter\JqPlot
      */
@@ -219,6 +250,12 @@ class JqPlot
         return $this;
     }
     
+    /**
+     * Implemented from \Altamira\JsWriter\Ability\Legendable
+     * @see \Altamira\JsWriter\Ability\Legendable::setLegend()
+     * @param array $opts
+     * @return \Altamira\JsWriter\JqPlot
+     */
     public function setLegend( array $opts = array('on'       => 'true', 
                                                    'location' => 'ne', 
                                                    'x'        => 0, 
@@ -281,8 +318,12 @@ class JqPlot
     }
 
     /**
-     * (non-PHPdoc)
+     * Registers a type for a series or entire chart
      * @see \Altamira\JsWriter\JsWriterAbstract::setType()
+     * @param string|Altamira\Type\TypeAbstract $type
+     * @param array $options
+     * @param string $series
+     * @return \Altamira\JsWriter\JqPlot
      */
     public function setType( $type, $options = array(), $series = 'default' )
     {
@@ -299,21 +340,30 @@ class JqPlot
         return $this;
     }
 
-    public function getOptionsJS()
+    /**
+     * Prepares options and returns JSON
+     * @return string
+     */
+    protected function getOptionsJS()
     {
         $opts = $this->options;
         foreach ( $opts['seriesStorage'] as $label => $options ) {
             $options['label'] = $label;
             $opts['series'][] = $options;
         }
+        
+        if ( $this->chart->titleHidden() ) {
+        	unset( $opts['title'] );
+        }
+        
         unset($opts['seriesStorage']);
         return $this->makeJSArray( $opts );
     }
     
     /**
      * Initializes default settings for using labels
+     * @see \Altamira\JsWriter\Ability\Labelable::useSeriesLabels()
      * @param string|\Altamira\Series $series
-     * @param array $labels an array of strings for labels, in order
      * @return \Altamira\JsWriter\JqPlot
      */
     public function useSeriesLabels( $series )
@@ -328,6 +378,7 @@ class JqPlot
     
     /**
      * Sets label setting option values
+     * @see \Altamira\JsWriter\Ability\Labelable::setSeriesLabelSetting()
      * @param string $series
      * @param string $name
      * @param mixed $value
@@ -344,6 +395,7 @@ class JqPlot
     
     /**
      * Determines the width of the line we will show, if we're showing it
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesLineWidth()
      * @param string $series
      * @param mixed $value
      * @return \Altamira\JsWriter\JqPlot
@@ -355,6 +407,7 @@ class JqPlot
     
     /**
      * Determines whether we show the line for a series
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowLine()
      * @param string|\Altamira\Series $series
      * @param bool $bool
      * @return \Altamira\JsWriter\JqPlot
@@ -366,6 +419,7 @@ class JqPlot
     
     /**
      * Determines whether we show the marker for a series
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesShowMarker()
      * @param string|\Altamira\Series $series
      * @param bool $bool
      * @return \Altamira\JsWriter\JqPlot
@@ -377,6 +431,7 @@ class JqPlot
     
     /**
      * Sets the style of the marker
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerStyle()
      * @param string|\Altamira\Series $series
      * @param string $value
      * @return \Altamira\JsWriter\JqPlot
@@ -388,6 +443,7 @@ class JqPlot
     
     /**
      * Sets the size of the marker
+     * @see \Altamira\JsWriter\Ability\Lineable::setSeriesMarkerSize()
      * @param string|\Altamira\Series $series
      * @param mixed $value
      * @return \Altamira\JsWriter\JqPlot

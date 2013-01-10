@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta charset="utf-8">
-<title>phpDocumentor » Altamira\JsWriter\Ability</title>
+<title>phpDocumentor » Type</title>
 <meta name="author" content="Mike van Riel">
 <meta name="description" content="">
 <link href="../css/template.css" rel="stylesheet" media="all">
@@ -61,107 +61,121 @@
 </div>
 <ul class="side-nav nav nav-list">
 <li class="nav-header">
-<i class="icon-map-marker"></i> Namespaces</li>
+<i class="icon-map-marker"></i> Packages</li>
 <li>
-<a href="../namespaces/Altamira.JsWriter.Ability.html" title="Ability"><i class="icon-th"></i>Ability</a><ul class="nav nav-list nav-namespaces"></ul>
+<a href="../packages/Type.html" title="Type"><i class="icon-folder-open"></i>Type</a><ul class="nav nav-list nav-packages">
+<li>
+<a href="../packages/Type.Flot.html" title="Flot"><i class="icon-folder-open"></i>Flot</a><ul class="nav nav-list nav-packages"></ul>
 </li>
+<li>
+<a href="../packages/Type.JqPlot.html" title="JqPlot"><i class="icon-folder-open"></i>JqPlot</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#TypeAbstract" title="Provides a common interface for registering types with charts or series
+Implementations vary based on library.">TypeAbstract</a></li>
 </ul>
 </div>
-<div class="span8 namespace-contents">
-<ul class="breadcrumb">
-<li>
-<a href="../index.html"><i class="icon-th"></i></a><span class="divider">\</span>
-</li>
-<li><a href="../namespaces/Altamira.html">Altamira</a></li>
-<li>
-<span class="divider">\</span><a href="../namespaces/Altamira.JsWriter.html">JsWriter</a>
-</li>
-<li class="active">
-<span class="divider">\</span><a href="../namespaces/Altamira.JsWriter.Ability.html">Ability</a>
-</li>
-</ul>
-<div class="namespace-indent">
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/Type.html">Type</a></li>
+</li></ul>
+<div class="package-indent">
 <h3>
 <i class="icon-custom icon-class"></i> Classes and interfaces</h3>
-<div id="Cursorable" class="element ajax clickable interface">
-<h1>Cursorable<a href="../classes/Altamira.JsWriter.Ability.Cursorable.html">¶</a>
+<div id="TypeAbstract" class="element ajax clickable class">
+<h1>TypeAbstract<a href="../classes/Altamira.Type.TypeAbstract.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around showing cursor actions on a chart</p>
+<p class="short_description">Provides a common interface for registering types with charts or series
+Implementations vary based on library.</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Cursorable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.TypeAbstract.html" class="more">« More »</a>
 </div>
-<div id="Datable" class="element ajax clickable interface">
-<h1>Datable<a href="../classes/Altamira.JsWriter.Ability.Datable.html">¶</a>
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li><a href="../packages/Type.html">Type</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../packages/Type.Flot.html">Flot</a>
+</li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<div id="Bar" class="element ajax clickable class">
+<h1>Bar<a href="../classes/Altamira.Type.Flot.Bar.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around handling dates within charts</p>
+<p class="short_description">Registers the provided series (or entire chart) as a bar series in Flot</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Datable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.Flot.Bar.html" class="more">« More »</a>
 </div>
-<div id="Fillable" class="element ajax clickable interface">
-<h1>Fillable<a href="../classes/Altamira.JsWriter.Ability.Fillable.html">¶</a>
+<div id="Bubble" class="element ajax clickable class">
+<h1>Bubble<a href="../classes/Altamira.Type.Flot.Bubble.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around series fill (e.g.</p>
+<p class="short_description">Registers a series or chart for being rendered as a bubble
+Requires https://raw.github.com/ubermajestix/flot-plugins/master/jquery.flot.bubble.js</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Fillable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.Flot.Bubble.html" class="more">« More »</a>
 </div>
-<div id="Griddable" class="element ajax clickable interface">
-<h1>Griddable<a href="../classes/Altamira.JsWriter.Ability.Griddable.html">¶</a>
+<div id="Donut" class="element ajax clickable class">
+<h1>Donut<a href="../classes/Altamira.Type.Flot.Donut.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around a background grid in a chart</p>
+<p class="short_description">This type registers a series of chart to be rendered as a donut.</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Griddable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.Flot.Donut.html" class="more">« More »</a>
 </div>
-<div id="Highlightable" class="element ajax clickable interface">
-<h1>Highlightable<a href="../classes/Altamira.JsWriter.Ability.Highlightable.html">¶</a>
+<div id="Pie" class="element ajax clickable class">
+<h1>Pie<a href="../classes/Altamira.Type.Flot.Pie.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around point highlighting</p>
+<p class="short_description">This class registers a series of chart as being rendered as a pie.</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Highlightable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.Flot.Pie.html" class="more">« More »</a>
 </div>
-<div id="Labelable" class="element ajax clickable interface">
-<h1>Labelable<a href="../classes/Altamira.JsWriter.Ability.Labelable.html">¶</a>
+<div id="Bar" class="element ajax clickable class">
+<h1>Bar<a href="../classes/Altamira.Type.JqPlot.Bar.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around labeling series</p>
+<p class="short_description">This class registers a series or an entire chart for rendering as a bar</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Labelable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.JqPlot.Bar.html" class="more">« More »</a>
 </div>
-<div id="Legendable" class="element ajax clickable interface">
-<h1>Legendable<a href="../classes/Altamira.JsWriter.Ability.Legendable.html">¶</a>
-</h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around displaying a legend</p>
-<div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Legendable.html" class="more">« More »</a>
 </div>
-<div id="Lineable" class="element ajax clickable interface">
-<h1>Lineable<a href="../classes/Altamira.JsWriter.Ability.Lineable.html">¶</a>
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li><a href="../packages/Type.html">Type</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../packages/Type.JqPlot.html">JqPlot</a>
+</li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<div id="Bubble" class="element ajax clickable class">
+<h1>Bubble<a href="../classes/Altamira.Type.JqPlot.Bubble.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around rendering lines in a chart.</p>
+<p class="short_description">This class registers a series or entire chart to be rendered as a bubble</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Lineable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.JqPlot.Bubble.html" class="more">« More »</a>
 </div>
-<div id="Shadowable" class="element ajax clickable interface">
-<h1>Shadowable<a href="../classes/Altamira.JsWriter.Ability.Shadowable.html">¶</a>
+<div id="Donut" class="element ajax clickable class">
+<h1>Donut<a href="../classes/Altamira.Type.JqPlot.Donut.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around applying a shadow to content rendered on a chart</p>
+<p class="short_description">This class will register a series or chart to be rendered as a donut</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Shadowable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.JqPlot.Donut.html" class="more">« More »</a>
 </div>
-<div id="Zoomable" class="element ajax clickable interface">
-<h1>Zoomable<a href="../classes/Altamira.JsWriter.Ability.Zoomable.html">¶</a>
+<div id="Pie" class="element ajax clickable class">
+<h1>Pie<a href="../classes/Altamira.Type.JqPlot.Pie.html">¶</a>
 </h1>
-<p class="short_description">This interface dictates that the implementing class can control
-and transform options around allowing zooming around the chart</p>
+<p class="short_description">Registers a series or chart as being a pie (this is usually chart-wide)</p>
 <div class="details collapse"></div>
-<a href="../classes/Altamira.JsWriter.Ability.Zoomable.html" class="more">« More »</a>
+<a href="../classes/Altamira.Type.JqPlot.Pie.html" class="more">« More »</a>
+</div>
+<div id="Stacked" class="element ajax clickable class">
+<h1>Stacked<a href="../classes/Altamira.Type.JqPlot.Stacked.html">¶</a>
+</h1>
+<p class="short_description">Registers a chart or series to be rendered as a stacked bar</p>
+<div class="details collapse"></div>
+<a href="../classes/Altamira.Type.JqPlot.Stacked.html" class="more">« More »</a>
+</div>
 </div>
 </div>
 </div>

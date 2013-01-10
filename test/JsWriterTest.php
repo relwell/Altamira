@@ -202,9 +202,12 @@ class JsWriterTest extends PHPUnit_Framework_TestCase
         $expectedJson = <<<JSON
 {"foo":(function(){alert("hi");})(),"bar":$.jqplot.DateAxisRenderer,"baz":"qux"}
 JSON;
+        
+        $reflMake = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'makeJSArray' );
+        $reflMake->setAccessible( true );
         $this->assertEquals(
                 $expectedJson,
-                $jsWriter->makeJSArray( $jsvals ),
+                $reflMake->invoke( $jsWriter, $jsvals),
                 '\Altamira\JsWriter\JsWriterAbstract::makeJSArray should json-encode an array, replacing callbacks and properly evaluating values wrapped in hashes'
         );
         $this->assertNotEmpty(
@@ -524,7 +527,9 @@ JSON;
                 $options['axes']['yaxis']['renderer']
         );
         
-        $optionsJs = $jsWriter->getOptionsJS();
+        $reflGet = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'getOptionsJs' );
+        $reflGet->setAccessible( true );
+        $optionsJs = $reflGet->invoke( $jsWriter );
         
         $modelOptions = $options;
         $modelOptions['series'] = $modelOptions['seriesStorage'];
@@ -565,6 +570,32 @@ JSON;
         $this->assertEquals(
                 $jsWriter,
                 $jsWriter->setType( 'Bar', array( 'horizontal' => true ) )
+        );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\JqPlot::getOptionsJS
+     */
+    public function testJqPlotJsArrayHidesTitleWhenRequired()
+    {
+        $chart = new \Altamira\Chart( 'foo', \Altamira\JsWriter\JqPlot::LIBRARY );
+        $chart->setTitle( "I am a title" );
+        
+        $reflGet = new ReflectionMethod( '\Altamira\JsWriter\JqPlot', 'getOptionsJs' );
+        $reflGet->setAccessible( true );
+        
+        $origJs = json_decode( $reflGet->invoke( $chart->getJsWriter() ), true );
+        $this->assertArrayHasKey(
+                'title',
+                $origJs,
+                '\Altamira\JsWriter\JqPlot::getOptionsJS should encode a value for the chart title by default'
+        );
+        
+        $newJs = json_decode( $reflGet->invoke( $chart->hideTitle()->getJsWriter() ), true );
+        $this->assertArrayNotHasKey(
+                'title',
+                $newJs,
+                '\Altamira\JsWriter\JqPlot::getOptionsJS should not encode a value for the chart title if the chart is hiding its title'
         );
     }
 }

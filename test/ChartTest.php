@@ -642,4 +642,40 @@ ENDSTRING;
                 '\Altamira\Chart::createManySeries should throw an exception if we are trying to use it with a donut flot'
         );
     }
+    
+    /**
+     * @covers \Altamira\Chart::hideTitle
+     * @covers \Altamira\Chart::titleHidden
+     */
+    public function testChartHidesTitle()
+    {
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                          ->disableOriginalConstructor()
+                          ->setMethods( array( 'foo' ) )
+                          ->getMock();
+        
+        $reflHidden = new ReflectionProperty( '\Altamira\Chart', 'titleHidden' );
+        $reflHidden->setAccessible( true );
+        
+        $this->assertFalse(
+                $reflHidden->getValue( $mockChart ),
+                '\Altamira\Chart::$titleHidden should default to false'
+        );
+        $this->assertFalse(
+                $mockChart->titleHidden(),
+                '\Altamira\Chart::titleHidden should return the value of \Altamira\Chart::$titleHidden'
+        );
+        $this->assertEquals(
+                $mockChart,
+                $mockChart->hideTitle()
+        );
+        $this->assertTrue(
+                $reflHidden->getValue( $mockChart ),
+                '\Altamira\Chart::$titleHidden should be set to true by \Altamira\Chart::hideTitle'
+        );
+        $this->assertTrue(
+                $mockChart->titleHidden(),
+                '\Altamira\Chart::titleHidden should return the value of \Altamira\Chart::$titleHidden'
+        );
+    }
 }
