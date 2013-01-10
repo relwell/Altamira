@@ -1,9 +1,15 @@
 <?php 
-
+/**
+ * Class definition for \Altamira\ChartDatum\TwoDimensionalPointFactory
+ * @author relwell
+ */
 namespace Altamira\ChartDatum;
 
 use Altamira\ChartDatum\TwoDimensionalPoint;
-
+/**
+ * Responsible for creating instances of \Altamira\ChartDatum\TwoDimensionalPoint
+ * @author relwell
+ */
 class TwoDimensionalPointFactory
 {
     /**

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta charset="utf-8">
-<title>phpDocumentor » \Altamira\ChartDatum\BubbleFactory</title>
+<title>phpDocumentor » ChartDatum</title>
 <meta name="author" content="Mike van Riel">
 <meta name="description" content="">
 <link href="../css/template.css" rel="stylesheet" media="all">
@@ -55,62 +55,57 @@
                         </div></noscript>
 <div class="row">
 <div class="span4">
-<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
 <button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
 </div>
-<ul class="side-nav nav nav-list"><li class="nav-header">
-<i class="icon-custom icon-method"></i> Methods
-                    <ul><li class="method public "><a href="#method_getBubbleDatumFromTupleSet" title="getBubbleDatumFromTupleSet :: Returns an array of results provided an array of arrays of three values -- label, x, y, and radius"><span class="description">Returns an array of results provided an array of arrays of three values -- label, x, y, and radius</span><pre>getBubbleDatumFromTupleSet()</pre></a></li></ul>
-</li></ul>
-</div>
-<div class="span8">
-<a id="\Altamira\ChartDatum\BubbleFactory"></a><ul class="breadcrumb">
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
 <li>
-<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+<a href="../packages/ChartDatum.html" title="ChartDatum"><i class="icon-folder-open"></i>ChartDatum</a><ul class="nav nav-list nav-packages"></ul>
 </li>
-<li><a href="../namespaces/Altamira.html">Altamira</a></li>
-<li>
-<span class="divider">\</span><a href="../namespaces/Altamira.ChartDatum.html">ChartDatum</a>
-</li>
-<li class="active">
-<span class="divider">\</span><a href="../classes/Altamira.ChartDatum.BubbleFactory.html">BubbleFactory</a>
-</li>
+<li class="nav-header">
+<i class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#Bubble" title="Class for abstracting bubble chart data.">Bubble</a></li>
+<li><a href="#BubbleFactory" title="Responsible for creating instances of \Altamira\ChartDatum\Bubble">BubbleFactory</a></li>
+<li><a href="#ChartDatumAbstract" title="Data abstraction class for points.">ChartDatumAbstract</a></li>
+<li><a href="#TwoDimensionalPoint" title="Class for abstracting chart data with an X, a Y, and a label.">TwoDimensionalPoint</a></li>
 </ul>
-<div class="element class">
-<p class="short_description">Responsible for creating instances of \Altamira\ChartDatum\Bubble</p>
-<div class="details">
-<div class="long_description"></div>
-<table class="table table-bordered">
-<tr>
-<th>package</th>
-<td><a href="../packages/ChartDatum.html">ChartDatum</a></td>
-</tr>
-<tr>
-<th>author</th>
-<td><a href="">relwell</a></td>
-</tr>
-</table>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/ChartDatum.html">ChartDatum</a></li>
+</li></ul>
+<div class="package-indent">
 <h3>
-<i class="icon-custom icon-method"></i> Methods</h3>
-<a id="method_getBubbleDatumFromTupleSet"></a><div class="element clickable method public method_getBubbleDatumFromTupleSet" data-toggle="collapse" data-target=".method_getBubbleDatumFromTupleSet .collapse">
-<h2>Returns an array of results provided an array of arrays of three values -- label, x, y, and radius</h2>
-<pre>getBubbleDatumFromTupleSet(array $tupleSet, array $results) : array</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$tupleSet</h4>
-<code>array</code>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<div id="Bubble" class="element ajax clickable class">
+<h1>Bubble<a href="../classes/Altamira.ChartDatum.Bubble.html">¶</a>
+</h1>
+<p class="short_description">Class for abstracting bubble chart data.</p>
+<div class="details collapse"></div>
+<a href="../classes/Altamira.ChartDatum.Bubble.html" class="more">« More »</a>
 </div>
-<div class="subelement argument">
-<h4>$results</h4>
-<code>array</code><p>provided if you have an existing array of ChartDatum instances you want to append to</p></div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>array</code>of \Altamira\ChartDatum\Bubble</div>
-</div></div>
+<div id="BubbleFactory" class="element ajax clickable class">
+<h1>BubbleFactory<a href="../classes/Altamira.ChartDatum.BubbleFactory.html">¶</a>
+</h1>
+<p class="short_description">Responsible for creating instances of \Altamira\ChartDatum\Bubble</p>
+<div class="details collapse"></div>
+<a href="../classes/Altamira.ChartDatum.BubbleFactory.html" class="more">« More »</a>
 </div>
+<div id="ChartDatumAbstract" class="element ajax clickable class">
+<h1>ChartDatumAbstract<a href="../classes/Altamira.ChartDatum.ChartDatumAbstract.html">¶</a>
+</h1>
+<p class="short_description">Data abstraction class for points.</p>
+<div class="details collapse"></div>
+<a href="../classes/Altamira.ChartDatum.ChartDatumAbstract.html" class="more">« More »</a>
+</div>
+<div id="TwoDimensionalPoint" class="element ajax clickable class">
+<h1>TwoDimensionalPoint<a href="../classes/Altamira.ChartDatum.TwoDimensionalPoint.html">¶</a>
+</h1>
+<p class="short_description">Class for abstracting chart data with an X, a Y, and a label.</p>
+<div class="details collapse"></div>
+<a href="../classes/Altamira.ChartDatum.TwoDimensionalPoint.html" class="more">« More »</a>
 </div>
 </div>
 </div>

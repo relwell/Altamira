@@ -1,7 +1,18 @@
 <?php
-
+/**
+ * Class definition for \Altamira\Chart
+ * @author relwell
+ *
+ */
 namespace Altamira;
 
+/**
+ * This class encapsulates all behavior around charts.
+ * It's responsible for keeping track data and configurations 
+ * and transmitting the appropriate information to its JsWriter.
+ * Each chart has its own JsWriter instance.
+ * @author relwell
+ */
 class Chart
 {
     /**
