@@ -41,6 +41,9 @@ class Bar extends \Altamira\Type\TypeAbstract
 	            $this->pluginFiles[] = 'jquery.flot.stack.js';
 	            $this->options['series']['stack'] = true;
 	            break; 
+	        case 'fillColor':
+	            $this->options['series']['bars']['fillColor']['colors'] = $value;
+	            break;
 	        default:
 	            parent::setOption($name, $value);
 	    }
