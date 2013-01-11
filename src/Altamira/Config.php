@@ -7,10 +7,8 @@
 namespace Altamira;
 
 /**
- * @codeCoverageIgnore
- */
-/**
  * Configuration class for global state and environmental dependencies
+ * @codeCoverageIgnore
  */
 class Config implements \ArrayAccess
 {
