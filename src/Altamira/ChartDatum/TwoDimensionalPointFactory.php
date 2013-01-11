@@ -9,6 +9,7 @@ use Altamira\ChartDatum\TwoDimensionalPoint;
 /**
  * Responsible for creating instances of \Altamira\ChartDatum\TwoDimensionalPoint
  * @author relwell
+ * @package ChartDatum
  */
 class TwoDimensionalPointFactory
 {

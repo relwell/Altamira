@@ -1086,103 +1086,104 @@ Note that showing the title is the default behavior</description>
       </method>
     </class>
   </file>
-  <file path="ChartDatum/TwoDimensionalPointFactory.php" hash="d86887de618f5596e2a809354cc1345b" package="Default">
+  <file path="ChartDatum/TwoDimensionalPointFactory.php" hash="81c03ea117816fe9f11b98bcb8c0068d" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\ChartDatum\TwoDimensionalPointFactory</description>
-      <long-description/>
+      <long-description></long-description>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
-    <class final="false" abstract="false" namespace="Altamira\ChartDatum" line="13" package="Default">
+    <class final="false" abstract="false" namespace="Altamira\ChartDatum" line="14" package="ChartDatum">
       <extends/>
       <name>TwoDimensionalPointFactory</name>
       <full_name>\Altamira\ChartDatum\TwoDimensionalPointFactory</full_name>
       <docblock line="9">
         <description>Responsible for creating instances of \Altamira\ChartDatum\TwoDimensionalPoint</description>
-        <long-description/>
+        <long-description></long-description>
         <tag line="9" name="author" description="relwell"/>
+        <tag line="9" name="package" description="ChartDatum"/>
       </docblock>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="23" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="24" package="ChartDatum">
         <name>getFromYValues</name>
         <full_name>getFromYValues</full_name>
-        <docblock line="15">
+        <docblock line="16">
           <description>Transforms a one-dimensional array to x,y points.</description>
           <long-description>&lt;p&gt;Adds one to each X value as array index. Y value is array value.
 Passing an array will append the results to an existing array.
 For more freedom over points, use getFromNested&lt;/p&gt;</long-description>
-          <tag line="15" name="param" description="" type="array" variable="$oneDimensionalArray">
+          <tag line="16" name="param" description="" type="array" variable="$oneDimensionalArray">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="15" name="param" description="" type="array|null" variable="$result">
+          <tag line="16" name="param" description="" type="array|null" variable="$result">
             <type by_reference="false">array</type>
             <type by_reference="false">null</type>
           </tag>
-          <tag line="15" name="return" description="of \Altamira\ChartDatum\TwoDimensionalPoint" type="array">
+          <tag line="16" name="return" description="of \Altamira\ChartDatum\TwoDimensionalPoint" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="23">
+        <argument line="24">
           <name>$oneDimensionalArray</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
-        <argument line="23">
+        <argument line="24">
           <name>$result</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="39" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="40" package="ChartDatum">
         <name>getFromXValues</name>
         <full_name>getFromXValues</full_name>
-        <docblock line="31">
+        <docblock line="32">
           <description>Transforms a one-dimensional array to x,y points.</description>
           <long-description>&lt;p&gt;Adds one to each Y value as array index. X value is array value.
 Passing an array will append the results to an existing array.
 For more freedom over value relationships, use getFromNested&lt;/p&gt;</long-description>
-          <tag line="31" name="param" description="" type="array" variable="$oneDimensionalArray">
+          <tag line="32" name="param" description="" type="array" variable="$oneDimensionalArray">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="31" name="param" description="" type="array|null" variable="$result">
+          <tag line="32" name="param" description="" type="array|null" variable="$result">
             <type by_reference="false">array</type>
             <type by_reference="false">null</type>
           </tag>
-          <tag line="31" name="return" description="of \Altamira\ChartDatum\TwoDimensionalPoint" type="array">
+          <tag line="32" name="return" description="of \Altamira\ChartDatum\TwoDimensionalPoint" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="39">
+        <argument line="40">
           <name>$oneDimensionalArray</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
-        <argument line="39">
+        <argument line="40">
           <name>$result</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="54" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="55" package="ChartDatum">
         <name>getFromNested</name>
         <full_name>getFromNested</full_name>
-        <docblock line="47">
+        <docblock line="48">
           <description>Transforms an array of arrays into points using the first two array values of each nested array.</description>
           <long-description>&lt;p&gt;Passing an array will append the results to an existing array.&lt;/p&gt;</long-description>
-          <tag line="47" name="param" description="" type="array" variable="$nestedArray">
+          <tag line="48" name="param" description="" type="array" variable="$nestedArray">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="47" name="param" description="" type="array" variable="$result">
+          <tag line="48" name="param" description="" type="array" variable="$result">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="47" name="return" description="" type="\Altamira\ChartDatum\TwoDimensionalPoint">
+          <tag line="48" name="return" description="" type="\Altamira\ChartDatum\TwoDimensionalPoint">
             <type by_reference="false">\Altamira\ChartDatum\TwoDimensionalPoint</type>
           </tag>
         </docblock>
-        <argument line="54">
+        <argument line="55">
           <name>$nestedArray</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
-        <argument line="54">
+        <argument line="55">
           <name>$result</name>
           <default>array()</default>
           <type/>
@@ -5053,7 +5054,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
   <file path="Type/JqPlot/Bar.php" hash="c0cbe08674cc7f187c64294b534fd58d" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\Type\JqPlot\Bar</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira\Type\JqPlot" line="14" package="Type\Flot">
@@ -5062,7 +5063,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
       <full_name>\Altamira\Type\JqPlot\Bar</full_name>
       <docblock line="8">
         <description>This class registers a series or an entire chart for rendering as a bar</description>
-        <long-description></long-description>
+        <long-description/>
         <tag line="8" name="author" description="relwell"/>
         <tag line="8" name="package" description="Type"/>
         <tag line="8" name="subpackage" description="Flot"/>
@@ -5077,7 +5078,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
         <default>null</default>
         <docblock line="18">
           <description>Only used for this specific bar type -- fulfilled via config</description>
-          <long-description></long-description>
+          <long-description/>
         </docblock>
       </property>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Altamira\Type\JqPlot" line="29" package="Type\Flot">
@@ -5085,7 +5086,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
         <full_name>getOptions</full_name>
         <docblock line="23">
           <description>This provides a limited set of options based on how it has been configured</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="23" name="TODO" description="this really looks like it should be refactored, but it's pretty opaque and legacy at this point"/>
           <tag line="23" name="see" description="\Altamira\Type\TypeAbstract::getOptions()" refers="\Altamira\Type\TypeAbstract::getOptions()"/>
           <tag line="23" name="return" description="" type="array">
@@ -5099,7 +5100,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
         <docblock line="67">
           <description>Allows us to configure bar direction for renderer
 (non-PHPdoc)</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="67" name="see" description="\Altamira\Type\TypeAbstract::setOption()" refers="\Altamira\Type\TypeAbstract::setOption()"/>
           <tag line="67" name="param" description="" type="string" variable="$name">
             <type by_reference="false">string</type>
@@ -5113,12 +5114,12 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
         </docblock>
         <argument line="75">
           <name>$name</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
         <argument line="75">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
@@ -5238,7 +5239,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
   <file path="Type/JqPlot/Stacked.php" hash="d36b5ce67867abf9e890084446c50b86" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\Type\JqPlot\Stacked</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira\Type\JqPlot" line="14" package="Type\JqPlot">
@@ -5247,7 +5248,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
       <full_name>\Altamira\Type\JqPlot\Stacked</full_name>
       <docblock line="8">
         <description>Registers a chart or series to be rendered as a stacked bar</description>
-        <long-description></long-description>
+        <long-description/>
         <tag line="8" name="author" description="relwell"/>
         <tag line="8" name="package" description="Type"/>
         <tag line="8" name="subpackage" description="JqPlot"/>
@@ -5262,7 +5263,7 @@ I would just use JqPlot for donut charts..&lt;/p&gt;</long-description>
         <default>array('stackSeries' =&gt; true, 'seriesDefaults' =&gt; array('fill' =&gt; true, 'showMarker' =&gt; false, 'shadow' =&gt; false))</default>
         <docblock line="18">
           <description>Overwrites defaults in the JqPlot JsWriter</description>
-          <long-description></long-description>
+          <long-description/>
           <tag line="18" name="var" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
