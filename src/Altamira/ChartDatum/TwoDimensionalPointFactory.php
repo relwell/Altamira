@@ -16,7 +16,11 @@ class TwoDimensionalPointFactory
     /**
      * Transforms a one-dimensional array to x,y points. Adds one to each X value as array index. Y value is array value.
      * Passing an array will append the results to an existing array.
-     * For more freedom over points, use getFromNested
+     * In other words, providing the following array:
+     * <code>array( 5, 10, 15, 20, 25 )</code>
+     * will yield the following coordinates (as {x,y}):
+     * <code>[{1,5}, {2,10}, {3,15}, {4,20}, {5,25}]</code>
+     * For more freedom over points, use getFromNested.
      * @param array $oneDimensionalArray
      * @param array|null $result
      * @return array of \Altamira\ChartDatum\TwoDimensionalPoint
@@ -32,7 +36,11 @@ class TwoDimensionalPointFactory
     /**
      * Transforms a one-dimensional array to x,y points. Adds one to each Y value as array index. X value is array value.
      * Passing an array will append the results to an existing array.
-     * For more freedom over value relationships, use getFromNested
+     * In other words, providing the following array:
+     * <code>array( 5, 10, 15, 20, 25 )</code>
+     * will yield the following coordinates (as {x,y}):
+     * <code>[{5,1}, {10,2}, {15,3}, {20,4}, {25,5}]</code>
+     * For more freedom over value relationships, use getFromNested.
      * @param array $oneDimensionalArray
      * @param array|null $result
      * @return array of \Altamira\ChartDatum\TwoDimensionalPoint
@@ -48,6 +56,10 @@ class TwoDimensionalPointFactory
     /**
      * Transforms an array of arrays into points using the first two array values of each nested array.
      * Passing an array will append the results to an existing array.
+     * Therefore, you providing the following array:
+     * <code>array( array( 10, 8 ), array( 11, 24 ), array( 0.3341, 1551351235 ) )</code>
+     * will yield the following two-dimensional points (as {x,y}):
+     * <code>[{10, 8}, {11, 24}, {0.3341, 1551351235}]</code>
      * @param array $nestedArray
      * @param array $result
      * @return \Altamira\ChartDatum\TwoDimensionalPoint

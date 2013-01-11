@@ -729,10 +729,10 @@ Note that showing the title is the default behavior</description>
       </method>
     </class>
   </file>
-  <file path="ChartDatum/BubbleFactory.php" hash="2496b3e4a62f9618afbbd1d3bd85008a" package="Default">
+  <file path="ChartDatum/BubbleFactory.php" hash="25414828ad1fe9df38030886bf19f3ae" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\ChartDatum\BubbleFactory</description>
-      <long-description/>
+      <long-description></long-description>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira\ChartDatum" line="14" package="ChartDatum">
@@ -741,16 +741,20 @@ Note that showing the title is the default behavior</description>
       <full_name>\Altamira\ChartDatum\BubbleFactory</full_name>
       <docblock line="9">
         <description>Responsible for creating instances of \Altamira\ChartDatum\Bubble</description>
-        <long-description/>
+        <long-description></long-description>
         <tag line="9" name="package" description="ChartDatum"/>
         <tag line="9" name="author" description="relwell"/>
       </docblock>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="22" package="ChartDatum">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="25" package="ChartDatum">
         <name>getBubbleDatumFromTupleSet</name>
         <full_name>getBubbleDatumFromTupleSet</full_name>
         <docblock line="16">
-          <description>Returns an array of results provided an array of arrays of three values -- label, x, y, and radius</description>
-          <long-description/>
+          <description>Returns an array of results provided an array of arrays of four values -- label, x, y, and radius.</description>
+          <long-description>&lt;p&gt;This means that an array should be formatted as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array( 'this is my label', 10, 20, 15 )&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Where the label is "this is my label", the point at the center of the bubble is located at {10, 20}, and the radius of the bubble is 15.&lt;/p&gt;</long-description>
           <tag line="16" name="param" description="" type="array" variable="$tupleSet">
             <type by_reference="false">array</type>
           </tag>
@@ -761,12 +765,12 @@ Note that showing the title is the default behavior</description>
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="22">
+        <argument line="25">
           <name>$tupleSet</name>
-          <default/>
+          <default></default>
           <type>array</type>
         </argument>
-        <argument line="22">
+        <argument line="25">
           <name>$results</name>
           <default>array()</default>
           <type/>
@@ -1086,10 +1090,10 @@ Note that showing the title is the default behavior</description>
       </method>
     </class>
   </file>
-  <file path="ChartDatum/TwoDimensionalPointFactory.php" hash="81c03ea117816fe9f11b98bcb8c0068d" package="Default">
+  <file path="ChartDatum/TwoDimensionalPointFactory.php" hash="d5e9e48c87c9e52948a353e8aa8a2282" package="Default">
     <docblock line="2">
       <description>Class definition for \Altamira\ChartDatum\TwoDimensionalPointFactory</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="2" name="author" description="relwell"/>
     </docblock>
     <class final="false" abstract="false" namespace="Altamira\ChartDatum" line="14" package="ChartDatum">
@@ -1098,18 +1102,26 @@ Note that showing the title is the default behavior</description>
       <full_name>\Altamira\ChartDatum\TwoDimensionalPointFactory</full_name>
       <docblock line="9">
         <description>Responsible for creating instances of \Altamira\ChartDatum\TwoDimensionalPoint</description>
-        <long-description></long-description>
+        <long-description/>
         <tag line="9" name="author" description="relwell"/>
         <tag line="9" name="package" description="ChartDatum"/>
       </docblock>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="24" package="ChartDatum">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="28" package="ChartDatum">
         <name>getFromYValues</name>
         <full_name>getFromYValues</full_name>
         <docblock line="16">
           <description>Transforms a one-dimensional array to x,y points.</description>
           <long-description>&lt;p&gt;Adds one to each X value as array index. Y value is array value.
 Passing an array will append the results to an existing array.
-For more freedom over points, use getFromNested&lt;/p&gt;</long-description>
+In other words, providing the following array:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array( 5, 10, 15, 20, 25 )&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;will yield the following coordinates (as {x,y}):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[{1,5}, {2,10}, {3,15}, {4,20}, {5,25}]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For more freedom over points, use getFromNested.&lt;/p&gt;</long-description>
           <tag line="16" name="param" description="" type="array" variable="$oneDimensionalArray">
             <type by_reference="false">array</type>
           </tag>
@@ -1121,69 +1133,84 @@ For more freedom over points, use getFromNested&lt;/p&gt;</long-description>
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="24">
+        <argument line="28">
           <name>$oneDimensionalArray</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
-        <argument line="24">
+        <argument line="28">
           <name>$result</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="40" package="ChartDatum">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="48" package="ChartDatum">
         <name>getFromXValues</name>
         <full_name>getFromXValues</full_name>
-        <docblock line="32">
+        <docblock line="36">
           <description>Transforms a one-dimensional array to x,y points.</description>
           <long-description>&lt;p&gt;Adds one to each Y value as array index. X value is array value.
 Passing an array will append the results to an existing array.
-For more freedom over value relationships, use getFromNested&lt;/p&gt;</long-description>
-          <tag line="32" name="param" description="" type="array" variable="$oneDimensionalArray">
+In other words, providing the following array:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array( 5, 10, 15, 20, 25 )&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;will yield the following coordinates (as {x,y}):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[{5,1}, {10,2}, {15,3}, {20,4}, {25,5}]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For more freedom over value relationships, use getFromNested.&lt;/p&gt;</long-description>
+          <tag line="36" name="param" description="" type="array" variable="$oneDimensionalArray">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="32" name="param" description="" type="array|null" variable="$result">
+          <tag line="36" name="param" description="" type="array|null" variable="$result">
             <type by_reference="false">array</type>
             <type by_reference="false">null</type>
           </tag>
-          <tag line="32" name="return" description="of \Altamira\ChartDatum\TwoDimensionalPoint" type="array">
+          <tag line="36" name="return" description="of \Altamira\ChartDatum\TwoDimensionalPoint" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="40">
+        <argument line="48">
           <name>$oneDimensionalArray</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
-        <argument line="40">
+        <argument line="48">
           <name>$result</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="55" package="ChartDatum">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="Altamira\ChartDatum" line="67" package="ChartDatum">
         <name>getFromNested</name>
         <full_name>getFromNested</full_name>
-        <docblock line="48">
+        <docblock line="56">
           <description>Transforms an array of arrays into points using the first two array values of each nested array.</description>
-          <long-description>&lt;p&gt;Passing an array will append the results to an existing array.&lt;/p&gt;</long-description>
-          <tag line="48" name="param" description="" type="array" variable="$nestedArray">
+          <long-description>&lt;p&gt;Passing an array will append the results to an existing array.
+Therefore, you providing the following array:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array( array( 10, 8 ), array( 11, 24 ), array( 0.3341, 1551351235 ) )&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;will yield the following two-dimensional points (as {x,y}):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[{10, 8}, {11, 24}, {0.3341, 1551351235}]&lt;/code&gt;&lt;/pre&gt;</long-description>
+          <tag line="56" name="param" description="" type="array" variable="$nestedArray">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="48" name="param" description="" type="array" variable="$result">
+          <tag line="56" name="param" description="" type="array" variable="$result">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="48" name="return" description="" type="\Altamira\ChartDatum\TwoDimensionalPoint">
+          <tag line="56" name="return" description="" type="\Altamira\ChartDatum\TwoDimensionalPoint">
             <type by_reference="false">\Altamira\ChartDatum\TwoDimensionalPoint</type>
           </tag>
         </docblock>
-        <argument line="55">
+        <argument line="67">
           <name>$nestedArray</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
-        <argument line="55">
+        <argument line="67">
           <name>$result</name>
           <default>array()</default>
           <type/>
