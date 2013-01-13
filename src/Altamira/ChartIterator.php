@@ -165,50 +165,37 @@ class ChartIterator extends \ArrayIterator
      */
     public function renderCss()
     {
-        $config = \Altamira\Config::getInstance();
-        
-        foreach ( $this->libraries as $library => $junk ) {
-            switch( $library ) {
-                case \Altamira\JsWriter\Flot::LIBRARY:
-                case \Altamira\JsWriter\D3::LIBRARY:
-                    break;
-                case \Altamira\JsWriter\JqPlot::LIBRARY:
-                default:
-                    $cssPath = $config['css.jqplotpath'];
-            }
-        
-        }
-        
-        if ( isset( $cssPath ) ) {
+        foreach ( $this->getCSSPaths() as $cssPath )
+        {
             echo "<link rel='stylesheet' type='text/css' href='{$cssPath}'></link>";
         }
         
         return $this;
-        
     }
     
     /**
      * Provides the appropriate path to where required CSS is stored for these charting libraries
      * @return Ambigous <string, \Altamira\Config>
      */
-    public function getCSSPath()
+    public function getCSSPaths()
     {
         $config = \Altamira\Config::getInstance();
         
-        $cssPath = '';
+        $cssPaths = array();
         
         foreach ( $this->libraries as $library => $junk ) {
             switch( $library ) {
                 case \Altamira\JsWriter\Flot::LIBRARY:
+                    break;
                 case \Altamira\JsWriter\D3::LIBRARY:
+                    $cssPaths[] = $config['css.d3path'];
                     break;
                 case \Altamira\JsWriter\JqPlot::LIBRARY:
-                default:
-                    $cssPath = $config['css.jqplotpath'];
+                    $cssPaths[] = $config['css.jqplotpath'];
             }
         }
         
-        return $cssPath;
+        return $cssPaths;
     }
     
 }

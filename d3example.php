@@ -25,7 +25,11 @@ $charts[] = $chart;
 $points = array( 'golf clubs' => 1, 'golf shoes' => 5, 'holes' => 18, 'strokes' => 32 );
 $chart = new Chart('chart2', $library );
 $chart->setType( 'Pie' );
-$chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $points ) ) );
+$data = ChartDatum\ScalarValueFactory::getFromAssociativeArray( $points );
+$data[0]['color'] = '#ccaaff';
+$data[1]['color'] = '#ffee00';
+$data[2]['color'] = '#0033dd';
+$chart->addSeries( $chart->createSeries( $data ) );
 $charts[] = $chart;
 
 $chartIterator = new ChartIterator( $charts );
