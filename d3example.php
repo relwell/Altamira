@@ -17,6 +17,9 @@ $library = 'd3';
 $charts = array();
 
 $chart = new Chart('chart1', $library);
+$chart->setAxisTicks( 'x', array( 1, 2, 3, 4, 5 ) )
+      ->addSeries( $chart->createSeries( TwoDimensionalPointFactory::getFromXValues( array( 1, 2, 3, 4, 5 ) ), 'Series A' ) )
+;
 
 $charts[] = $chart;
 
@@ -35,6 +38,22 @@ $chartIterator = new ChartIterator( $charts );
                  ->renderPlugins() ?>
 </head>
 <body>
+<style>
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+ 
+line {
+    stroke: black;
+}
+ 
+text {
+    font-family: Arial;
+    font-size: 9pt;
+}
+</style>
 <?php  
 while ( $chartIterator->valid() ) {
     
