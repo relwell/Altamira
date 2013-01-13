@@ -32,7 +32,7 @@ class ScalarValue extends ChartDatumAbstract
      * @see \Altamira\ChartDatum\ChartDatumAbstract::getRenderData()
      * @return array
      */
-    public function getRenderData()
+    public function getRenderData( $useLabel = false )
     {
         return $this->toArray();
     }

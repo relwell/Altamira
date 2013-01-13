@@ -9,7 +9,7 @@ use Altamira\ChartIterator;
 use Altamira\Series;
 use Altamira\ChartRenderer;
 use Altamira\Config;
-use Altamira\ChartDatum\TwoDimensionalPointFactory;
+use Altamira\ChartDatum;
 
 \Altamira\Config::setConfigFile( 'altamira-config.ini' );
 \Altamira\ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\SVGRenderer' );
@@ -19,9 +19,13 @@ $library = 'd3';
 $charts = array();
 
 $chart = new Chart('chart1', $library);
-$chart->addSeries( $chart->createSeries( TwoDimensionalPointFactory::getFromXValues( array( 1, 2, 3, 4, 5 ) ), 'Series A' ) )
-;
+$chart->addSeries( $chart->createSeries( ChartDatum\TwoDimensionalPointFactory::getFromXValues( array( 1, 2, 3, 4, 5 ) ), 'Series A' ) );
+$charts[] = $chart;
 
+$points = array( 'golf clubs' => 1, 'golf shoes' => 5, 'holes' => 18, 'strokes' => 32 );
+$chart = new Chart('chart2', $library );
+$chart->setType( 'Pie' );
+$chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $points ) ) );
 $charts[] = $chart;
 
 $chartIterator = new ChartIterator( $charts );
