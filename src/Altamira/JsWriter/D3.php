@@ -20,32 +20,21 @@ class D3
      * @var string
      */
     const LIBRARY = 'd3';
-    
-    /**
-     * Tracks the javascript commands sent to D3
-     */
-    protected $outputBuffer = array();
-    
+
     /**
      * Used to identify the type namespace for this particualr JsWriter 
      * @var string
      */
     protected $typeNamespace = '\\Altamira\\Type\\D3\\';
-    
+
     /**
-     * Sets the chart margin
-     * @var int
+     * Holds on to additional directives that the setting of specific options may register
+     * @var array
      */
-    protected $margin = 20;
-    
-    /**
-     * Gives us a consistent variable name for this chart's data
-     * @var string
-     */
-    protected $dataName;
+    protected $extraDirectives = array();
     
     /** 
-     * (non-PHPdoc)
+     * Not sure what to do with this yet. NVD3 is more functional than the other libs
      * @see \Altamira\JsWriter\JsWriterAbstract::getOptionsJS()
      */
     protected function getOptionsJS() 
@@ -59,48 +48,16 @@ class D3
      */
      public function getScript() 
      {
-         return  $this->writeData()
-              .  $this->writeMargin()
-              .  $this->writeSvg()
-              .  $this->writeAxisTicks()
-              .  $this->getType()->write( $this->getDataName() )
-         ;
+         return sprintf( self::ADD_GRAPH, $this->getType()->getChart(),
+                                          implode( "\n", $this->extraDirectives ),
+                                          $this->chart->getName(),
+                                          $this->writeData(),
+                                          $this->chart->getName()
+                       );
+         
+         
      }
      
-     
-    /**
-     * Responsible for setting the tick labels on a given axis
-     * @param string $axis
-     * @param array $ticks
-     * @return \Altamira\JsWriter\D3
-     */
-    public function setAxisTicks($axis, array $ticks = array() )
-    {
-        $opposites = array( 'x' => 'y', 'y' => 'x' );
-        if ( in_array($axis, array('x', 'y') ) ) {
-            $oppositeAxis = $opposites[$axis];
-            $length = count( $ticks );
-            $this->outputBuffer['axisticks'.$axis] = <<<ENDCODE
-g.selectAll(".{$axis}Ticks")
-    .data(x.ticks({$length}))
-    .enter().append("svg:line")
-    .attr("class", "{$axis}ticks")
-    .attr("{$axis}1", function(d) { return {$axis}(d); })
-    .attr("{$oppositeAxis}1", -1 * {$oppositeAxis}(0))
-    .attr("{$axis}2", function(d) { return {$axis}(d); })
-    .attr("{$oppositeAxis}2", -1 * {$oppositeAxis}(-0.3))
-ENDCODE;
-            
-        }
-
-        return $this;
-    }
-    
-    public function writeAxisTicks()
-    {
-        return  ( isset( $this->outputBuffer['axisticksx'] ) ? $this->outputBuffer['axisticksx'] : '' )
-             .  ( isset( $this->outputBuffer['axisticksy'] ) ? $this->outputBuffer['axisticksy'] : '' );
-    }
     
     /**
      * (non-PHPdoc)
@@ -119,58 +76,43 @@ ENDCODE;
      */
     protected function writeData()
     {
+        $jsonBuffer = "[\n";
         $counter = 0;
-        $ob = '';
-        $dataVars = array();
-        $chartName = $this->chart->getName();
-        foreach ( $this->chart->getSeries() as $series ) {
-            $seriesData = array();
-            $sig = sprintf( '%s_%s', $chartName, $counter++ );
+        foreach ( $this->chart->getSeries() as $series )
+        {
+            if ( $counter++ > 0 ) {
+                $jsonBuffer .= "\t,\n";
+            }
+            $data = array(
+                    'values' => array(),
+                    'key' => $series->getTitle(),
+                    'color' => ( $this->getNestedOptVal( $this->options, 'seriesStorage', $series->getTitle(), 'color' ) ?: '#333' )
+                    );
             foreach ( $series->getData() as $datum )
             {
-                $seriesData[] = $datum->getRenderData();
+                $data['values'][] = $datum->toArray();
             }
-            $dataVars[] = $sig;
-            $ob .= sprintf( "var %s = %s;\n", $sig, json_encode( $seriesData ) );
+            $jsonBuffer .= "\t".json_encode( $data )."\n";
         }
-        return sprintf( "%svar %s = [%s]\n", $ob, $this->getDataName(), implode( ',', $dataVars ) );
-    }
-    
-    public function setMargin( $margin )
-    {
-        $this->margin = $margin;
-    }
-    
-    protected function writeMargin()
-    {
-        return sprintf( "margin = %s;\n", $this->margin );
-    }
-    
-    protected function getDataName()
-    {
-        if (! isset( $this->dataName ) ) {
-            $this->dataName = $this->chart->getName() . '_data'; 
-        }
-        return $this->dataName; 
-    }
-    
-    protected function writeSvg()
-    {
-        $chartName = $this->chart->getName();
-        $dataName = $this->getDataName();
-        return <<<ENDSCRIPT
-var h = div.height;
-var w = div.width;
-y = d3.scale.linear().domain([0, d3.max({$dataName})]).range([0 + margin, h - margin]);
-x = d3.scale.linear().domain([0, {$dataName}.length]).range([0 + margin, w - margin]);
-var div = d3.select("#{$chartName}");
-var vis = div
-    .append("svg:svg")
-    .attr("width", w)
-    .attr("height", h)
-var g = vis.append("svg:g")
-    .attr("transform", "translate(0, 200)");
-ENDSCRIPT;
         
+        $jsonBuffer .= "\n]";
+        
+        return $jsonBuffer;
     }
+    
+
+    
+    const ADD_GRAPH = <<<ENDSCRIPT
+nv.addGraph(function() {  
+    %s
+    %s
+    d3.select('#%s svg')
+      .datum(%s)
+      .transition()
+      .duration(500)
+      .call(chart);
+    nv.utils.windowResize(function() { d3.select('#%s svg').call(chart) });
+    return chart;
+});
+ENDSCRIPT;
 }

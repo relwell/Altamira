@@ -12,5 +12,21 @@ use Altamira\Type\TypeAbstract;
  */
 abstract class D3TypeAbstract extends TypeAbstract
 {
-    abstract public function write( $dataName );
+    /**
+     * Specifies the model used to generate this chart
+     * @var string
+     */
+    protected $chartDirective;
+    
+    /**
+     * Generates the appropriate directive for generating the correct NVD3 model
+     * @return string;
+     */
+    public function getChart()
+    {
+        if (! isset( $this->chartDirective ) ) {
+            throw new \Exception( "Every instance of D3TypeAbstract should have a chartDirective value specified" );
+        }
+        return $this->chartDirective;
+    }
 }

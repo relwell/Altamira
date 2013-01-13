@@ -12,13 +12,14 @@ use Altamira\Config;
 use Altamira\ChartDatum\TwoDimensionalPointFactory;
 
 \Altamira\Config::setConfigFile( 'altamira-config.ini' );
+\Altamira\ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\SVGRenderer' );
+\Altamira\ChartRenderer::pushRenderer( '\Altamira\ChartRenderer\DefaultRenderer' );
 $library = 'd3';
 
 $charts = array();
 
 $chart = new Chart('chart1', $library);
-$chart->setAxisTicks( 'x', array( 1, 2, 3, 4, 5 ) )
-      ->addSeries( $chart->createSeries( TwoDimensionalPointFactory::getFromXValues( array( 1, 2, 3, 4, 5 ) ), 'Series A' ) )
+$chart->addSeries( $chart->createSeries( TwoDimensionalPointFactory::getFromXValues( array( 1, 2, 3, 4, 5 ) ), 'Series A' ) )
 ;
 
 $charts[] = $chart;
@@ -29,31 +30,13 @@ $chartIterator = new ChartIterator( $charts );
 <html>
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
-<!-- enable this if you want to display the charts on IE -->
-<!--<script type="text/javascript" src="js/excanvas.js"></script>-->
+<script src="http://d3js.org/d3.v3.min.js"></script>
 
 <?php $chartIterator->renderLibraries()
                  ->renderCss()
                  ->renderPlugins() ?>
 </head>
 <body>
-<style>
-path {
-    stroke: steelblue;
-    stroke-width: 2;
-    fill: none;
-}
- 
-line {
-    stroke: black;
-}
- 
-text {
-    font-family: Arial;
-    font-size: 9pt;
-}
-</style>
 <?php  
 while ( $chartIterator->valid() ) {
     
