@@ -90,7 +90,12 @@ class D3
                     );
             foreach ( $series->getData() as $datum )
             {
-                $data['values'][] = $datum->toArray();
+                $datumArray = $datum->toArray();
+                if ( $datum instanceof \Altamira\ChartDatum\Bubble ) {
+                    $datumArray['size'] = $datumArray['radius'];
+                    unset( $datumArray['radius'] );
+                }
+                $data['values'][] = $datumArray;
             }
             $jsonBuffer .= "\t".json_encode( $data )."\n";
         }

@@ -35,6 +35,20 @@ $chart->setType( 'Donut' );
 $chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromNestedArray( $nested ) ) );
 $charts[] = $chart;
 
+$tuples = array( 
+        array('Screws', 4, 7, 5),
+        array('Nails', 5, 3, 6),
+        array('Bolts', 4, 5, 7),
+        array('Nuts', 3, 4, 6),
+        array('Washers', 3, 2, 5),
+        array('Pliers', 4, 1, 5),
+        array('Hammers', 4, 6, 6)
+        );
+$chart = new Chart('chart4', $library );
+$chart->addSeries( $chart->createManySeries( $tuples, array( '\Altamira\ChartDatum\BubbleFactory', 'getBubbleDatumFromTupleSet' ) ) );
+$chart->setType( 'Bubble' );
+$charts[] = $chart;
+
 $chartIterator = new ChartIterator( $charts );
 
 ?>
