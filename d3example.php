@@ -49,6 +49,38 @@ $chart->addSeries( $chart->createManySeries( $tuples, array( '\Altamira\ChartDat
 $chart->setType( 'Bubble' );
 $charts[] = $chart;
 
+$chart = new Chart('chart5', $library);
+$array1 = array( 'A'=>1, 'B'=>4, 'C'=>8, 'D'=>2, 'E'=>1, 'F'=>5);
+$array2 = array( 'A'=>6, 'B'=>3, 'C'=>2, 'D'=>8, 'E'=>9, 'F'=>4);
+$series1 = $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array1 ), 'Runs');
+$series2 = $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array2 ), 'Walks');
+$series1->setFill( array( 'color' => '#22dd22' ) );
+$series2->setFill( array( 'color' => '#dd2222' ) );
+$chart->setTitle('Horizontal Bar Chart')->
+    addSeries( $series1 )->
+    addSeries( $series2 )->
+    setType('Bar', array( 'horizontal' => true ) );
+$charts[] = $chart;
+
+$array1 = array(1, 4, 8, 2, 1, 5);
+$array2 = array(3, 3, 5, 4, 2, 6);
+$alphas = range('A', 'Z');
+$num = max(count($array1), count($array2));
+for($i = 0; $i < $num; $i++) {
+    $total = $array1[$i] + $array2[$i];
+    $array1[$alphas[$i]] = (int) ($array1[$i] / $total * 100);
+    $array2[$alphas[$i]] = (int) ($array2[$i] / $total * 100);
+    unset( $array1[$i] );
+    unset( $array2[$i] );
+}
+
+$chart = new Chart('chart6', $library);
+$chart->setTitle('Vertical Stack Chart')->
+    addSeries($chart->createSeries(ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array1 ), 'Is'))->
+    addSeries($chart->createSeries(ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array2 ), 'Is Not'))->
+    setType('Bar', array( 'stackSeries' => true ) );
+$charts[] = $chart;
+
 $chartIterator = new ChartIterator( $charts );
 
 ?>

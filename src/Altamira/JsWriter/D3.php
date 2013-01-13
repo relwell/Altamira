@@ -14,6 +14,7 @@ use Altamira\JsWriter\Ability;
  */
 class D3
     extends JsWriterAbstract
+    implements Ability\Fillable
 {
     /**
      * Identifies the string value of which library this jsWriter is responsible for
@@ -72,6 +73,23 @@ class D3
     }
     
     /**
+     * Used for filling series in charts
+     * @param string|\Altamira\Chart $series
+     * @param array $opts
+     */
+    public function setFill($series, $opts = array('use'    => true, 
+                                                   'stroke' => false, 
+                                                   'color'  => null, 
+                                                   'alpha'  => null
+                                                  )
+                            )
+    {
+        if ( isset( $opts['color'] ) ) {
+            $this->setSeriesOption( $series, 'color', $opts['color'] );
+        }
+    }
+    
+    /**
      * Provided data registered in a series, declare the data for that series
      */
     protected function writeData()
@@ -83,14 +101,18 @@ class D3
             if ( $counter++ > 0 ) {
                 $jsonBuffer .= "\t,\n";
             }
+
             $data = array(
                     'values' => array(),
                     'key' => $series->getTitle(),
-                    'color' => ( $this->getNestedOptVal( $this->options, 'seriesStorage', $series->getTitle(), 'color' ) ?: '#333' )
                     );
+            if ( $color = $this->getNestedOptVal( $this->options, 'seriesStorage', $series->getTitle(), 'color' ) ) {
+                $data['color'] = $color;
+            }
             foreach ( $series->getData() as $datum )
             {
                 $datumArray = $datum->toArray();
+                // reformat bubble radius to size
                 if ( $datum instanceof \Altamira\ChartDatum\Bubble ) {
                     $datumArray['size'] = $datumArray['radius'];
                     unset( $datumArray['radius'] );
@@ -104,7 +126,6 @@ class D3
         
         return $jsonBuffer;
     }
-    
 
     
     const ADD_GRAPH = <<<ENDSCRIPT
