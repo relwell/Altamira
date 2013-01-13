@@ -39,6 +39,8 @@ class Config implements \ArrayAccess
         if ( !empty( $file ) && file_exists( $file ) ) {
             $this->config = parse_ini_file( $file, true );
         }
+        
+        $this['altamira.root'] = __DIR__ . '/';
     }
     
     /**
