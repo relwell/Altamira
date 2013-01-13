@@ -26,10 +26,13 @@ $points = array( 'golf clubs' => 1, 'golf shoes' => 5, 'holes' => 18, 'strokes' 
 $chart = new Chart('chart2', $library );
 $chart->setType( 'Pie' );
 $data = ChartDatum\ScalarValueFactory::getFromAssociativeArray( $points );
-$data[0]['color'] = '#ccaaff';
-$data[1]['color'] = '#ffee00';
-$data[2]['color'] = '#0033dd';
 $chart->addSeries( $chart->createSeries( $data ) );
+$charts[] = $chart;
+
+$nested = array( array( 45, 'cool' ), array( 25, 'cold' ), array( '60', 'temperate' ), array( '75', 'warm' ), array( '90', 'hot' ) );
+$chart = new Chart('chart3', $library );
+$chart->setType( 'Donut' );
+$chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromNestedArray( $nested ) ) );
 $charts[] = $chart;
 
 $chartIterator = new ChartIterator( $charts );
