@@ -13,5 +13,5 @@ class Line extends \Altamira\Type\D3\D3TypeAbstract
      * NVD3 lineChart model
      * @var string
      */
-    protected $chartDirective = "var chart = nv.models.lineChart();";
+    protected $chartDirective = "var chart = nv.models.lineChart();\n";
 }
