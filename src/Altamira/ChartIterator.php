@@ -133,7 +133,8 @@ class ChartIterator extends \ArrayIterator
         $config = \Altamira\Config::getInstance();
         $libraryToPath = array(
                 \Altamira\JsWriter\Flot::LIBRARY    =>    $config['js.flotlib'],
-                \Altamira\JsWriter\JqPlot::LIBRARY  =>    $config['js.jqplotlib']
+                \Altamira\JsWriter\JqPlot::LIBRARY  =>    $config['js.jqplotlib'],
+                \Altamira\JsWriter\D3::LIBRARY      =>    $config['js.d3lib']
                 );
         $libraryKeys = array_unique( array_keys( $this->libraries ) );
         $libraryPaths = array();
@@ -169,6 +170,7 @@ class ChartIterator extends \ArrayIterator
         foreach ( $this->libraries as $library => $junk ) {
             switch( $library ) {
                 case \Altamira\JsWriter\Flot::LIBRARY:
+                case \Altamira\JsWriter\D3::LIBRARY:
                     break;
                 case \Altamira\JsWriter\JqPlot::LIBRARY:
                 default:
@@ -198,6 +200,7 @@ class ChartIterator extends \ArrayIterator
         foreach ( $this->libraries as $library => $junk ) {
             switch( $library ) {
                 case \Altamira\JsWriter\Flot::LIBRARY:
+                case \Altamira\JsWriter\D3::LIBRARY:
                     break;
                 case \Altamira\JsWriter\JqPlot::LIBRARY:
                 default:
