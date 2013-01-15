@@ -13,6 +13,7 @@ class ChartDatumTest extends PHPUnit_Framework_TestCase
      * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetSet
      * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetGet
      * @covers \Altamira\ChartDatum\ChartDatumAbstract::offsetUnset
+     * @covers \Altamira\ChartDatum\ChartDatumAbstract::toArray
      */
     public function testTwoDimensionalPointAndAbstract()
     {
@@ -108,6 +109,13 @@ class ChartDatumTest extends PHPUnit_Framework_TestCase
                 array( $dimensions['x'], $dimensions['y'], $label ),
                 $point->getRenderData( true ),
                 '\Altamira\TwoDimensionalPoint::getRenderData should return array(x, y, label) when passed true as its first parameter'
+        );
+        
+        $datumDataRefl = new ReflectionProperty( '\Altamira\ChartDatum\ChartDatumAbstract', 'datumData' );
+        $datumDataRefl->setAccessible( true );
+        $this->assertEquals(
+                $datumDataRefl->getValue( $point ),
+                $point->toArray()
         );
         
         unset( $point['x'] );
