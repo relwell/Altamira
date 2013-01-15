@@ -91,6 +91,7 @@ class D3
     
     /**
      * Provided data registered in a series, declare the data for that series
+     * @return string
      */
     protected function writeData()
     {
@@ -101,19 +102,19 @@ class D3
             if ( $counter++ > 0 ) {
                 $jsonBuffer .= "\t,\n";
             }
-
+            $title = $series->getTitle();
             $data = array(
                     'values' => array(),
-                    'key' => $series->getTitle(),
+                    'key' => $title,
                     );
-            if ( $color = $this->getNestedOptVal( $this->options, 'seriesStorage', $series->getTitle(), 'color' ) ) {
+            if ( $color = $this->getNestedOptVal( $this->options, 'seriesStorage', $title, 'color' ) ) {
                 $data['color'] = $color;
             }
             foreach ( $series->getData() as $datum )
             {
                 $datumArray = $datum->toArray();
                 // reformat bubble radius to size
-                if ( $datum instanceof \Altamira\ChartDatum\Bubble ) {
+                if ( isset( $datumArray['radius'] ) ) {
                     $datumArray['size'] = $datumArray['radius'];
                     unset( $datumArray['radius'] );
                 }
