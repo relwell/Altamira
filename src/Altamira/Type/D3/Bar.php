@@ -28,15 +28,15 @@ class Bar extends D3TypeAbstract
      */
     public function getChart()
     {
-        if (! isset( $this->chartDirective ) ) {
-            throw new \Exception( "Every instance of D3TypeAbstract should have a chartDirective value specified" );
-        }
         return str_replace( '#model#', $this->chartModel, $this->chartDirective );
     }
     
     /**
-     * (non-PHPdoc)
+     * Configures the chart directive based on the options set
      * @see \Altamira\Type\TypeAbstract::setOption()
+     * @param string $key
+     * @param mixed $val
+     * @return \Altamira\Type\D3\Bar
      */
     public function setOption( $key, $val )
     {

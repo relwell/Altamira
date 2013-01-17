@@ -133,6 +133,70 @@ class D3Test extends PHPUnit_Framework_TestCase
                 '#333',
                 $resultDecoded[0]['color']
         );
+    }
+    
+    /**
+     * @covers \Altamira\JsWriter\D3::getScript
+     */
+    public function testGetScript()
+    {
+        $d3 = $this->d3->setMethods( array( 'getType', 'writeData' ) )->getMock();
         
+        $mockChart = $this->getMockBuilder( '\Altamira\Chart' )
+                          ->disableOriginalConstructor()
+                          ->setMethods( array( 'getName' ) )
+                          ->getMock();
+        
+        $mockType = $this->getMockBuilder( '\Altamira\Type\D3\Line' )
+                         ->disableOriginalConstructor()
+                         ->setMethods( array( 'getChart' ) )
+                         ->getMock();
+        
+        $chartString = 'it does not matter what i am';
+        $name = 'me neither';
+        $extraDirs = array( 'oh', 'and', 'this', 'dunt', 'either' );
+        $writeData = "I am write data";
+        
+        $d3
+            ->expects( $this->at( 0 ) )
+            ->method ( 'getType' )
+            ->will   ( $this->returnValue( $mockType ) )
+        ;
+        $mockType
+            ->expects( $this->at( 0 ) )
+            ->method ( 'getChart' )
+            ->will   ( $this->returnValue( $chartString ) )
+        ;
+        $mockChart
+            ->expects( $this->any() )
+            ->method ( 'getName' )
+            ->will   ( $this->returnValue( $name ) )
+        ;
+        $d3
+            ->expects( $this->at( 1 ) )
+            ->method ( 'writeData' )
+            ->will   ( $this->returnValue( $writeData ) )
+        ;
+        
+        $script = sprintf( \Altamira\JsWriter\D3::ADD_GRAPH, 
+                           $chartString,
+                           implode( "\n", $extraDirs ),
+                           $name,
+                           $writeData,
+                           $name
+                       );
+        
+        $dirs = new ReflectionProperty( '\Altamira\JsWriter\D3', 'extraDirectives' );
+        $dirs->setAccessible( true );
+        $dirs->setValue( $d3, $extraDirs );
+        
+        $chart = new ReflectionProperty( '\Altamira\JsWriter\D3', 'chart' );
+        $chart->setAccessible( true );
+        $chart->setValue( $d3, $mockChart );
+        
+        $this->assertEquals(
+                $d3->getScript(),
+                $script
+        );
     }
 }
