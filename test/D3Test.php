@@ -199,4 +199,22 @@ class D3Test extends PHPUnit_Framework_TestCase
                 $script
         );
     }
+    
+    /**
+     * @covers \Altamira\JsWriter\D3::setFill
+     */
+    public function testSetFill()
+    {
+        $d3 = $this->d3->setMethods( array( 'setFillColor' ) )->getMock();
+        $mockSeries = $this->getMockBuilder( '\Altamira\Series' )
+                           ->disableOriginalConstructor()
+                           ->getMock();
+
+        $d3
+            ->expects( $this->at( 0 ) )
+            ->method ( 'setFillColor' )
+            ->with   ( $mockSeries, '#333' ) 
+        ;
+        $d3->setFill( $mockSeries, array( 'use' => true, 'color' => '#333' ) );
+    }
 }

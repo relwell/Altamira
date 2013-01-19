@@ -54,7 +54,7 @@ $array1 = array( 'A'=>1, 'B'=>4, 'C'=>8, 'D'=>2, 'E'=>1, 'F'=>5);
 $array2 = array( 'A'=>6, 'B'=>3, 'C'=>2, 'D'=>8, 'E'=>9, 'F'=>4);
 $series1 = $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array1 ), 'Runs');
 $series2 = $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array2 ), 'Walks');
-$series1->setFill( array( 'color' => '#22dd22' ) );
+$series1->setFill( array( 'use'=>true, 'stroke'=>'rgba(20, 255, 20, 1)' ) );
 $series2->setFill( array( 'color' => '#dd2222' ) );
 $chart->setTitle('Horizontal Bar Chart')->
     addSeries( $series1 )->

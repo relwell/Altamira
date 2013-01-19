@@ -34,6 +34,17 @@ class D3
      */
     protected $extraDirectives = array();
     
+    /**
+     * Same as with Flot
+     */
+    protected $useSeriesLabels = true;
+    
+    /**
+     * Allows us to control the style of series a bit better
+     * @var array
+     */
+    protected $extraStyle = array();
+    
     /** 
      * Not sure what to do with this yet. NVD3 is more functional than the other libs
      * @see \Altamira\JsWriter\JsWriterAbstract::getOptionsJS()
@@ -54,7 +65,10 @@ class D3
                                           $this->chart->getName(),
                                           $this->writeData(),
                                           $this->chart->getName()
-                       );
+                       )
+               // these work when spit into the console, but not when loaded here. we need to find a good trigger to call
+              . implode( "\n", $this->extraStyle );
+         ;
          
          
      }
@@ -74,7 +88,7 @@ class D3
     
     /**
      * Used for filling series in charts
-     * @param string|\Altamira\Chart $series
+     * @param string|\Altamira\Series $series
      * @param array $opts
      */
     public function setFill($series, $opts = array('use'    => true, 
@@ -84,9 +98,80 @@ class D3
                                                   )
                             )
     {
-        if ( isset( $opts['color'] ) ) {
-            $this->setSeriesOption( $series, 'color', $opts['color'] );
+        if ( isset( $opts['use'] ) && !$opts['use'] ) {
+            $this->setUseFill( $series, false );
         }
+        if ( isset( $opts['color'] ) ) {
+            $this->setFillColor( $series, $opts['color'] );
+        }
+        if ( isset( $opts['stroke'] ) ) {
+            $this->setStrokeColor( $series, $opts['stroke'] );
+        }
+    }
+    
+    /**
+     * Sets the fill color (we're splitting out array-based functionality so we can refactor interfaces soon)
+     * @param string|\Altamira\Series $series
+     * @param string $color
+     * @return \Altamira\JsWriter\JsWriterAbstract
+     */
+    public function setFillColor( $series, $color ) {
+        return $this->setSeriesOption( $this->getSeriesTitle( $series ), 'color', $color );
+    }
+    
+    /**
+     * Determines whether to use fill for a series
+     * @param string|\Altamira\Series $series
+     * @param bool $bool
+     * @return \Altamira\JsWriter\JsWriterAbstract
+     */
+    public function setUseFill( $series, $bool ) {
+        return $bool ? $this : $this->setFillColor( $series, 'rgba(0, 0, 0, 0)' );
+    }
+    
+    /**
+     * Sets the stroke color for the series
+     * @param \Altamira\Series|string $series
+     * @param string $color
+     * @return \Altamira\JsWriter\D3
+     */
+    public function setStrokeColor( $series, $color ) 
+    {
+        return $this->setStyleForSeries( $series, 'stroke', $color )
+                    ->setStyleForSeries( $series, 'stroke-opacity', '1' )
+                    ->setStyleForSeries( $series, 'stroke-width', '1px' );
+    }
+    
+    /**
+     * Allows us to set the style of a specific series
+     * @param \Altamira\Series|string $series
+     * @param string $key
+     * @param string $value
+     * @return \Altamira\JsWriter\D3
+     */
+    protected function setStyleForSeries( $series, $key, $value ) 
+    {
+        $this->extraStyle[] = sprintf( self::SET_STYLE_FOR_SERIES, 
+                                       $this->chart->getName(), 
+                                       $this->getSeriesIndex( $series ),
+                                       $key, 
+                                       $value );
+        return $this;
+    }
+     
+    /**
+     * Gives us the ordering of the series. This allows us to do some css selector black magic.
+     * @param \Altamira\Series|string $series
+     * @return int|false
+     */
+    protected function getSeriesIndex( $series ) 
+    {
+        if ( $series instanceof \Altamira\Series ) {
+            $array = $this->chart->getSeries();
+        } else {
+            $array = array_keys( $this->options['seriesStorage'] );
+        }
+        return array_search( $series, $array, true );
     }
     
     /**
@@ -102,30 +187,52 @@ class D3
             if ( $counter++ > 0 ) {
                 $jsonBuffer .= "\t,\n";
             }
-            $title = $series->getTitle();
-            $data = array(
-                    'values' => array(),
-                    'key' => $title,
-                    );
-            if ( $color = $this->getNestedOptVal( $this->options, 'seriesStorage', $title, 'color' ) ) {
-                $data['color'] = $color;
-            }
-            foreach ( $series->getData() as $datum )
-            {
-                $datumArray = $datum->toArray();
-                // reformat bubble radius to size
-                if ( isset( $datumArray['radius'] ) ) {
-                    $datumArray['size'] = $datumArray['radius'];
-                    unset( $datumArray['radius'] );
-                }
-                $data['values'][] = $datumArray;
-            }
+            
+            $data = $this->getDataFromSeries( $series );
+            
             $jsonBuffer .= "\t".json_encode( $data )."\n";
         }
         
         $jsonBuffer .= "\n]";
         
         return $jsonBuffer;
+    }
+    
+    /**
+     * Adds values to a series based on any options set
+     * @param \Altamira\Series $series
+     */
+    protected function getDataFromSeries( \Altamira\Series $series )
+    {
+        $title = $this->getSeriesTitle( $series );
+        $data = array( 'values' => array(), 'key' => $title );
+
+        $style = array();
+        if ( $color = $this->getSeriesOption( $series, 'color' ) ) {
+            $data['color'] = $color;
+        }
+        
+        foreach ( $series->getData() as $datum )
+        {
+            $data['values'][] = $this->getDataFromDatum( $datum );
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * Prepares the array which we turn into JSON for a given datum
+     * @param \Altamira\ChartDatum $datum
+     */
+    protected function getDataFromDatum( \Altamira\ChartDatum\ChartDatumAbstract $datum ) 
+    {
+        $datumArray = $datum->toArray();
+        // reformat bubble radius to size
+        if ( isset( $datumArray['radius'] ) ) {
+            $datumArray['size'] = $datumArray['radius'];
+            unset( $datumArray['radius'] );
+        }
+        return $datumArray;
     }
 
     
@@ -142,4 +249,9 @@ nv.addGraph(function() {
     return chart;
 });
 ENDSCRIPT;
+    
+    const SET_STYLE_FOR_SERIES = <<<ENDSCRIPT
+jQuery(jQuery('#%s .nv-groups > g')[%s]).find( 'g' ).children().css( "%s", "%s" );
+ENDSCRIPT;
+
 }
