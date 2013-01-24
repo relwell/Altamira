@@ -49,18 +49,19 @@ $chart->addSeries( $chart->createManySeries( $tuples, array( '\Altamira\ChartDat
 $chart->setType( 'Bubble' );
 $charts[] = $chart;
 
-$chart = new Chart('chart5', $library);
+$chart5 = new Chart('chart5', $library);
+$chart5->setType('Bar', array( 'horizontal' => true ) );
 $array1 = array( 'A'=>1, 'B'=>4, 'C'=>8, 'D'=>2, 'E'=>1, 'F'=>5);
 $array2 = array( 'A'=>6, 'B'=>3, 'C'=>2, 'D'=>8, 'E'=>9, 'F'=>4);
-$series1 = $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array1 ), 'Runs');
-$series2 = $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array2 ), 'Walks');
+$series1 = $chart5->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array1 ), 'Runs');
+$series2 = $chart5->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $array2 ), 'Walks');
 $series1->setFill( array( 'use'=>true, 'stroke'=>'rgba(20, 255, 20, 1)' ) );
 $series2->setFill( array( 'color' => '#dd2222' ) );
-$chart->setTitle('Horizontal Bar Chart')->
+$chart5->setTitle('Horizontal Bar Chart')->
     addSeries( $series1 )->
-    addSeries( $series2 )->
-    setType('Bar', array( 'horizontal' => true ) );
-$charts[] = $chart;
+    addSeries( $series2 )
+    ;
+$charts[] = $chart5;
 
 $array1 = array(1, 4, 8, 2, 1, 5);
 $array2 = array(3, 3, 5, 4, 2, 6);

@@ -40,6 +40,12 @@ class D3
     protected $useSeriesLabels = true;
     
     /**
+     * CSS
+     * @var array
+     */
+    protected $extraCSS = array();
+    
+    /**
      * Allows us to control the style of series a bit better
      * @var array
      */
@@ -60,14 +66,16 @@ class D3
      */
      public function getScript() 
      {
-         return sprintf( self::ADD_GRAPH, $this->getType()->getChart(),
+         return sprintf( self::ON_RENDER_END, implode( "\n", $this->extraStyle ) )
+              . sprintf( self::ADD_GRAPH, $this->getType()->getChart(),
                                           implode( "\n", $this->extraDirectives ),
                                           $this->chart->getName(),
                                           $this->writeData(),
                                           $this->chart->getName()
                        )
-               // these work when spit into the console, but not when loaded here. we need to find a good trigger to call
-              . implode( "\n", $this->extraStyle );
+               . sprintf( self::MAKE_CSS, implode( "\n", $this->extraCSS ) );
+              ;
+         
          ;
          
          
@@ -107,6 +115,7 @@ class D3
         if ( isset( $opts['stroke'] ) ) {
             $this->setStrokeColor( $series, $opts['stroke'] );
         }
+        
     }
     
     /**
@@ -137,6 +146,10 @@ class D3
      */
     public function setStrokeColor( $series, $color ) 
     {
+        $call = $this->getType()->setStrokeColor( $this->chart->getName(), $this->getSeriesIndex( $series ), $color );
+        if (! empty( $call ) ) { 
+            $this->extraCSS[] = $call;
+        }
         return $this->setStyleForSeries( $series, 'stroke', $color )
                     ->setStyleForSeries( $series, 'stroke-opacity', '1' )
                     ->setStyleForSeries( $series, 'stroke-width', '1px' );
@@ -155,6 +168,8 @@ class D3
                                        $this->chart->getName(), 
                                        $this->getSeriesIndex( $series ),
                                        $key, 
+                                       $value,
+                                       $key,
                                        $value );
         return $this;
     }
@@ -166,12 +181,8 @@ class D3
      */
     protected function getSeriesIndex( $series ) 
     {
-        if ( $series instanceof \Altamira\Series ) {
-            $array = $this->chart->getSeries();
-        } else {
-            $array = array_keys( $this->options['seriesStorage'] );
-        }
-        return array_search( $series, $array, true );
+        $array = array_keys( $this->options['seriesStorage'] );
+        return array_search( $this->getSeriesTitle( $series ), $array, true );
     }
     
     /**
@@ -251,7 +262,18 @@ nv.addGraph(function() {
 ENDSCRIPT;
     
     const SET_STYLE_FOR_SERIES = <<<ENDSCRIPT
-jQuery(jQuery('#%s .nv-groups > g')[%s]).find( 'g' ).children().css( "%s", "%s" );
+jQuery('#%s .nv-series-%s').css( "%s", "%s" );
 ENDSCRIPT;
+    
+    const ON_RENDER_END = <<<ENDSCRIPT
+nv.dispatch.on('render_end', function(e) {
+    %s
+});    
+ENDSCRIPT;
+    
+    const MAKE_CSS = <<<ENDSCRIPT
+jQuery( 'body' ).append( jQuery('<style></style>').text("%s") );
+ENDSCRIPT;
+    
 
 }
