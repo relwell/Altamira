@@ -15,7 +15,8 @@ use Altamira\JsWriter\Ability;
 class D3
     extends JsWriterAbstract
     implements Ability\Fillable,
-               Ability\Legendable
+               Ability\Legendable,
+               Ability\Cursorable
 {
     /**
      * Identifies the string value of which library this jsWriter is responsible for
@@ -169,6 +170,24 @@ class D3
     {
         if ( isset( $opts['on'] ) && !( $opts['on'] ) ) {
             $this->extraDirectives[] = "chart.showLegend(false)\n";
+        }
+        return $this;
+    }
+    
+    /**
+     * Actually turns OFF cursor the first time. 
+     * @todo probably a bad thing
+     * @see \Altamira\JsWriter\Ability\Cursorable::useCursor()
+     * @return \Altamira\JsWriter\D3
+     */
+    public function useCursor()
+    {
+        if ( isset( $this->options['hideCursor'] ) && $this->options['hideCursor'] ) {
+            $this->extraDirectives[] = "chart.tooltips(true);\n";
+            unset( $this->options['hideCursor'] );
+        } else {
+            $this->extraDirectives[] = "chart.tooltips(false);\n";
+            $this->options['hideCursor'] = true;
         }
         return $this;
     }
