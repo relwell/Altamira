@@ -19,7 +19,7 @@ class Bar extends D3TypeAbstract
      * Allows us to identify the correct chart model
      * @var string
      */
-    protected $chartModel = 'discreteBarChart';
+    protected $chartModel = 'multiBarChart';
     
     /**
      * Generates the appropriate directive for generating the correct NVD3 model
@@ -45,8 +45,10 @@ class Bar extends D3TypeAbstract
                 $this->chartModel = 'multiBarHorizontalChart';
                 return $this;
             case 'stackSeries':
-                $this->chartModel = 'multiBarChart';
                 $this->chartDirective .= ".stacked(true)\n";
+                return $this;
+            case 'discrete':
+                $this->chartModel = 'discreteBarChart';
                 return $this;
             default:
                 return parent::setOption( $key, $val );

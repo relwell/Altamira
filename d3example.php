@@ -82,13 +82,21 @@ $chart->setTitle('Vertical Stack Chart')->
     setType('Bar', array( 'stackSeries' => true ) );
 $charts[] = $chart;
 
+$arr1 = array( "SF" => 50, "Oakland" => 75, "Marin" => 2, "Millbrae" => 10, "San Bruno" => 5 );
+$arr2 = array( "SF" => 15, "Oakland" => 125, "Marin" => 12, "Millbrae" => 4, "San Bruno" => 12 );
+$chart = new Chart( 'chart7', $library );
+$chart->setType( "Bar" )->setTitle( 'Another Bar Chart' );
+$chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $arr1 ), 'Players' ) )
+      ->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $arr2 ), 'Hustlers' ) );
+$charts[] = $chart;
+
 $chartIterator = new ChartIterator( $charts );
 
 ?>
 <html>
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.v2.min.js"></script>
 
 <?php $chartIterator->renderLibraries()
                  ->renderCss()
