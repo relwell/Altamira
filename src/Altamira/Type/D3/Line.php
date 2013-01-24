@@ -14,6 +14,4 @@ class Line extends \Altamira\Type\D3\D3TypeAbstract
      * @var string
      */
     protected $chartDirective = "var chart = nv.models.lineChart();\n";
-    
-    public function setStrokeColor() { return ''; }
 }
