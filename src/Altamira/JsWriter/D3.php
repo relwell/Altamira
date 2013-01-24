@@ -14,7 +14,8 @@ use Altamira\JsWriter\Ability;
  */
 class D3
     extends JsWriterAbstract
-    implements Ability\Fillable
+    implements Ability\Fillable,
+               Ability\Legendable
 {
     /**
      * Identifies the string value of which library this jsWriter is responsible for
@@ -153,6 +154,23 @@ class D3
         return $this->setStyleForSeries( $series, 'stroke', $color )
                     ->setStyleForSeries( $series, 'stroke-opacity', '1' )
                     ->setStyleForSeries( $series, 'stroke-width', '1px' );
+    }
+    
+    /**
+     * Sets the legend -- used to turn legend OFF
+     * @see \Altamira\JsWriter\Ability\Legendable::setLegend()
+     * @param array $opts
+     * @return \Altamira\JsWriter\D3
+     */
+    public function setLegend( array $opts = array('on'       => 'true', 
+                                                    'location' => 'ne', 
+                                                    'x'        => 0, 
+                                                    'y'        => 0) )
+    {
+        if ( isset( $opts['on'] ) && !( $opts['on'] ) ) {
+            $this->extraDirectives[] = "chart.showLegend(false)\n";
+        }
+        return $this;
     }
     
     /**

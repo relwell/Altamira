@@ -20,6 +20,7 @@ $charts = array();
 
 $chart = new Chart('chart1', $library);
 $chart->addSeries( $chart->createSeries( ChartDatum\TwoDimensionalPointFactory::getFromXValues( array( 1, 2, 3, 4, 5 ) ), 'Series A' ) );
+$chart->setLegend( array( 'on' => false ) );
 $charts[] = $chart;
 
 $points = array( 'golf clubs' => 1, 'golf shoes' => 5, 'holes' => 18, 'strokes' => 32 );
