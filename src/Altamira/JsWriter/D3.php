@@ -234,6 +234,8 @@ class D3
         return $this;
     }
     
+    public function setAxisOptions() { /* @todo */ return $this; }
+    public function setAxisTicks() { /* @todo */ return $this; }
     
     
     /**

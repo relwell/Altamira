@@ -117,7 +117,9 @@ class Chart
 	 */
 	public function useHighlighting( array $opts = array( 'size' => 7.5 ) )
 	{
-	    $this->jsWriter->useHighlighting( $opts );
+	    if ( $this->jsWriter instanceof Altamira\JsWriter\Ability\Highlightable ) {
+    	    $this->jsWriter->useHighlighting( $opts );
+	    }
 
 		return $this;
 	}
@@ -158,7 +160,9 @@ class Chart
 	 */
 	public function useDates( $axis = 'x' )
 	{
-		$this->jsWriter->useDates($axis);
+	    if ( $this->jsWriter instanceof Altamira\JsWriter\Ability\Datable ) {
+            $this->jsWriter->useDates($axis);
+	    }
 
 		return $this;
 	}
