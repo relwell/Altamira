@@ -17,7 +17,8 @@ class D3
     implements Ability\Fillable,
                Ability\Legendable,
                Ability\Cursorable,
-               Ability\Zoomable
+               Ability\Zoomable,
+               Ability\Labelable
 {
     /**
      * Identifies the string value of which library this jsWriter is responsible for
@@ -206,6 +207,36 @@ class D3
     }
     
     /**
+     * Activates the option for labeling the provided series 
+     * @param  string|\Altamira\Series $series
+     */
+    public function useSeriesLabels( $series )
+    {
+        if ( $this->useSeriesLabels == true ) {
+            $this->extraDirectives[] = "chart.showLabels(false);";
+            $this->useSeriesLabels = false;
+        } else {
+            $this->extraDirectives[] = "chart.showLabels(true);";
+            $this->useSeriesLabels = true;
+        }
+        return $this;
+    }
+    
+    /**
+     * Specifies a labeling option for the provided series
+     * @param string|\Altamira\Series $series
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setSeriesLabelSetting( $series, $name, $value )
+    {
+        //@todo
+        return $this;
+    }
+    
+    
+    
+    /**
      * Allows us to set the style of a specific series
      * @param \Altamira\Series|string $series
      * @param string $key
@@ -294,6 +325,17 @@ class D3
             unset( $datumArray['radius'] );
         }
         return $datumArray;
+    }
+    
+    /**
+     * Lets you customize your chart
+     * @param array $functionCalls
+     * @return \Altamira\JsWriter\D3
+     */
+    public function pushExtraFunctionCalls( array $functionCalls )
+    {
+        $this->extraDirectives += $functionCalls;
+        return $this;
     }
 
     

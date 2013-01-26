@@ -27,13 +27,18 @@ $points = array( 'golf clubs' => 1, 'golf shoes' => 5, 'holes' => 18, 'strokes' 
 $chart = new Chart('chart2', $library );
 $chart->setType( 'Pie' );
 $data = ChartDatum\ScalarValueFactory::getFromAssociativeArray( $points );
-$chart->addSeries( $chart->createSeries( $data ) );
+$series = $chart->createSeries( $data );
+$series->useLabels(); // since labels are on by default, this turns it off :-\
+$chart->addSeries( $series );
 $charts[] = $chart;
 
+// this is an option we can set to move the donut labels out
+$calls = array( "chart.donutLabelsOutside(true);" );
 $nested = array( array( 45, 'cool' ), array( 25, 'cold' ), array( '60', 'temperate' ), array( '75', 'warm' ), array( '90', 'hot' ) );
 $chart = new Chart('chart3', $library );
 $chart->setType( 'Donut' );
 $chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromNestedArray( $nested ) ) );
+$chart->getJsWriter()->pushExtraFunctionCalls( $calls );
 $charts[] = $chart;
 
 $tuples = array( 
