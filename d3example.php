@@ -91,6 +91,19 @@ $chart->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromA
       ->addSeries( $chart->createSeries( ChartDatum\ScalarValueFactory::getFromAssociativeArray( $arr2 ), 'Hustlers' ) );
 $charts[] = $chart;
 
+$chart = new Chart( 'chart8', $library );
+$chart->setTitle( 'Line Chart With Zooming' );
+$chart->addSeries( 
+        $chart->createSeries( 
+                ChartDatum\TwoDimensionalPointFactory::getFromNested( 
+                        array_map( function($x) { return array( $x, $x*$x ); }, range( 0, 100 ) ) 
+                        ), 
+                'Whatever' 
+                ) 
+        )
+       ->useZooming();
+$charts[] = $chart;
+
 $chartIterator = new ChartIterator( $charts );
 
 ?>

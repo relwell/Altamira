@@ -16,7 +16,8 @@ class D3
     extends JsWriterAbstract
     implements Ability\Fillable,
                Ability\Legendable,
-               Ability\Cursorable
+               Ability\Cursorable,
+               Ability\Zoomable
 {
     /**
      * Identifies the string value of which library this jsWriter is responsible for
@@ -189,6 +190,18 @@ class D3
             $this->extraDirectives[] = "chart.tooltips(false);\n";
             $this->options['hideCursor'] = true;
         }
+        return $this;
+    }
+    
+    /**
+     * Turns on focus chart
+     * @see \Altamira\JsWriter\Ability\Zoomable::useZooming()
+     * @param array
+     * @return \Altamira\JsWriter\D3
+     */
+    public function useZooming( array $options = array( 'mode'=>'xy' ) )
+    {
+        $this->setType( 'LineWithFocus' );
         return $this;
     }
     
