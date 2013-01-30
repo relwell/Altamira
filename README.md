@@ -30,3 +30,15 @@ git clone https://github.com/novus/nvd3.git js/nvd3
 ```
 
 Load example.php in your browser.
+
+API Documentation
+=======================
+Api Documentation is available using [phpDocumentor](http://www.phpdoc.org/).
+
+Install phpDocumentor with PEAR using the instructions on the site. 
+In order to generate documentation, use the following command:
+
+    phpdoc -d src -t docs
+
+You can now view documentation in your browser at localhost/Altamira/docs 
+(assuming you can do that with localhost/Altamira/example.php).
