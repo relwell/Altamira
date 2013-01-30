@@ -250,7 +250,7 @@ class Chart
 	}
 
         /**
-         * Sets legend options within the jsWriter
+         * Sets legend options within the jsWriter.
          * To show or hide the legend, invoke the following method:
          * <code>
          * // default value for first parameter will show the legend
