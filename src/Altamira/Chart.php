@@ -117,7 +117,7 @@ class Chart
 	 */
 	public function useHighlighting( array $opts = array( 'size' => 7.5 ) )
 	{
-	    if ( $this->jsWriter instanceof Altamira\JsWriter\Ability\Highlightable ) {
+	    if ( $this->jsWriter instanceof \Altamira\JsWriter\Ability\Highlightable ) {
     	    $this->jsWriter->useHighlighting( $opts );
 	    }
 
@@ -143,7 +143,7 @@ class Chart
 	public function useCursor()
 	{
 	    //@codeCoverageIgnoreStart
-	    if (! $this->jsWriter instanceOf \AltaMira\JsWriter\Ability\Cursorable ) {
+	    if (! $this->jsWriter instanceOf \Altamira\JsWriter\Ability\Cursorable ) {
             throw new \BadMethodCallException( "JsWriter cannot use cursor" );
 	    }
 	    //@codeCoverageIgnoreEnd
@@ -160,7 +160,7 @@ class Chart
 	 */
 	public function useDates( $axis = 'x' )
 	{
-	    if ( $this->jsWriter instanceof Altamira\JsWriter\Ability\Datable ) {
+	    if ( $this->jsWriter instanceof \Altamira\JsWriter\Ability\Datable ) {
             $this->jsWriter->useDates($axis);
 	    }
 
