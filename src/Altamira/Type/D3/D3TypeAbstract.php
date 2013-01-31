@@ -30,5 +30,5 @@ abstract class D3TypeAbstract extends TypeAbstract
         return $this->chartDirective;
     }
     
-    public function setStrokeColor() { return ''; }
+    public function setStrokeColor( $name = null, $seriesIndex = null, $val = null ) { return ''; }
 }

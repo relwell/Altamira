@@ -56,7 +56,7 @@ class Bar extends D3TypeAbstract
         return $this;
     }
     
-    public function setStrokeColor( $name, $seriesIndex, $val )
+    public function setStrokeColor( $name = null, $seriesIndex = null, $val = null )
     {
         return sprintf( '#%s .nv-series-%s g rect {stroke-opacity: 1 !important; }', $name, $seriesIndex, $val );
     }
