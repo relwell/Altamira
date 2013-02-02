@@ -5,6 +5,7 @@
  *
  */
 namespace Altamira;
+use Altamira\ChartDatum\FactoryStrategy;
 
 /**
  * This class encapsulates all behavior around charts.
@@ -56,6 +57,12 @@ class Chart
 	 * @var bool
 	 */
 	protected $titleHidden = false;
+	
+	/**
+	 * Responsible for creating data based on chart's configurations
+	 * @var FactoryStrategy
+	 */
+	
 
 	/**
 	 * Constructor method. Registers the identifier name and initializes the JsWriter based on the library.
@@ -77,6 +84,8 @@ class Chart
 	    } else {
 	        throw new \Exception( "No JsWriter by name of {$className}" );
 	    }
+	    
+	    $this->dataFactory = new FactoryStrategy( $this );
 	}
 	
 	/**
@@ -303,7 +312,10 @@ class Chart
 	 */
 	public function createSeries( $data, $title = null, $type = null )
 	{
-        return new Series( $data, $title, $this->jsWriter );
+	    if ( $data[0] instanceof \Altamira\ChartDatum\ChartDatumAbstract ) {
+            return new Series( $data, $title, $this->jsWriter );
+	    }
+	    return new Series( $this->dataFactory->buildData( $data ), $title, $type );
 	}
 	
 	/**
