@@ -39,13 +39,15 @@ class FactoryStrategy
     protected function buildForFlotOrJqPlot( array $data )
     {
         $type = $this->chart->getJsWriter()->getType();
-        $typeOptions = $type->getOptions();
-        switch ( $type->getName() ) {
-            case 'Bar':
-                if ( isset( $typeOptions['horizontal'] ) && $typeOptions['horizontal'] ) {
-                    return TwoDimensionalPointFactory::getFromXValues( $data );
-                }
-                break;
+        if ( $type instanceof \Altamira\Type\TypeAbstract ) {
+            $typeOptions = $type->getOptions();
+            switch ( $type->getName() ) {
+                case 'Bar':
+                    if ( isset( $typeOptions['horizontal'] ) && $typeOptions['horizontal'] ) {
+                        return TwoDimensionalPointFactory::getFromXValues( $data );
+                    }
+                    break;
+            }
         }
         
         if ( $this->dataIsNested ) {

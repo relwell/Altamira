@@ -77,7 +77,9 @@ class Chart
 	    
 		$this->name = preg_replace( '/\s+/', '_', $name );
 
+		$library = (strtolower($library) == \Altamira\JsWriter\JqPlot::LIBRARY) ? \Altamira\JsWriter\JqPlot::LIBRARY : $library;  
 	    $className = '\\Altamira\\JsWriter\\'.ucfirst( $library );
+	    
     
 	    if ( class_exists( $className ) ) {
 	        $this->jsWriter = new $className( $this );
@@ -313,9 +315,14 @@ class Chart
 	public function createSeries( $data, $title = null, $type = null )
 	{
 	    if ( $data[0] instanceof \Altamira\ChartDatum\ChartDatumAbstract ) {
-            return new Series( $data, $title, $this->jsWriter );
+            $series = new Series( $data, $title, $this->jsWriter );
+	    } else {
+    	    $series = new Series( $this->dataFactory->buildData( $data ), $title, $this->jsWriter );
 	    }
-	    return new Series( $this->dataFactory->buildData( $data ), $title, $type );
+	    if ( $type !== null ) {
+	        $series->setType( $type );
+	    }
+	    return $series;
 	}
 	
 	/**
