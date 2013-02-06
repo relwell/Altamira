@@ -9,6 +9,8 @@ namespace Altamira\Type\D3;
  */
 class Bubble extends D3TypeAbstract
 {
+    const TYPE = 'Bubble';
+    
     /**
      * Defintes the scatter plot model
      * @var string

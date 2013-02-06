@@ -8,6 +8,8 @@ namespace Altamira\Type\D3;
  */
 class Pie extends D3TypeAbstract
 {
+    const TYPE = 'Pie';
+    
     /**
      * NVD3 pie model
      * @var string

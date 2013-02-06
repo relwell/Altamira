@@ -9,6 +9,8 @@ namespace Altamira\Type\D3;
  */
 class Donut extends D3TypeAbstract
 {
+    const TYPE = 'Donut';
+    
     /**
      * NVD3 pie model with donut activated
      * @var string

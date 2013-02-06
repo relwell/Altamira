@@ -20,6 +20,7 @@ class D3
                Ability\Zoomable,
                Ability\Labelable
 {
+
     /**
      * Identifies the string value of which library this jsWriter is responsible for
      * @var string
@@ -32,6 +33,12 @@ class D3
      */
     protected $typeNamespace = '\\Altamira\\Type\\D3\\';
 
+    /**
+     * Allows us to register nvd3 framework as a plugin to D3 
+     * @var array
+     */
+    protected $files = array( 'nv.d3.js' );
+    
     /**
      * Holds on to additional directives that the setting of specific options may register
      * @var array

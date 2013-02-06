@@ -29,7 +29,7 @@ class DefaultRenderer implements RendererInterface
         $dataAttributes = self::getAttributesFromChart( $chart );
         
         return <<<ENDDIV
-<div class="{$chart->getLibrary()}" id="{$chart->getName()}" {$dataAttributes} style="{$style}">
+<div class="{$chart->getLibrary()} chart" id="{$chart->getName()}" {$dataAttributes} style="{$style}">
 ENDDIV;
         
     }

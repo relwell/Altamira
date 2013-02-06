@@ -8,6 +8,8 @@ namespace Altamira\Type\D3;
  */
 class LineWithFocus extends D3TypeAbstract
 {
+    const TYPE = 'LineWithFocus';
+    
     /**
      * NVD3 linewithfocus model
      * @var string

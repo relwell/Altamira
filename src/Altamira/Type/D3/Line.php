@@ -9,6 +9,8 @@ namespace Altamira\Type\D3;
  */
 class Line extends \Altamira\Type\D3\D3TypeAbstract
 {
+    const TYPE = 'Line';
+    
     /**
      * NVD3 lineChart model
      * @var string
